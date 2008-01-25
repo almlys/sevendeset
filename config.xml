@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE sd7config SYSTEM 'sd7Config.dtd'>
+<!DOCTYPE sd7config SYSTEM "http://7d7.almlys.org/spec/draft/sd7Config.dtd">
 <sd7config>
 
-	<args>
-		<param name='BootStrap.downloadPath' value='downloads' />
-		<param name='BootStrap.outputPath' value='depends' />
-		<param name='BootStrap.prefix' value='runtime' />
-		<param name='BootStrap.patches' value='patches' />
-		<param name='BootStrap.manifest' value='bootstrap.xml' />
-	</args>
+	<section name="global">
+		<option name='BootStrap.downloadPath' value='downloads' />
+		<option name='BootStrap.outputPath' value='depends' />
+		<option name='BootStrap.prefix' value='runtime' />
+		<option name='BootStrap.patches' value='patches' />
+		<option name='BootStrap.manifest' value='bootstrap.xml' />
+	</section>
 
 </sd7config>
