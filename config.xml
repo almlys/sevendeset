@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE sd7config SYSTEM 'sd7Config.dtd'>
+<sd7config>
+
+	<args>
+		<param name='BootStrap.downloadPath' value='downloads' />
+		<param name='BootStrap.outputPath' value='depends' />
+		<param name='BootStrap.prefix' value='runtime' />
+		<param name='BootStrap.patches' value='patches' />
+		<param name='BootStrap.manifest' value='bootstrap.xml' />
+	</args>
+
+</sd7config>
