@@ -1,0 +1,19 @@
+diff -ur ois.orig/bootstrap ois/bootstrap
+--- ois.orig/bootstrap	2006-08-31 04:16:10.000000000 +0200
++++ ois/bootstrap	2008-01-02 18:44:10.000000000 +0100
+@@ -17,10 +17,11 @@
+     exit 1;
+ fi
+ 
+-if test -z "`automake --version 2>&1|head -n 1|egrep '1.[6-9]'`"; then
+-	echo "Automake 1.6 or above is required. Aborting build...";
+-	exit 1;
+-fi
++#if test -z "`automake --version 2>&1|head -n 1|egrep '1.[6-9]'`"; then
++#	echo "Automake 1.6 or above is required. Aborting build...";
++#	exit 1;
++#fi
++# Hey, and automake 1.10 what? and versions higher than 10?
+ 
+ if test -z "`libtool --version 2>&1|head -n 1|egrep '1.[4-5]'`"; then
+ 	echo "Libtool 1.4 or above is required. Aborting build...";
