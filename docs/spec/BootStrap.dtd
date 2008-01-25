@@ -1,12 +1,13 @@
 <!ELEMENT bootstrap (module)+>
 
-<!ELEMENT module (comment?,source,patch?,build?,install?)>
+<!ELEMENT module (comment?,license?,source+,patch?,build?,install?)>
 <!ATTLIST module
 	name ID #REQUIRED
 	ignore CDATA #IMPLIED
 	depends CDATA #IMPLIED>
 
 <!ELEMENT comment (#PCDATA)>
+<!ELEMENT license (#PCDATA)>
 
 <!ELEMENT source EMPTY>
 <!ATTLIST source
@@ -14,7 +15,9 @@
 	method CDATA #REQUIRED
 	renamefrom CDATA #IMPLIED
 	md5 CDATA #IMPLIED
-	module CDATA #IMPLIED>
+	module CDATA #IMPLIED
+	platform CDATA #IMPLIED
+	arch CDATA #IMPLIED>
 
 <!ELEMENT patch EMPTY>
 <!ATTLIST patch

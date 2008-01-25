@@ -1,8 +1,10 @@
-<!ELEMENT sd7config (args)>
+<!ELEMENT sd7config (section)+>
 
-<!ELEMENT args (param)+>
+<!ELEMENT section (option)*>
+<!ATTLIST section
+	name CDATA #REQUIRED>
 
-<!ELEMENT param EMPTY>
-<!ATTLIST param
+<!ELEMENT option EMPTY>
+<!ATTLIST option
 	name CDATA #REQUIRED
 	value CDATA #REQUIRED>
