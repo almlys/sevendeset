@@ -1,3 +1,13 @@
+<!--
+
+    sd7 Project BootStrap Document Type Definition
+    Copyright (C) 2008 Alberto Montañola Lacort
+    Licensed under the GNU GPL. For full terms see the file COPYING.
+
+    Id: $Id$
+
+-->
+
 <!ELEMENT bootstrap (module)+>
 
 <!ELEMENT module (comment?,license?,source+,patch?,build?,install?)>

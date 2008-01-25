@@ -1,3 +1,13 @@
+<!--
+
+    sd7 Project Configuration Document Type Definition
+    Copyright (C) 2008 Alberto Montañola Lacort
+    Licensed under the GNU GPL. For full terms see the file COPYING.
+
+    Id: $Id$
+
+-->
+
 <!ELEMENT sd7config (section)+>
 
 <!ELEMENT section (option)*>
