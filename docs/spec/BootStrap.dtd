@@ -1,0 +1,30 @@
+<!ELEMENT bootstrap (module)+>
+
+<!ELEMENT module (comment?,source,patch?,build?,install?)>
+<!ATTLIST module
+	name ID #REQUIRED
+	ignore CDATA #IMPLIED
+	depends CDATA #IMPLIED>
+
+<!ELEMENT comment (#PCDATA)>
+
+<!ELEMENT source EMPTY>
+<!ATTLIST source
+	addr CDATA #REQUIRED
+	method CDATA #REQUIRED
+	renamefrom CDATA #IMPLIED
+	md5 CDATA #IMPLIED
+	module CDATA #IMPLIED>
+
+<!ELEMENT patch EMPTY>
+<!ATTLIST patch
+	addr CDATA #REQUIRED>
+
+<!ELEMENT build (cmd)+>
+
+<!ELEMENT install (cmd)+>
+
+<!ELEMENT cmd (#PCDATA)>
+<!ATTLIST cmd
+	cmd CDATA #IMPLIED
+	path CDATA #IMPLIED>

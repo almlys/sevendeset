@@ -1,0 +1,8 @@
+<!ELEMENT sd7config (args)>
+
+<!ELEMENT args (param)+>
+
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+	name CDATA #REQUIRED
+	value CDATA #REQUIRED>
