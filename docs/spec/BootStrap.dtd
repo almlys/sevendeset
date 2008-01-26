@@ -10,7 +10,7 @@
 
 <!ELEMENT bootstrap (module)+>
 <!ATTLIST bootstrap
-	default_target #REQUIRED>
+	default_target CDATA #REQUIRED>
 
 <!ELEMENT module (comment?,license?,source+,patch?,build?,install?)>
 <!ATTLIST module
