@@ -1,0 +1,32 @@
+(((((((((((((((((((((((((((((((((((((((((((((((
+========= 7d7 3d Real Time Engine =============
+***********************************************
+=========  http://7d7.almlys.org  =============
+)))))))))))))))))))))))))))))))))))))))))))))))
+
+== Author ==
+Name: Alberto Montañola Lacort
+E-mail: almlys+sd7@almlys.org
+Project Home: http://7d7.almlys.org
+
+== About this documentation ==
+This file may easily get out of date, so you will find up to date documentation
+at http://7d7.almlys.org
+
+== Introdution ==
+7d7 or sd7 is a framework that integrates a set of libraries, such a renderer
+engine, a physics simulation engine, sound system, between others.
+This framework focuses in giving the necessary aid and tools in order to aid in
+the development of 3d real-time applications.
+
+== License ==
+7d7 is licensed under the GNU GPL v3 or later. See the file COPYING for more 
+details.
+
+== Build & Install ==
+Please read: http://7d7.almlys.org/Build
+
+== Usage ==
+You will find usage information at http://7d7.almlys.org
+
+
