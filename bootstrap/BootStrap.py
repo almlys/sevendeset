@@ -8,48 +8,77 @@
 #    Id: $Id$
 #
 
-import os, os.path
+"""
+sd7 Project BootStrap Script
+
+This module downloads and build a set of libraries required to run sd7
+"""
+
+__version__ = "$Revision$"
+
+__all__ = ["BuildError","InstallError","PatchError","BootStrap","MainApp"]
+
+
+import os
+import os.path
+import sys
 
 from xmlparser import XMLParser
 from Tools import ToolDownloadFactory, ToolFactory
+
 
 class BuildError(Exception): pass
 class InstallError(Exception): pass
 class PatchError(Exception): pass
 
-class BootStrap(object):
 
-    def __init__(self,options,config):
-        self.config = config
-        self.downloadFactory = ToolDownloadFactory()
-        self.ToolFactory = ToolFactory()
+class BootStrap(object):
+    """
+    Main BootStrap Class
+    """
+    
+    _manifest = None #: Path to BootStrap manifest
+    _ToolDownloadFactory = ToolDownloadFactory()
+    _ToolFactory = ToolFactory()
+
+    def __init__(self,options):
+        """
+        Init
+        @param options: A dictonary containing all BootStrap options
+        """
+        self._manifest = options["global"]["BootStrap.manifest"]
+
         def setPath(path):
             if path.startswith('/'):
                 return path
             else:
                 return os.getcwd() + '/' + path.strip("./")
-                
-        self.downloadPath = os.getcwd() + '/' + 'downloads'
-        self.outputPath = os.getcwd() + '/' + 'depends'
-        self.prefix = os.getcwd() + '/' + 'runtime'
-        self.patches = os.getcwd() + '/' + 'patches'
-        fprefix = os.environ['PREFIX'] = self.prefix
+
+
+        self._downloadPath = setPath(options["global"]["BootStrap.downloadPath"])
+        self._outputPath = setPath(options["global"]["BootStrap.outputPath"])
+        self._prefix = setPath(options["global"]["BootStrap.prefix"])
+        self._patches = setPath(options["global"]["BootStrap.patches"])
+
         if not os.path.exists(self.downloadPath):
             os.makedirs(self.downloadPath,0755)
         if not os.path.exists(self.outputPath):
             os.makedirs(self.outputPath,0755)
         if not os.path.exists(self.prefix):
             os.makedirs(self.prefix,0755)
-        import sys
+
+        # Enviorment vars
+        prefix = os.environ['PREFIX'] = self._prefix
+
         version = sys.version.split('.')
         version = version[0] + "." + version[1]
-        # More enviorment vars
-        os.environ['PATH']=fprefix + '/bin:' + os.environ['PATH']
-        os.environ['LD_LIBRARY_PATH']=fprefix + '/lib'
-        os.environ['PYTHONPATH']=fprefix + '/lib/python' + version + '/site-packages'
-        os.environ['CPPFLAGS']='-I' + fprefix + '/include'
-        os.environ['LDFLAGS']='-L' + fprefix + '/lib'
-        os.environ['PKG_CONFIG_PATH']=fprefix + '/lib/pkgconfig'
+
+        os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
+        os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
+        os.environ['PYTHONPATH'] = prefix + '/lib/python' + version + '/site-packages'
+        os.environ['CPPFLAGS'] = '-I' + prefix + '/include'
+        os.environ['LDFLAGS'] = '-L' + prefix + '/lib'
+        os.environ['PKG_CONFIG_PATH'] = prefix + '/lib/pkgconfig'
     
     def run(self):
         p = XMLParser()
@@ -141,44 +170,57 @@ class BootStrap(object):
 
 
 class MainApp(object):
+    """
+    Main BootStrap Application
+    """
     
-    _args = []
-    _options = {}
-    _options_defaults = {
+    _args = [] #: Defines extra args to be appened to the cmd
+    _options = { 'global' : {
         'BootStrap.downloadPath' : 'downloads',
         'BootStrap.outputPath' : 'depends',
         'BootStrap.prefix' : 'runtime',
         'BootStrap.patches' : 'patches',
-        'BootStrap.cache' : 'depends/cache.status.xml',
+        'BootStrap.moduleStatus' : 'BootStrap.status.xml',
         'BootStrap.manifest' : 'bootstrap.xml'
-        }
-    _configFile = None
-    _modules = []
-    _command = None
+        }} #: Store all options (init to defaults)
+    _configFile = None #: Defines configuration file
+    _modules = [] #: The list of modules were bootstrap operates
+    _command = None #: The command to run
     _config = None
-    _bootStrap = None
+    _bootStrap = None #: An instance of the BootStrap class
     
-    def __init__(self):
-        self._run()
+    def __init__(self,args=None):
+        """
+        @param args: App Args
+        """
+        self._run(args)
     
-    def _run(self):
-        self._parseArgs()
+    def _run(self,args=None):
+        """
+        Run it
+        """
+        if args!=None:
+            self._parseArgs(args)
         self._readConfig()
-        self._bootStrap = BootStrap(self._options,self._configFile)
+        self._setCmdConfig()
+        print self._options
+        self._bootStrap = BootStrap(self._options)
         self._runcmd(self._command,self._args,self._modules)
 
-    def _parseArgs(self):
-        import sys
-        n=len(sys.argv)-1
+    def _parseArgs(self,argv):
+        n=len(argv)-1
         for i in xrange(1,n+1):
-            param=sys.argv[i]
+            param=argv[i]
             if param.startswith("-"):
                 if param=="-c" and i<n:
                     i+=1
-                    self._configFile=sys.argv[i]
+                    self._configFile=argv[i]
                 elif param=="-o" and i<n-1:
                     i+=1
-                    self._options[sys.argv[i]]=sys.argv[i+1]
+                    if not self._options.has_key("cmd"):
+                        self._options["cmd"] = {}
+                    self._options["cmd"][argv[i]]=argv[i+1]
+                    i+=1
                 else:
                     self._args.append(param)
             else:
@@ -190,15 +232,25 @@ class MainApp(object):
         if self._configFile!=None:
             self._config = XMLParser()
             self._config.readfile(self._configFile)
-            for arg in self._config.xsd7config[0].args[0].param:
-                if not self._args.has_key(arg.pname):
-                    self._args[arg.pname] = arg.pvalue
-        for arg in self._options_defaults:
-            if not self._options.has_key(arg):
-                self._options[arg] = self._options_defaults[arg]
-        #print self._options
+            
+            for section in self._config.xsd7config[0].xsection:
+                for option in section.xoption:
+                    if not self._options.has_key("global"):
+                        self._options["global"] = {}
+                    self._options["global"][option.pname] = option.pvalue
+    
+    def _setCmdConfig(self):
+        """
+        Command line passed args, are more prioritary
+        """
+        if self._options.has_key("cmd"):
+            for opt in self._options["cmd"]:
+                self._options["global"][opt] = self._options["cmd"][opt]
 
     def _runcmd(self,cmd,args,modules):
+        """
+        Runs a cmd with args for the specified modules
+        """
         if cmd==None or cmd=="help":
             print """
 get <module1> <module2> ...     Downloads the module(s)
@@ -232,5 +284,5 @@ auto <module1> <module2> ...    Automatically builds and installs the module(s)
 
 
 if __name__ == "__main__":
-    app = MainApp()
+    app = MainApp(sys.argv)
 

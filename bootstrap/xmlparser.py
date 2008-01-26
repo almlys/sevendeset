@@ -8,15 +8,45 @@
 #    Id: $Id$
 #
 
+"""
+XML Parsing help tools
+"""
+
+__version__ = "$Revision$"
+
+__all__ = ["XMLParser",]
+
+
 import xml.parsers.expat as xmlp
 
+
 class pnode(object):
-    """Implements a node from the XML tree"""
+    """
+    Implements a node from the XML tree
+    Attributes of the node are accessed appending "p" to the member name.
+    Elements of the tree are accessed appending "x" to the member name.
+    
+        <test>
+            <name val="hi" />
+        </test>
+        
+        val = xml_parser.xtest[0].xname[0].pname
+    
+    """
+
     def __init__(self,name,attrs):
         self.name=name
         self.attrs=attrs
         self.data=""
+
     def __getattribute__(self,name):
+#        if name.startswith("_"):
+#            return object.__getattribute__(self,name[1:])
+#        else:
+#            if name in self.attrs:
+#                return self.attrs[name]
+#            else:
+#                raise AttributeError,name
 #        if name.startswith("x"):
 #            attr=object.__getattribute__(self,name)
 #            if len(attr)==1:
@@ -31,11 +61,18 @@ class pnode(object):
         else:
             return object.__getattribute__(self,name)
 
+
 class XMLParser(object):
+    """
+    XML Parser help class
+    
+    """
+    
     def __init__(self):
         self.stack=[]
         self.current=None
-    def start_element(self,name,attrs):
+
+    def _start_element(self,name,attrs):
         #print "Start element:", name, attrs
         if self.current==None:
             self.current=self
@@ -47,7 +84,8 @@ class XMLParser(object):
             setattr(self.current,"x" + name.lower(),[node,])
         self.current=node
         self.stack.append(node)            
-    def end_element(self,name):
+
+    def _end_element(self,name):
         #print "End element", name
         if self.current!=None:
             self.stack.remove(self.current)
@@ -55,18 +93,29 @@ class XMLParser(object):
                 self.current=self.stack[len(self.stack)-1]
             else:
                 self.current=None
-    def char_data(self,data):
+
+    def _char_data(self,data):
         #print "Character data:", repr(data), str(data)
         self.current.data = self.current.data + str(data)
+
     def parse(self,input):
+        """
+        Parses a string
+        @param input: Input string to parse
+        """
         p = xmlp.ParserCreate()
 
-        p.StartElementHandler = self.start_element
-        p.EndElementHandler = self.end_element
-        p.CharacterDataHandler = self.char_data
+        p.StartElementHandler = self._start_element
+        p.EndElementHandler = self._end_element
+        p.CharacterDataHandler = self._char_data
 
         p.Parse(input,1)
+
     def readfile(self,inn):
+        """
+        Reads and parses a file
+        @param inn: Name of the file to parse
+        """
         f = file(inn,"r")
         self.parse(f.read())
         f.close()
