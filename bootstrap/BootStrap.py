@@ -60,12 +60,12 @@ class BootStrap(object):
         self._prefix = setPath(options["global"]["BootStrap.prefix"])
         self._patches = setPath(options["global"]["BootStrap.patches"])
 
-        if not os.path.exists(self.downloadPath):
-            os.makedirs(self.downloadPath,0755)
-        if not os.path.exists(self.outputPath):
-            os.makedirs(self.outputPath,0755)
-        if not os.path.exists(self.prefix):
-            os.makedirs(self.prefix,0755)
+        if not os.path.exists(self._downloadPath):
+            os.makedirs(self._downloadPath,0755)
+        if not os.path.exists(self._outputPath):
+            os.makedirs(self._outputPath,0755)
+        if not os.path.exists(self._prefix):
+            os.makedirs(self._prefix,0755)
 
         # Enviorment vars
         prefix = os.environ['PREFIX'] = self._prefix
@@ -203,7 +203,7 @@ class MainApp(object):
             self._parseArgs(args)
         self._readConfig()
         self._setCmdConfig()
-        print self._options
+        #print self._options
         self._bootStrap = BootStrap(self._options)
         self._runcmd(self._command,self._args,self._modules)
 
@@ -252,7 +252,7 @@ class MainApp(object):
         Runs a cmd with args for the specified modules
         """
         if cmd==None or cmd=="help":
-            print """
+            print """sd7 BootStrap Application
 get <module1> <module2> ...     Downloads the module(s)
 update <module1> <module2> ...  Updates the module(s)
 remove <module1> <module2> ...  Removes the module(s)
@@ -261,7 +261,6 @@ build <module1> <module2> ...   Builds the module(s)
 clean <module1> <module2> ...   Cleans the module(s)
 install <module1> <module2> ... Installs the module(s)
 auto <module1> <module2> ...    Automatically builds and installs the module(s)
-
 """
             return
         for m in modules:
