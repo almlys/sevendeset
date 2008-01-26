@@ -9,6 +9,8 @@
 -->
 
 <!ELEMENT bootstrap (module)+>
+<!ATTLIST bootstrap
+	default_target #REQUIRED>
 
 <!ELEMENT module (comment?,license?,source+,patch?,build?,install?)>
 <!ATTLIST module
