@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE bootstrap SYSTEM "http://7d7.almlys.org/spec/draft/BootStrap.dtd">
-<bootstrap>
+<bootstrap default_target='sd7'>
 
 	<module name='cg' ignore='no'>
 		<comment>
@@ -167,6 +167,13 @@
 		</comment>
 		<license>LGPLv2 or lather</license>
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre' method='svn' />
+	</module>
+	
+	<module name='sd7' depends='python-ogre' >
+		<comment>
+			sd7 real time 3d engine
+		</comment>
+		<license>GPLv3 or later</license>
 	</module>
 	
 </bootstrap>
