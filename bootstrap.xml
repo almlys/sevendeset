@@ -10,7 +10,7 @@
 			Note: Ogre can be compiled without the cg library, but well, you now how things will look without it.
 		</comment>
 		<license>Propietary</license>
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz' method='wget' renamefrom='usr' md5='f6191a01b22f29f7df0b1e1a013aa971' platform='linux' arch='x86' />
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz' method='wget' renamefrom='usr' md5='f6191a01b22f29f7df0b1e1a013aa971' platform='linux' arch='i686' />
 		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz' method='wget' renamefrom='usr' md5='f6191a01b22f29f7df0b1e1a013aa971' platform='linux' arch='x86_64' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>

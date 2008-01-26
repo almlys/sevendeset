@@ -8,6 +8,15 @@
 #    Id: $Id$
 #
 
+"""
+Tool Factory Stuff
+"""
+
+__version__ = "$Revision$"
+
+__all__ = ["ToolFactory","ToolDownloadFactory","ToolError","ToolNotInstalled"]
+
+
 from ToolFactory import ToolDownloadFactory, ToolFactory
 from Tools import ToolError, ToolNotInstalled
 

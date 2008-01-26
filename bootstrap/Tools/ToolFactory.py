@@ -8,7 +8,21 @@
 #    Id: $Id$
 #
 
-class ToolNotInstalled(Exception): pass
+
+"""
+Tool Factory Stuff
+
+Manages the available tools
+"""
+
+__version__ = "$Revision$"
+
+__all__ = ["ToolDownloadFactory","ToolFactory"]
+
+
+import Tools
+from Tools import ToolNotInstalled
+
 
 class _ToolDownloadFactory(object):
     
@@ -17,7 +31,6 @@ class _ToolDownloadFactory(object):
         self.loadTools()
     
     def loadTools(self):
-        import Tools
         #from Tools import WgetTool, CVSTool
         self.addTool("wget",Tools.WgetTool)
         self.addTool("cvs",Tools.CVSTool)
@@ -32,6 +45,11 @@ class _ToolDownloadFactory(object):
         return self.tools[name]()
     
     def get(self,name,args):
+        """
+        Downloads/updates the selected source with the specified method
+        @param name: Method/Tool to download the code
+        @param args: Tuple of arguments passed to the inner tool
+        """
         #print args
         return self.create(name).get(args)
 
@@ -57,14 +75,24 @@ class _ToolFactory(object):
         return self.tools[name]()
     
     def run(self,name,args):
+        """
+        Runs the specified tool with the inner params
+        @param name: Name of the tool/cmd to run
+        @param args: Inner params to send to the tool
+        """
         #print args
         return self.create(name).run(args)
+
 
 
 _ToolDownloadFactoryInstance = None
 _ToolFactoryInstance = None
 
+
 def ToolDownloadFactory():
+    """
+    Returns a ToolDownloadFactory instance
+    """
     global _ToolDownloadFactoryInstance
 
     if _ToolDownloadFactoryInstance == None:
@@ -72,7 +100,11 @@ def ToolDownloadFactory():
     
     return _ToolDownloadFactoryInstance
 
+
 def ToolFactory():
+    """
+    Returns a ToolFactory instance
+    """
     global _ToolFactoryInstance
 
     if _ToolFactoryInstance == None:

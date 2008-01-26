@@ -8,12 +8,22 @@
 #    Id: $Id$
 #
 
+
+"""
+Some Tools
+"""
+
+__version__ = "$Revision$"
+
 __all__ = ["WgetTool","CVSTool","SVNTool","MkdirTool","CdTool"]
 
-import os, shutil, time
+
+import os
+import shutil
+import time
+
 
 class ToolNotInstalled(Exception): pass
-
 class ToolError(Exception): pass
 
 
@@ -22,10 +32,12 @@ class Tool(object):
     def check(self):
         pass
 
+
 class DownloadTool(Tool):
 
     def get(self,args):
         print args
+
 
 class WgetTool(DownloadTool):
     
@@ -97,7 +109,7 @@ class WgetTool(DownloadTool):
             if md5!=args['md5']:
                 raise ToolError, "Checksum missmatch, source package may have been altered!"
 
-        if os.path.exists(path) and not args['update']:
+        if os.path.exists(path) and not args['update'] and not args['redownload']:
             print "%s already unpacked, skipping..." %(path,)
         else:
             if os.path.exists(path):
