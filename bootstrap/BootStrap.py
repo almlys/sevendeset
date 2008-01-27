@@ -368,5 +368,9 @@ auto <module1> <module2> ...    Automatically builds and installs the module(s)
 
 
 if __name__ == "__main__":
+    import time
+    start = time.clock()
     app = MainApp(sys.argv)
+    end = time.clock()
+    print "done in %.2f seconds" %(end-start,)
 

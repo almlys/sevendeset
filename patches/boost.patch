@@ -1,3 +1,15 @@
+--- boost2/boost/python/detail/preprocessor.hpp	2004-07-26 02:32:07.000000000 +0200
++++ boost/boost/python/detail/preprocessor.hpp	2008-01-27 02:07:13.000000000 +0100
+@@ -26,7 +26,7 @@
+ # endif
+ 
+ # ifndef BOOST_PYTHON_MAX_ARITY
+-#  define BOOST_PYTHON_MAX_ARITY 15
++#  define BOOST_PYTHON_MAX_ARITY 19
+ # endif
+ 
+ # ifndef BOOST_PYTHON_MAX_BASES
+Sólo en boost: .bootstrap.patched
 diff -ru boost2/libs/python/build/Jamfile.v2 boost/libs/python/build/Jamfile.v2
 --- boost2/libs/python/build/Jamfile.v2	2007-06-08 20:30:43.000000000 +0200
 +++ boost/libs/python/build/Jamfile.v2	2008-01-27 01:41:04.000000000 +0100
