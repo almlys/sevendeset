@@ -115,35 +115,6 @@
 			<cmd>make install</cmd>
 		</install>
 	</module>
-
-	<module name='boost' ignore='no'>
-		<comment>
-			Boost Libraries
-			# Need to patch??
-		</comment>
-		<license>Boost</license>
-		<source addr='http://downloads.sourceforge.net/boost/boost_1_34_1.tar.bz2' method='wget' renamefrom='boost_1_34_1' md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
-		<patch addr='boost.patch' />
-		<build>
-			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
-			<cmd>make</cmd>
-		</build>
-		<install>
-			<cmd>make install</cmd>
-		</install>
-	</module>
-
-	<module name='scons' ignore='no'>
-		<comment>
-			Build tool, required to build some packages
-			python setup.py install --prefix=$PREFIX
-		</comment>
-		<license>MIT</license>
-		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.97.0d20071212.tar.gz' method='wget' renamefrom='scons-0.97.0d20071212' md5='d06327b77552ac0153bb8f93b27b7f13' />
-		<install>
-			<cmd>python setup.py install --prefix=$PREFIX</cmd>
-		</install>
-	</module>
 	
 	<module name='pygccxml' ignore='no' depends='gccxml'>
 		<comment>
@@ -159,6 +130,40 @@
 			<cmd>python setup.py install --prefix=$PREFIX</cmd>
 		</install>
 	</module>
+
+	<module name='scons' ignore='no'>
+		<comment>
+			Build tool, required to build some packages
+			python setup.py install --prefix=$PREFIX
+		</comment>
+		<license>MIT</license>
+		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.97.0d20071212.tar.gz' method='wget' renamefrom='scons-0.97.0d20071212' md5='d06327b77552ac0153bb8f93b27b7f13' />
+		<install>
+			<cmd>python setup.py install --prefix=$PREFIX</cmd>
+		</install>
+	</module>
+
+	<module name='boost' ignore='no' depends='pygccxml'>
+		<comment>
+			Boost Libraries
+			# Need to patch??
+		</comment>
+		<license>Boost</license>
+		<source addr='http://downloads.sourceforge.net/boost/boost_1_34_1.tar.bz2' method='wget' renamefrom='boost_1_34_1' md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
+		<patch addr='boost.patch' />
+		<build>
+			<!-- Begin Dirty Hack -->
+			<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>
+			<cmd>cp -rv ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
+			<!-- End Dirty Hack -->
+			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
+			<cmd>make</cmd>
+		</build>
+		<install>
+			<cmd>make install</cmd>
+		</install>
+	</module>
+
 	
 	<module name='python-ogre' ignore='no' depends='ogre,pygccxml,scons,boost'>
 		<comment>

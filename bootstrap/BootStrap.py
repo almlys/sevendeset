@@ -231,7 +231,7 @@ class BootStrap(object):
             os.chdir(self._outputPath + '/' + module.pname)
             for cmd in module.xinstall[0].xcmd:
                 if hasattr(cmd,"pcmd"):
-                    self.ToolFactory.run(cmd.pcmd,cmd.attrs)
+                    self._ToolFactory.run(cmd.pcmd,cmd.attrs)
                 elif (os.system(cmd.data)!=0):
                     raise InstallError
         except Exception,e:
