@@ -172,6 +172,7 @@
 		</comment>
 		<license>LGPLv2 or lather</license>
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre' method='svn' />
+		<patch addr='python-ogre.patch' />
 	</module>
 	
 	<module name='sd7' depends='python-ogre' >

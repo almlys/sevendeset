@@ -1,0 +1,27 @@
+--- python-ogre/PythonOgreConfig_posix.py	2008-01-27 02:04:59.000000000 +0100
++++ python-ogre/PythonOgreConfig_posix.py	2008-01-27 17:53:42.000000000 +0100
+@@ -11,16 +11,20 @@
+ MAC_cflags = ' --gccxml-cxxflags "-DCF_OPEN_SOURCE -D_POSIX_C_SOURCE -isysroot /Developer/SDKs/MacOSX10.4u.sdk"'
+ 
+ # the base of the /usr/... dircetory structure that we are using
+-ROOT_DIR = os.path.join(BASE_DIR,'root')
+-LOCAL_LIB = os.path.join(ROOT_DIR,'usr/lib')
+-LOCAL_INCLUDE = os.path.join(ROOT_DIR, 'usr/include')
++#ROOT_DIR = os.path.join(BASE_DIR,'root')
++ROOT_DIR = os.environ['PREFIX']
++LOCAL_LIB = os.path.join(ROOT_DIR,'lib')
++LOCAL_INCLUDE = os.path.join(ROOT_DIR, 'include')
+ 
+ ## path to the root of your boost dir, should have 'libs', 'boost' subdirectories
+ PATH_Boost = os.path.join(LOCAL_INCLUDE, 'boost-1_34_1')
+ ## Path to your boost_pythonxxxx lib file
+ PATH_LIB_Boost = LOCAL_LIB
+ ## and the name of the boost python library
+-LIB_Boost = 'libboost_python-gcc42-1_34_1'
++import re
++a,b = os.popen4("gcc -v")
++MY_GCC_VERSION"".join(re.search('gcc version ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
++LIB_Boost = 'libboost_python-gcc%s-1_34_1' %(MY_GCC_VERSION,)
+ 
+ # in Linux we need to code in the Relative path for the library
+ RPATH=os.path.join('\\$$ORIGIN',os.pardir,os.pardir, 'lib') #+ '\'' 
