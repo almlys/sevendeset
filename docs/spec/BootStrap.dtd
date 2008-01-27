@@ -12,7 +12,7 @@
 <!ATTLIST bootstrap
 	default_target CDATA #REQUIRED>
 
-<!ELEMENT module (comment?,license?,source+,patch?,build?,install?)>
+<!ELEMENT module (comment?,license?,source*,patch?,build?,install?)>
 <!ATTLIST module
 	name ID #REQUIRED
 	ignore CDATA #IMPLIED
