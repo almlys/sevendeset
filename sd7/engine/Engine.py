@@ -9,11 +9,19 @@
 #
 
 """
-sd7 Engine Root Package
+Main Engine App (Integrates most subsystems)
 """
 
 __version__ = "$Revision$"
 
 __all__ = ["Engine"]
 
-from Engine import Engine
+
+class Engine(object):
+    
+    def __init__(self):
+        pass
+        
+    def run(self):
+        pass
+
