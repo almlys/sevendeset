@@ -7,7 +7,7 @@
 		<option name='BootStrap.outputPath' value='depends' />
 		<option name='BootStrap.prefix' value='runtime' />
 		<option name='BootStrap.patches' value='patches' />
-		<option name='BootStrap.manifest' value='bootstrap.xml' />
+		<option name='BootStrap.manifest' value='config/bootstrap.xml' />
 	</section>
 
 </sd7config>

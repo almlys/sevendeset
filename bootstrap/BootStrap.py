@@ -261,7 +261,7 @@ class MainApp(object):
         'BootStrap.prefix' : 'runtime',
         'BootStrap.patches' : 'patches',
         'BootStrap.moduleStatus' : 'BootStrap.status.xml',
-        'BootStrap.manifest' : 'bootstrap.xml'
+        'BootStrap.manifest' : 'config/bootstrap.xml'
         }} #: Store all options (init to defaults)
     _configFile = None #: Defines configuration file
     _modules = [] #: The list of modules were bootstrap operates
