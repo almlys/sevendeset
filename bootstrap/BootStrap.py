@@ -356,7 +356,7 @@ auto <module1> <module2> ...    Automatically builds and installs the module(s)
                 elif cmd=="patch":
                     self._bootStrap.patch(m)
                 elif cmd=="build":
-                    self._bootStrap.patch(m)
+                    self._bootStrap.build(m)
                 elif cmd=="clean":
                     self._bootStrap.clean(m)
                 elif cmd=="install":

@@ -168,11 +168,51 @@
 	<module name='python-ogre' ignore='no' depends='ogre,pygccxml,scons,boost'>
 		<comment>
 			Python-Ogre
-			# svn co https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre python-ogre
 		</comment>
 		<license>LGPLv2 or lather</license>
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre' method='svn' />
 		<patch addr='python-ogre.patch' />
+		<build>
+			<cmd>echo "OK. LONG BUILD PROCESS STARTS NOW!!! - LEFT YOUR COMPUTER ON, AND COME TOMORROW!!"</cmd>
+
+			<cmd cmd='cd' path='code_generators/ogre' />
+			<cmd>echo "Generating Ogre Code ......."</cmd>
+			<cmd>python generate_code.py</cmd>
+			<cmd cmd='cd' path='../..' />
+			
+			<cmd cmd='cd' path='code_generators/cegui' />
+			<cmd>echo "Generating CEGUI Code ......."</cmd>
+			<cmd>python generate_code.py</cmd>
+			<cmd cmd='cd' path='../..' />
+
+			<cmd cmd='cd' path='code_generators/ois' />
+			<cmd>echo "Generating OIS Code ......."</cmd>
+			<cmd>python generate_code.py</cmd>
+			<cmd cmd='cd' path='../..' />
+
+			<cmd>echo "Building Ogre ......."</cmd>
+			<cmd>scons PROJECTS="ogre"</cmd>
+
+			<cmd>echo "Building CEGUI ......."</cmd>
+			<cmd>scons PROJECTS="cegui"</cmd>
+			
+			<cmd>echo "Building OIS ......."</cmd>
+			<cmd>scons PROJECTS="ois"</cmd>
+
+			<cmd>echo "CONGRATULATIONS!!, everything has sucessfully being build!!!!"</cmd>
+		</build>
+		
+		<install>
+			<cmd>cp -rfv packages_2.5/ogre/gui/betagui packages_2.4/ogre/gui</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/bullet packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/PhysX packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/NxOgre packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/OgreBulletC packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/OgreBulletD packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/addons packages_2.4/ogre</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/gui/navi packages_2.4/ogre/gui</cmd>
+			<cmd>python setup.py install --prefix=$PREFIX</cmd>
+		</install>
 	</module>
 	
 	<module name='sd7' depends='python-ogre' >
