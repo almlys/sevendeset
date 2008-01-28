@@ -14,6 +14,6 @@ Template file
 
 __version__ = "$Revision$"
 
-__all__ = []
+__all__ = ["Engine"]
 
-
+from Engine import Engine

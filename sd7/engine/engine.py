@@ -9,16 +9,11 @@
 #
 
 """
-sd7 Main Entry Point file and Application
+Template file
 """
 
 __version__ = "$Revision$"
 
 __all__ = []
 
-from sd7.engine import Engine
 
-e = Engine()
-e.run()
-
-print "App Terminated"
