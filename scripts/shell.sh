@@ -20,6 +20,6 @@ export LD_LIBRARY_PATH=$PREFIX/lib
 export CPPFLAGS=-I$PREFIX/include
 export LDFLAGS=-L$PREFIX/lib
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
-export PYTHONPATH=$PREFIX/lib/python$PYTHONVERSION/site-packages
+export PYTHONPATH=`pwd`:$PREFIX/lib/python$PYTHONVERSION/site-packages
 
 bash

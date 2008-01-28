@@ -99,7 +99,7 @@ class BootStrap(object):
 
         os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
         os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
-        os.environ['PYTHONPATH'] = prefix + '/lib/python' + version + '/site-packages'
+        os.environ['PYTHONPATH'] = os.getcwd() + ":" + prefix + '/lib/python' + version + '/site-packages'
         os.environ['CPPFLAGS'] = '-I' + prefix + '/include'
         os.environ['LDFLAGS'] = '-L' + prefix + '/lib'
         os.environ['PKG_CONFIG_PATH'] = prefix + '/lib/pkgconfig'
