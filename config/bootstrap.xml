@@ -222,4 +222,15 @@
 		<license>GPLv3 or later</license>
 	</module>
 	
+	<module name='binary_depends' ignore='no'>
+		<comment>
+			Big package that contains all the above stuff mixed in one item
+		</comment>
+		<license>GPLv3 or later</license>
+		<source addr='http://7d7.almlys.org/builds/runtime.tar.bz2' method='wget' renamefrom='runtime' md5='3b00c3a2591fa481ea54a8e7a4fda288' platform='linux' arch='i686' />
+		<install>
+			<cmd>cp -rvp * $PREFIX</cmd>
+		</install>
+	</module>
+	
 </bootstrap>
