@@ -16,9 +16,39 @@ __version__ = "$Revision$"
 
 __all__ = []
 
+from bootstrap.xmlparser import XMLParser
 from sd7.engine import Engine
 
-e = Engine()
+_config = XMLParser()
+_config.readfile("config/config.xml")
+_options = {}
+    
+for section in _config.xsd7config[0].xsection:
+    for option in section.xoption:
+        if not _options.has_key(section.pname):
+            _options[section.pname] = {}
+        _options[section.pname][option.pname] = option.pvalue
+
+e = Engine(_options)
 e.run()
+
+
+print """<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE sd7config SYSTEM "http://7d7.almlys.org/spec/draft/sd7Config.dtd">
+<sd7config>
+"""
+
+for section in _options:
+    if section == "cmd":
+        # Hide command line options
+        continue
+    print "\t<section name='%s'>" %(section,)
+    for option in _options[section]:
+        if option.startswith("_"):
+            continue
+        print "\t\t<option name='%s' value='%s' />" %(option,_options[section][options])
+    print "\t</section>"
+
+print "</sd7config>"
 
 print "App Terminated"

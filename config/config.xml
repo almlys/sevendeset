@@ -2,12 +2,24 @@
 <!DOCTYPE sd7config SYSTEM "http://7d7.almlys.org/spec/draft/sd7Config.dtd">
 <sd7config>
 
-	<section name="global">
+	<section name='global'>
 		<option name='BootStrap.downloadPath' value='downloads' />
 		<option name='BootStrap.outputPath' value='depends' />
 		<option name='BootStrap.prefix' value='runtime' />
 		<option name='BootStrap.patches' value='patches' />
 		<option name='BootStrap.manifest' value='config/bootstrap.xml' />
+		<option name='Engine.OgreRenderer.PluginsPath' value='runtime/lib/OGRE' />
+		<option name='Engine.OgreRenderer.direct3d' value='false' />
+	</section>
+	
+	<section name='engine.OgreRenderer.plugins'>
+		<option name='RenderSystem_Direct3D9' value='disabled' />
+		<option name='RenderSystem_GL' value='enabled' />
+		<option name='Plugin_ParticleFX' value='enabled' />
+		<option name='Plugin_BSPSceneManager' value='enabled' />
+		<option name='Plugin_OctreeSceneManager' value='enabled' />
+		<option name='Plugin_CgProgramManager' value='enabled' />
+		<option name='Plugin_EXRCodec' value='enabled' />
 	</section>
 
 </sd7config>

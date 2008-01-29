@@ -14,6 +14,6 @@ Template file
 
 __version__ = "$Revision$"
 
-__all__ = []
+__all__ = ["OgreRenderer"]
 
-
+from OgreRenderer import OgreRenderer

@@ -315,9 +315,9 @@ class MainApp(object):
             
             for section in self._config.xsd7config[0].xsection:
                 for option in section.xoption:
-                    if not self._options.has_key("global"):
-                        self._options["global"] = {}
-                    self._options["global"][option.pname] = option.pvalue
+                    if not self._options.has_key(section.pname):
+                        self._options[section.pname] = {}
+                    self._options[section.pname][option.pname] = option.pvalue
     
     def _setCmdConfig(self):
         """
