@@ -154,7 +154,7 @@
 		<build>
 			<!-- Begin Dirty Hack -->
 			<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>
-			<cmd>cp -rv ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
+			<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
 			<!-- End Dirty Hack -->
 			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
 			<cmd>make</cmd>
