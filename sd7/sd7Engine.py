@@ -16,21 +16,47 @@ __version__ = "$Revision$"
 
 __all__ = []
 
+import sys
 from bootstrap.xmlparser import XMLParser
+from common.BaseApp import BaseApplication
 from sd7.engine import Engine
+
+
+class MainApp(BaseApplication):
+    
+    pass
+
+
+if __name__ == '__main__':
+    app = MainApp(sys.argv)
+
+raise "stop"
 
 _config = XMLParser()
 _config.readfile("config/config.xml")
-_options = {}
+_options = MyDict()
     
 for section in _config.xsd7config[0].xsection:
     for option in section.xoption:
         if not _options.has_key(section.pname):
-            _options[section.pname] = {}
+            _options[section.pname] = MyDict()
         _options[section.pname][option.pname] = option.pvalue
 
-e = Engine(_options)
-e.run()
+try:
+    e = Engine(_options)
+    e.run2()
+except:
+    import traceback, sys
+    trace = file("log/traceback.log","w")
+    traceback.print_exc(file=trace)
+    trace.close()
+    traceback.print_exc(file=sys.stderr)
+    try:
+        import wx
+        app = wx.App(redirect=False)
+        wx.MessageBox(traceback.format_exc(),"Traceback",wx.ICON_ERROR)
+    except ImportError:
+        pass
 
 
 print """<?xml version='1.0' encoding='UTF-8' ?>
@@ -46,7 +72,7 @@ for section in _options:
     for option in _options[section]:
         if option.startswith("_"):
             continue
-        print "\t\t<option name='%s' value='%s' />" %(option,_options[section][options])
+        print "\t\t<option name='%s' value='%s' />" %(option,_options[section][option])
     print "\t</section>"
 
 print "</sd7config>"

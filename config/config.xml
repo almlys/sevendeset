@@ -9,7 +9,9 @@
 		<option name='BootStrap.patches' value='patches' />
 		<option name='BootStrap.manifest' value='config/bootstrap.xml' />
 		<option name='Engine.OgreRenderer.PluginsPath' value='runtime/lib/OGRE' />
-		<option name='Engine.OgreRenderer.direct3d' value='false' />
+		<option name='graphics.fullscreen' value='false' />
+		<option name='graphics.width' value='800' />
+		<option name='graphics.height' value='600' />
 	</section>
 	
 	<section name='engine.OgreRenderer.plugins'>
