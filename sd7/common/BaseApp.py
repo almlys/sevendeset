@@ -139,12 +139,14 @@ class BaseApplication(object):
             return self.__Languages
 
     def SetLanguage(self,lang):
+        """ Sets the application language """
         #import locale
         #locale.setlocale(locale.LC_ALL, (lang,"utf-8"))
         self.__Language=lang
         self._installGettext(lang)
 
     def GetLanguage(self):
+        """ Returns current application language """
         try:
             return self.__Language
         except:
@@ -153,6 +155,7 @@ class BaseApplication(object):
             return self.__Language
 
     def GetAppVersion(self):
-        return "$Id$"
+        """ Returns thea application version """
+        return "$Revision$"
 
 
