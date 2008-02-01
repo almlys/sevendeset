@@ -17,8 +17,10 @@ __version__ = "$Revision$"
 __all__ = ['BaseApplication',]
 
 import os.path
+import sys
 
 from MyDict import MyDict
+from sdlogger import mlog
 from bootstrap.xmlparser import XMLParser
 
 
@@ -31,20 +33,45 @@ class BaseApplication(object):
     
     _options = MyDict() #: Defines app options
     _configFile = "config/config.xml" #: Defines the config file path
+    _old_stdout = None
+    _old_stderr = None
+    _logdir = 'log'
+    _log = None
+    _logerr = None
 
-    def __init__(self,args = None):
+    def __init__(self,args = None,redirect=True):
         """
+        Init app
         @param args: App Args
+        @param redirect: Redirects stdout/stderr to log file
         """
         if args!=None:
             self._parseArgs(args)
         if os.path.isfile(self._configFile):
             self._readConfig()
         self._setCmdConfig()
+        self._logdir = self.GetCfg('global','system.logdir')
+        if redirect:
+            self._log = mlog(sys.stdout,self._logdir + '/stdout.log','w')
+            self._logerr = mlog(sys.stderr,self._logdir + '/stderr.log','w')
+            self._old_stdout = sys.stdout
+            self._old_stderr = sys.stderr
+            sys.stdout = self._log
+            sys.stderr = self._logerr
+        else:
+            self._log = sys.stdout
+            self._logerr = sys.stderr
+        
         self._installGettext()
     
     def __del__(self):
         self._saveConfig()
+        if self._old_stdout != None:
+            sys.stdout = self._old_stdout
+            self._log.close()
+        if self._old_stderr != None:
+            sys.stderr = self._old_stderr
+            self._logerr.close()
     
     def _parseArgs(self,argv):
         n=len(argv)-1
@@ -90,6 +117,8 @@ class BaseApplication(object):
             self.SetCfg('global','app.gettext.locales','data/system/locales')
         if self.GetCfg('global','app.gettext.domain') == None:
             self.SetCfg('global','app.gettext.domain',self._getGettextDomain())
+        if self.GetCfg('global','system.logdir') == None:
+            self.SetCfg('global','system.logdir','log')
     
     def _getGettextDomain(self):
         return "Undefined"

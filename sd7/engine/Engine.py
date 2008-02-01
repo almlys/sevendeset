@@ -37,10 +37,18 @@ class Engine(object):
         #    }
         
         # Start up the renderer
-        #print self._options
         from renderer import OgreRenderer as Renderer
         self._renderer = Renderer(self._options["global"])
+        #from input import OISInput as Input
+        #self._input = Input(self._options["global"])
+        #from physics import ODEPhysics as Physics
+        #self._physics = Physics(self._options["global"])
+        #from audio import OpenALAudio as Audio
+        #self._audio = Audio(self._options["global"])
+        #from networking import sd7Net as NetCore
+        #self._netcore = NetCore(self._options["global"])
         
+
     def run(self):
         self._renderer.renderLoop()
 

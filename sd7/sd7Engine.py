@@ -17,6 +17,7 @@ __version__ = "$Revision$"
 __all__ = []
 
 import sys
+
 from bootstrap.xmlparser import XMLParser
 from common.BaseApp import BaseApplication
 from sd7.engine import Engine
@@ -24,9 +25,31 @@ from sd7.engine import Engine
 
 class MainApp(BaseApplication):
     
+    def __init__(self,argv):
+        BaseApplication.__init__(self,argv)
+    
     def _getGettextDomain(self):
         return "sd7Engine"
+    
+    def run(self):
+        try:
+            e = Engine(self._options)
+            e.run()
+        except:
+            import traceback
+            trace = file(self.GetCfg('global','system.logdir') + '/traceback.log','w')
+            traceback.print_exc(file=trace)
+            trace.close()
+            traceback.print_exc(file=sys.stderr)
+            try:
+                import wx
+                app = wx.App(redirect=False)
+                wx.MessageBox(traceback.format_exc(),'Traceback - ' + self.GetAppVersion(),wx.ICON_ERROR)
+            except ImportError:
+                pass
 
+    def GetAppVersion(self):
+        return "sd7 Alchera pre-alpha v0.1 $Revision$"
 
 if __name__ == '__main__':
     try:
@@ -47,24 +70,4 @@ if __name__ == '__main__':
             wx.MessageBox(traceback.format_exc(),"Traceback",wx.ICON_ERROR)
         except ImportError:
             pass
-raise "stop"
-
-
-try:
-    e = Engine(_options)
-    e.run2()
-except:
-    import traceback, sys
-    trace = file("log/traceback.log","w")
-    traceback.print_exc(file=trace)
-    trace.close()
-    traceback.print_exc(file=sys.stderr)
-    try:
-        import wx
-        app = wx.App(redirect=False)
-        wx.MessageBox(traceback.format_exc(),"Traceback",wx.ICON_ERROR)
-    except ImportError:
-        pass
-
-
-print "App Terminated"
+    print "App Terminated"
