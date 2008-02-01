@@ -9,7 +9,7 @@
 #
 
 """
-Example file, with basic IO that handles input action 'exit'
+Example file, with basic Input that handles input action 'exit'
 """
 
 __version__ = "$Revision$"
@@ -26,3 +26,6 @@ class MyBasicInputHandler(object):
         
         if action=="exit":
             self._engine.Terminate()
+        else:
+            return False
+        return True
