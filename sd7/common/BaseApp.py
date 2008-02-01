@@ -16,6 +16,7 @@ __version__ = "$Revision$"
 
 __all__ = ['BaseApplication',]
 
+import os.path
 
 from MyDict import MyDict
 from bootstrap.xmlparser import XMLParser
@@ -37,16 +38,18 @@ class BaseApplication(object):
         """
         if args!=None:
             self._parseArgs(args)
-        self._readConfig()
+        if os.path.isfile(self._configFile):
+            self._readConfig()
         self._setCmdConfig()
-        self._run(args)
+        self._installGettext()
     
-    def _run(self,args=None):
-        pass
-
+    def __del__(self):
+        self._saveConfig()
+    
     def _parseArgs(self,argv):
         n=len(argv)-1
-        for i in xrange(1,n+1):
+        i = 1
+        while i <= n:
             param=argv[i]
             if param.startswith("-"):
                 if param=="-c" and i<n:
@@ -59,9 +62,13 @@ class BaseApplication(object):
                     self._options["cmd"][argv[i]]=argv[i+1]
                     i+=1
                 else:
-                    print "Ignoring Unknown Parameter %s" %(param,)
+                    i = self._parseArgument(argv,i,n)
             else:
-                print "Ignoring Unknown Parameter %s" %(param,)
+                i = self._parseArgument(argv,i,n)
+            i = i+1
+
+    def _parseArgument(argv,i,n):
+        print "Ignoring Unknown Parameter %s" %(argv[i],)
 
     def _readConfig(self):
         """Load App configuration"""
@@ -74,6 +81,18 @@ class BaseApplication(object):
                     if not self._options.has_key(section.pname):
                         self._options[section.pname] = MyDict()
                     self._options[section.pname][option.pname] = option.pvalue
+        
+        self._setConfigDefaults()
+    
+    def _setConfigDefaults(self):
+        """ Set the default configuration values """
+        if self.GetCfg('global','app.gettext.locales') == None:
+            self.SetCfg('global','app.gettext.locales','data/system/locales')
+        if self.GetCfg('global','app.gettext.domain') == None:
+            self.SetCfg('global','app.gettext.domain',self._getGettextDomain())
+    
+    def _getGettextDomain(self):
+        return "Undefined"
 
     def _setCmdConfig(self):
         """
@@ -89,24 +108,31 @@ class BaseApplication(object):
             cfg = self._configFile
         if cfg != None:
             out = file(cfg,'w')
-            print """<?xml version='1.0' encoding='UTF-8' ?>
+            out.write("""<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE sd7config SYSTEM "http://7d7.almlys.org/spec/draft/sd7Config.dtd">
 <sd7config>
-""" >> out
-        for section in _options:
+
+""")
+        for section in self._options:
             if section == "cmd":
                 # Hide command line options
                 continue
-            print "\t<section name='%s'>" %(section,) >> out
-            for option in _options[section]:
+            out.write("\t<section name='%s'>\n" %(section,))
+            for option in self._options[section]:
                 if option.startswith("_"):
                     continue
-                print "\t\t<option name='%s' value='%s' />" %(option,_options[section][option]) >> out
-            print "\t</section>" >> out
-        print "</sd7config>" >> out
+                out.write("\t\t<option name='%s' value='%s' />\n" %(option,self._options[section][option]))
+            out.write("\t</section>\n\n")
+        out.write("</sd7config>")
         out.close()
 
+    def SetCfg(self,section,key,value):
+        if not self._options.has_key(section):
+            self._options[section] = MyDict()
+        self._options[section][key] = value
+
     def GetCfg(self,section,key):
+        """ Gets a configuration value """
         if self._options.has_key(section) and self._options[section].has_key(key):
             return self._options[section][key]
         return None
@@ -123,6 +149,7 @@ class BaseApplication(object):
                                 (lang,)).install(True)
 
     def GetLanguages(self):
+        """ Returns all available languages """
         try:
             return self.__Languages
         except:
