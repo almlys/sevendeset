@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE sd7hooks SYSTEM "http://7d7.almlys.org/spec/draft/sd7Hooks.dtd">
+<sd7hooks>
+
+	<!-- Define a object that will do some things
+			 The object will be instanciancied when it is used
+	-->
+	<controller name='basicInput' bind='sd7.system.basicInput.MyBasicInputHandler' target='main' />
+	<controller name='startup' bind='sd7.system.startup.StartupHandler' target='main' />
+	
+	<!-- Associate an event with an object -->
+	<event name='input' bind='basicInput' />
+	
+	<event name='system.startup' bind='startup' />
+
+
+	
+	
+</sd7hooks>

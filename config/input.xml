@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE sd7input SYSTEM "http://7d7.almlys.org/spec/draft/sd7Input.dtd">
+<sd7input>
+
+	<input device='keyboard' >
+		<!-- Exit action -->
+		<action name='exit' key='ESC' />
+		<action name='exit' key='c' control='true' alt='true' super='true' />
+		
+		<!-- Debug stuff -->
+		<action name='console' key='F12' />
+		<action name='debug' key='F11' />
+		<action name='stats' key='F10' />
+		<action name='screenshot' key='PrtSc' />
+		
+		<!-- Camera 1 or Player 1 actions
+				 For player 2, you can name them differently, or use the target name to differenciate players
+		-->
+		<action name='up' key='w' target='Cam' />
+		<action name='down' key='s' target='Cam' />
+		<action name='left' key='a' target='Cam' />
+		<action name='right' key='d' target='Cam' />
+		<action name='up' key='up' target='Cam' />
+		<action name='down' key='down' target='Cam' />
+		<action name='rotate_left' key='left' target='Cam' />
+		<action name='rotate_right' key='right' target='Cam' />
+		<action name='rotate_up' key='PgUp' target='Cam' />
+		<action name='rotate_right' key='PgDn' target='Cam' />
+
+	</input>
+	
+	<!-- Define actions for our Mouse -->
+	<input device='mouse' target='Me' >
+		
+		<action name='hello_world' button='1' />
+		<action name='bye_world' button='2' />
+		<action name='other' button='3' />
+		<axis name='rx' id='x' invert='false' />
+		<axis name='ry' id='y' invert='true' />
+		<axis name='z' id='z' />
+		
+	</input>
+	
+	<!-- Define actions for the gamepad -->
+	<input device='joy1' target='Me' >
+		
+		<action name='make_coffee' button='1' />
+		<action name='select' button='9' />
+		<action name='start' button='10' />
+		<action name='push_left' button='11' />
+		<action name='push_right' button='12' />
+		
+		<!-- Not sure yet how to handle the POV -->
+		<action name='up' button='POV0_N' />
+		<action name='down' button='POV0_S' />
+		<action name='left' button='POV0_W' />
+		<action name='right' button='POV0_E' />
+		<action name='up_right' button='POV0_NE' />
+		<action name='up_left' button='POV0_NW' />
+		<action name='down_right' button='POV0_SE' />
+		<action name='down_left' button='POV0_SW' />
+		
+		<axis name='x' id='1' />
+		<axis name='y' id='2' invert='true' />
+		<axis name='rx' id='3' />
+		<axis name='ry' id='4' />
+		
+	</input>
+	
+		<!-- Define actions for the Joystick -->
+	<input device='joy2' target='Me2' >
+		
+		<action name='make_coffee' button='1' />
+		<action name='select' button='9' />
+		<action name='start' button='10' />
+		<action name='push_left' button='11' />
+		<action name='push_right' button='12' />
+		
+		<!-- Not sure yet how to handle the POV -->
+		<action name='up' button='POV0_N' />
+		<action name='down' button='POV0_S' />
+		<action name='left' button='POV0_W' />
+		<action name='right' button='POV0_E' />
+		<action name='up_right' button='POV0_NE' />
+		<action name='up_left' button='POV0_NW' />
+		<action name='down_right' button='POV0_SE' />
+		<action name='down_left' button='POV0_SW' />
+		
+		<axis name='x' id='1' />
+		<axis name='y' id='2' invert='true' />
+		<axis name='rx' id='3' />
+		<axis name='ry' id='4' />
+		
+	</input>
+
+	
+</sd7config>

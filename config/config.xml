@@ -13,7 +13,8 @@
 		<option name='graphics.width' value='800' />
 		<option name='graphics.height' value='600' />
 		<option name='app.gettext.locales' value='data/system/locales' />
-		<option name='app.gettext.domain' value='Undefined' />
+		<option name='app.gettext.domain' value='sd7Engine' />
+		<option name='system.logdir' value='log' />
 	</section>
 
 	<section name='engine.OgreRenderer.plugins'>
