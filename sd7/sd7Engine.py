@@ -33,6 +33,7 @@ class MainApp(BaseApplication):
     
     def run(self):
         try:
+            self._options['global']['_window.name'] = self.GetAppVersion()
             e = Engine(self._options)
             e.run()
         except:
