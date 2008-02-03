@@ -119,10 +119,10 @@ class MyKeyListener(OIS.KeyListener):
         self._subscriber = subscriber
 
     def keyPressed(self, evt):
-        print "Key pressed"
+        print "Key pressed %i %s" %(evt.key,evt.text)
     
     def keyReleased(self, evt):
-        print "Key released"
+        print "Key released %i %s" %(evt.key,evt.text)
 
 
 class MyMouseListener(OIS.MouseListener):
