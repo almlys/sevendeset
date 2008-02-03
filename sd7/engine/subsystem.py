@@ -77,3 +77,5 @@ class SubSystem(object):
     def isInitialized(self):
         return self._initialized
 
+    def processEvent(self,evt):
+        return True

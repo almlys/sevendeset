@@ -20,30 +20,31 @@ import os
 import os.path
 
 import ogre.renderer.OGRE as ogre
+import ogre.io.OIS as OIS
 
+from sd7.engine.subsystem import SubSystem as SubSystem
+from sd7.engine.Events import Event, EventType
 from RendererInterface import RendererInterface
 
-class OgreRenderer(RendererInterface):
+class OgreRenderer(SubSystem,RendererInterface):
     
-    _config = None #: Configuration dict (reference to global section)
-    _initialized = False #: Is the render engine initialized?
-    _logDir = "log" #: Path to the log folder
     _renderWindow = None #: The render window
     _sceneManager = None
+    _subscribers = [] #: Event subscribers
 
     def __init__(self,options=None):
-        if options!=None:
-            self._config = options
-        else:
-            self._config = {}
+        SubSystem.__init__(self,'OgreRenderer',True,options)
         RendererInterface.__init__(self,options)
+
+    #def __del__(self):
+        #del self._renderWindow
+        #del self._sceneManager
 
     def _setConfigDefaults(self):
         """
         Sets default config parameters
         """
-        if not self._config.has_key("system.logdir"):
-            self._config["system.logdir"] = "log"
+        SubSystem._setConfigDefaults(self)
         if not self._config.has_key("python.psyco"):
             self._config["python.psyco"] = "enabled"
         if not self._config.has_key("python.psyco.log"):
@@ -56,6 +57,8 @@ class OgreRenderer(RendererInterface):
             self._config["graphics.width"] = "800"
         if not self._config.has_key("graphics.height"):
             self._config["graphics.height"] = "600"
+        if not self._config.has_key("_window.name"):
+            self._config["_window.name"] = "7d7 Engine"
 
         ##self.config.set("global","ogre.config","1")
         #self.config.set("global","ogre.core.enabled","1")
@@ -76,48 +79,55 @@ class OgreRenderer(RendererInterface):
            pass
 
     def initialize(self):
-        """Initialize the render engine"""
-        if self._initialized:
-            raise "Cannot reinit"
-        self._initialized = True
-        self._setConfigDefaults()
-        self._logFolder = self._config["system.logdir"]
-        if not os.path.exists(self._logDir):
-            os.mkdir(self._logDir)
+        if not SubSystem.initialize(self):
+            return False
         if self._config["python.psyco"].lower() == "enabled":
             self._activatePsyco()
+        a,b,c,d = ogre.GetOgreVersion()
+        print "Using Ogre %s.%s.%s %s" %(a,b,c,d)
+        a,b,c = ogre.GetPythonOgreVersion()
+        print "Using Python-Ogre %s.%s.%s" %(a,b,c)
         if not self._setUp():
             raise "self._setUP() failed!"
-
+        return True
+    
     def renderLoop(self):
         """Main render loop"""
-        self.initialize()
+        #self.initialize()
         self._root.startRendering()
 
     def _loadPlugins(self,plugins_path,plugins):
-        print "Loading plugins..."
+        self.log("Loading plugins...")
         for plugin in plugins:
             if plugins[plugin].lower() == "enabled":
-                print "Loading Plugin %s..." %(plugin,)
+                self.log("Loading Plugin %s..." %(plugin,))
                 self._root.loadPlugin(plugins_path + "/" + plugin)
             else:
-                print "Skipping Plugin %s..." %(plugin,)
+                self.log("Skipping Plugin %s..." %(plugin,))
+
+    def _setUpResources(self):
+        """Set up initial BootStrap resources"""
+        ogre.ResourceGroupManager.getSingleton().\
+        addResourceLocation("data/system/OgreCore.zip", "Zip", "Bootstrap")
+        ogre.ResourceGroupManager.getSingleton().\
+        addResourceLocation("data/system/common", "FileSystem", "General")
+
 
     def _configure(self):
         """Create the render window depending of the configured settings"""
         found = False
         renList = self._root.getAvailableRenderers()
         
-        print "Available render subsystems: "
+        self.log("Available render subsystems: ")
         for r in renList:
-            print r.getName()
+            self.log(r.getName())
             if r.getName().startswith(self._config["ogre.renderer"]):
                 self._root.setRenderSystem(r)
                 found = True
-                print "%s found and set" %(r.getName(),)
+                self.log("%s found and set" %(r.getName(),))
 
         if not found:
-            print "No Renderer was found in your system!"
+            self.log("No Renderer was found in your system!")
             return False
         else:
             self._root.initialise(False)
@@ -125,35 +135,74 @@ class OgreRenderer(RendererInterface):
             w=int(self._config["graphics.width"])
             h=int(self._config["graphics.height"])
 
-            self._renderWindow = self._root.createRenderWindow( "7d7 Engine", w, h, fullScreen)
+            self._renderWindow = self._root.createRenderWindow(
+                self._config["_window.name"], w, h, fullScreen)
+            self._config["_RootWindowHandle"] = \
+                str(self._renderWindow.getCustomAttributeInt("WINDOW"))
             return True
 
     def _chooseSceneManager(self):
         """Chooses a default SceneManager."""
         self._sceneManager = self._root.createSceneManager(ogre.ST_GENERIC,"MainSceneManager")
 
+    def _createCamera(self):
+        """Creates the camera."""        
+        self._camera = self._sceneManager.createCamera('PlayerCam')
+        self._camera.setPosition(0, 0, 500)
+        self._camera.lookAt((0, 0, -300))
+        self._camera.setNearClipDistance(5)
+
+    def _createViewports(self):
+        """Creates the Viewport."""
+        self._viewport = self._renderWindow.addViewport(self._camera)
+        self._viewport.backgroundColour = (0,0,0)
+
+    def _loadResources(self):
+        """This loads all initial resources.  Redefine this if you do not want
+        to load all resources at startup."""
+        ogre.ResourceGroupManager.getSingleton().initialiseAllResourceGroups()
+
+    def _createFrameListener(self):
+        """Creates the FrameListener."""
+        self._frameListener = EventListener(self._renderWindow, self._subscribers)
+        self._root.addFrameListener(self._frameListener)
+        ogre.WindowEventUtilities.addWindowEventListener(self._renderWindow, self._frameListener)
+
+    def _setUpLogging(self):
+        global _logMgr #very dirty workarround until I patch ogre (deleting _logMgr = KaBoum)
+        _logMgr = ogre.LogManager()
+        #logMgr = ogre.LogManager.getSingletonPtr()
+        self._ogreLog = _logMgr.createLog(self._logDir + '/Ogre.log',True,False,False)
+        
+#        class MyLog(ogre.LogListener):
+#            
+#            def messageLogged(self, message, level, debug, logName):
+#                self.logFile(message)
+#        
 
     def _setUp(self):
         """Set up the renderer"""
+        self._setUpLogging()
+        
         # We will manually load the plugins, and set the config
-        self._root = ogre.Root("","",self._logDir + "/OgreRenderer.log")
+        self._root = ogre.Root("","","")
         
         # Load Plugins
         self._loadPlugins(self._config["Engine.OgreRenderer.PluginsPath"],
         self._config["_engine.OgreRenderer.plugins"])
 
         # The next option avoids flickering of the framerate stats
-        self._root.setFrameSmoothingPeriod (5.0)
+        self._root.setFrameSmoothingPeriod(5.0)
 
-        ##self._setUpResources()
+        self._setUpResources()
         # Load configuration
         if not self._configure():
             return False
         
         self._chooseSceneManager()
-        #?# self._createWorld()
-        #self._createCamera()
-        #self._createViewports()
+        #self._createWorld()
+        self._createCamera()
+        self._createViewports()
 
         ogre.TextureManager.getSingleton().setDefaultNumMipmaps(5)
         #Set Anisotropic
@@ -161,8 +210,251 @@ class OgreRenderer(RendererInterface):
         ogre.MaterialManager.getSingleton().setDefaultTextureFiltering(ogre.TFO_ANISOTROPIC)
 
         #self._createResourceListener()
-        #self._loadResources()
+        self._loadResources()
 
         #self._createScene()
-        #self._createFrameListener()
+        self._createFrameListener()
         return True
+    
+    def addEventListener(self, listenner):
+        self._subscribers.append(listenner)
+    
+    def removeEventListener(self, listenner):
+        self._subscribers.remove(listenner)
+
+
+class OgreWindow(object):
+    
+    def __init__(self, window):
+        self._renderWindow = window
+        
+    def getMetrics(self):
+        return self._renderWindow.getMetrics()
+
+
+class Frame(object):
+    
+    def __init__(self, frameevt):
+        self._frameevt = frameevt
+
+
+class EventListener(ogre.FrameListener, ogre.WindowEventListener):
+    
+    def __init__(self, renderWindow, subscribers):
+        ogre.FrameListener.__init__(self)
+        ogre.WindowEventListener.__init__(self)
+        self._subscribers = subscribers
+        self._renderWindow = renderWindow
+        self._window = OgreWindow(renderWindow)
+    
+    # Begin windon events
+    def windowMoved(self, rw):
+        ev = Event(EventType.WIN_MOVED,self._window)
+        for s in self._subscribers:
+            s.processEvent(ev)
+    
+    def windowResized(self, rw):
+        ev = Event(EventType.WIN_RESIZED,self._window)
+        for s in self._subscribers:
+            s.processEvent(ev)
+
+    def windowClosed(self, rw):
+        ev = Event(EventType.WIN_CLOSED,self._window)
+        for s in self._subscribers:
+            s.processEvent(ev)
+
+    def windowFocusChange(self, rw):
+        ev = Event(EventType.WIN_FOCUS,self._window)
+        for s in self._subscribers:
+            s.processEvent(ev)
+    
+    # End window events
+    
+    # Begin Frame events
+    def frameStarted(self, evt):
+        if self._renderWindow.isClosed():
+            return False
+        ev = Event(EventType.FRAME_STARTED,Frame(evt))
+        for s in self._subscribers:
+            s.processEvent(ev)
+        return True
+    
+    def frameEnded(self, evt):
+        ev = Event(EventType.FRAME_ENDED,Frame(evt))
+        for s in self._subscribers:
+            s.processEvent(ev)
+        return True
+    
+    # End Frame events
+    
+
+
+class FrameListener(ogre.FrameListener, ogre.WindowEventListener):
+    """A default frame listener, which takes care of basic mouse and keyboard
+    input."""
+      
+    def __init__(self, renderWindow, camera, bufferedKeys = False, bufferedMouse = True, bufferedJoy = False):
+        ogre.FrameListener.__init__(self)
+        ogre.WindowEventListener.__init__(self)
+        self.camera = camera
+        self.renderWindow = renderWindow
+        self.statisticsOn = True
+        self.numScreenShots = 0
+        self.timeUntilNextToggle = 0
+        self.sceneDetailIndex = 0
+        self.moveScale = 0.0
+        self.rotationScale = 0.0
+        self.translateVector = ogre.Vector3(0.0,0.0,0.0)
+        self.filtering = ogre.TFO_BILINEAR
+        self.moveSpeed = 100.0
+        self.rotationSpeed = 8.0
+        self.displayCameraDetails = False
+        
+    def __del__ (self ):
+        ogre.WindowEventUtilities.removeWindowEventListener(self.renderWindow, self)
+        self.windowClosed(self.renderWindow)
+
+    def windowClosed(self, rw):
+      #Only close for window that created OIS (mWindow)
+      if( rw == self.renderWindow ):
+         if( self.InputManager ):
+            self.InputManager.destroyInputObjectMouse( self.Mouse )
+            self.InputManager.destroyInputObjectKeyboard( self.Keyboard )
+            if self.Joy:
+                self.InputManager.destroyInputObjectJoyStick( self.Joy )
+            OIS.InputManager.destroyInputSystem(self.InputManager)
+            self.InputManager=None
+            
+    def frameStarted(self, frameEvent):
+        if self.timeUntilNextToggle >= 0:
+            self.timeUntilNextToggle -= frameEvent.timeSinceLastFrame
+    
+        if frameEvent.timeSinceLastFrame == 0:
+            self.moveScale = 1
+            self.rotationScale = 0.1
+        else:
+            self.moveScale = self.moveSpeed * frameEvent.timeSinceLastFrame
+            self.rotationScale = self.rotationSpeed * frameEvent.timeSinceLastFrame
+    
+        self.rotationX = ogre.Degree(0.0)
+        self.rotationY = ogre.Degree(0.0)
+        self.translateVector = ogre.Vector3(0.0, 0.0, 0.0)
+        if not self._processUnbufferedKeyInput(frameEvent):
+            return False
+        
+        if not self.MenuMode:   # if we are in Menu mode we don't move the camera..
+            self._processUnbufferedMouseInput(frameEvent)
+            self._moveCamera()
+        return True
+
+    def _processUnbufferedKeyInput(self, frameEvent):
+        if self.Keyboard.isKeyDown(OIS.KC_A):
+            self.translateVector.x = -self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_D):
+            self.translateVector.x = self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_UP) or self.Keyboard.isKeyDown(OIS.KC_W):
+            self.translateVector.z = -self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_DOWN) or self.Keyboard.isKeyDown(OIS.KC_S):
+            self.translateVector.z = self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_PGUP):
+            self.translateVector.y = self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_PGDOWN):
+            self.translateVector.y = - self.moveScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_RIGHT):
+            self.rotationX = - self.rotationScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_LEFT):
+            self.rotationX = self.rotationScale
+
+        if self.Keyboard.isKeyDown(OIS.KC_ESCAPE) or self.Keyboard.isKeyDown(OIS.KC_Q):
+            return False
+
+        if( self.Keyboard.isKeyDown(OIS.KC_F) and self.timeUntilNextToggle <= 0 ): 
+             self.statisticsOn = not self.statisticsOn
+             self.showDebugOverlay(self.statisticsOn)
+             self.timeUntilNextToggle = 1
+
+        if self.Keyboard.isKeyDown(OIS.KC_T) and self.timeUntilNextToggle <= 0:
+            if self.filtering == ogre.TFO_BILINEAR:
+                self.filtering = ogre.TFO_TRILINEAR
+                self.Aniso = 1
+            elif self.filtering == ogre.TFO_TRILINEAR:
+                self.filtering = ogre.TFO_ANISOTROPIC
+                self.Aniso = 8
+            else:
+                self.filtering = ogre.TFO_BILINEAR
+                self.Aniso = 1
+
+            ogre.MaterialManager.getSingleton().setDefaultTextureFiltering(self.filtering)
+            ogre.MaterialManager.getSingleton().setDefaultAnisotropy(self.Aniso)
+            self.showDebugOverlay(self.statisticsOn)
+            self.timeUntilNextToggle = 1
+        
+        if self.Keyboard.isKeyDown(OIS.KC_SYSRQ) and self.timeUntilNextToggle <= 0:
+            path = 'screenshot_%d.png' % self.numScreenShots
+            self.numScreenShots += 1
+            self.renderWindow.writeContentsToFile(path)
+            Application.debugText = 'screenshot taken: ' + path
+            self.timeUntilNextToggle = 0.5
+        
+        if self.Keyboard.isKeyDown(OIS.KC_R) and self.timeUntilNextToggle <= 0:
+            detailsLevel = [ ogre.PM_SOLID,
+                             ogre.PM_WIREFRAME,
+                             ogre.PM_POINTS ]
+            self.sceneDetailIndex = (self.sceneDetailIndex + 1) % len(detailsLevel)
+            self.camera.polygonMode=detailsLevel[self.sceneDetailIndex]
+            self.timeUntilNextToggle = 0.5
+            
+        if self.Keyboard.isKeyDown(OIS.KC_F) and self.timeUntilNextToggle <= 0:
+            self.statisticsOn = not self.statisticsOn
+            self.showDebugOverlay(self.statisticsOn)
+            self.timeUntilNextToggle = 1
+        
+        if self.Keyboard.isKeyDown(OIS.KC_P) and self.timeUntilNextToggle <= 0:
+            self.displayCameraDetails = not self.displayCameraDetails
+            if not self.displayCameraDetails:
+                Application.debugText = ""
+                
+        if self.displayCameraDetails:
+            # Print camera details
+            pos = self.camera.getDerivedPosition()
+            o = self.camera.getDerivedOrientation()
+            Application.debugText = "P: %.3f %.3f %.3f O: %.3f %.3f %.3f %.3f"  \
+                        % (pos.x,pos.y,pos.z, o.w,o.x,o.y,o.z)
+        return True        
+        
+    def _isToggleKeyDown(self, keyCode, toggleTime = 1.0):
+        if self.Keyboard.isKeyDown(keyCode)and self.timeUntilNextToggle <=0:
+            self.timeUntilNextToggle = toggleTime
+            return True
+        return False
+        
+    def _isToggleMouseDown(self, Button, toggleTime = 1.0): 
+        ms = self.Mouse.getMouseState() 
+        if ms.buttonDown( Button ) and self.timeUntilNextToggle <=0: 
+            self.timeUntilNextToggle = toggleTime 
+            return True 
+        return False 
+
+    def _processUnbufferedMouseInput(self, frameEvent):
+        ms = self.Mouse.getMouseState()
+        if ms.buttonDown( OIS.MB_Right ):
+            self.translateVector.x += ms.X.rel * 0.13
+            self.translateVector.y -= ms.Y.rel * 0.13
+        else:
+            self.rotationX = ogre.Degree(- ms.X.rel * 0.13)
+            self.rotationY = ogre.Degree(- ms.Y.rel * 0.13)
+
+    def _moveCamera(self):
+        self.camera.yaw(self.rotationX)
+        self.camera.pitch(self.rotationY)
+        try:
+            self.camera.translate(self.translateVector) # for using OgreRefApp
+        except AttributeError:
+            self.camera.moveRelative(self.translateVector)

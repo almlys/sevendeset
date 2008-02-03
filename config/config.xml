@@ -15,6 +15,11 @@
 		<option name='app.gettext.locales' value='data/system/locales' />
 		<option name='app.gettext.domain' value='sd7Engine' />
 		<option name='system.logdir' value='log' />
+		<option name='python.psyco' value='enabled' />
+		<option name='python.psyco.log' value='enabled' />
+		<option name='ogre.renderer' value='OpenGL' />
+		<option name='input.actionmap' value='config/input.xml' />
+		<option name='system.hooks' value='config/hooks.xml' />
 	</section>
 
 	<section name='engine.OgreRenderer.plugins'>

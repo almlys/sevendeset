@@ -94,8 +94,9 @@ class BaseApplication(object):
                 i = self._parseArgument(argv,i,n)
             i = i+1
 
-    def _parseArgument(argv,i,n):
+    def _parseArgument(self,argv,i,n):
         print "Ignoring Unknown Parameter %s" %(argv[i],)
+        return i
 
     def _readConfig(self):
         """Load App configuration"""

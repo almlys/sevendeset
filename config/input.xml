@@ -5,7 +5,7 @@
 	<input device='keyboard' >
 		<!-- Exit action -->
 		<action name='exit' key='ESC' />
-		<action name='exit' key='c' control='true' alt='true' super='true' />
+		<action name='exit' key='c' control='true' alt='true' shift='true' />
 		
 		<!-- Debug stuff -->
 		<action name='console' key='F12' />

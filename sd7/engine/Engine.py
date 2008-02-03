@@ -43,7 +43,7 @@ class Engine(object):
         from input.OISInput import OISInput as Input
         self._input = Input(self._options["global"])
         self._input.initialize()
-        raise "die"
+        self._renderer.addEventListener(self._input)
         #from physics.ODEPhysics import ODEPhysics as Physics
         #self._physics = Physics(self._options["global"])
         #from audio.OpenALAudio import OpenALAudio as Audio
