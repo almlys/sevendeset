@@ -107,8 +107,8 @@ class OgreRenderer(SubSystem,RendererInterface):
 
     def _setUpResources(self):
         """Set up initial BootStrap resources"""
-        ogre.ResourceGroupManager.getSingleton().\
-        addResourceLocation("data/system/OgreCore.zip", "Zip", "Bootstrap")
+        #ogre.ResourceGroupManager.getSingleton().\
+        #addResourceLocation("data/system/OgreCore.zip", "Zip", "Bootstrap")
         ogre.ResourceGroupManager.getSingleton().\
         addResourceLocation("data/system/common", "FileSystem", "General")
 
