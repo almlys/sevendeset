@@ -66,6 +66,8 @@ class BootStrap(object):
         self._patches = setPath(options["global"]["BootStrap.patches"])
         self._moduleStatus = setPath(options["global"]["BootStrap.moduleStatus"])
         
+        self._branch = options["global"]["BootStrap.branch"]
+        
         # Set Platform and architecture details
         if options["global"].has_key("BootStrap.platform"):
             self._platform = options["global"]["BootStrap.platform"]
@@ -96,6 +98,7 @@ class BootStrap(object):
 
         version = sys.version.split('.')
         version = version[0] + "." + version[1]
+        self._python_version = version
 
         os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
         os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
@@ -137,19 +140,25 @@ class BootStrap(object):
         """
         
         # Architecture/Platform stuff
-        source = None
+        sources = []
         for source in module.xsource:
             if hasattr(source,"pplatform") and source.pplatform!=self._platform:
                 continue
             if hasattr(source,"parch") and source.parch!=self._arch:
                 continue
-            break
-        if source == None:
+            if hasattr(source,"ppython") and source.ppython!=self._python_version:
+                continue
+            if hasattr(source,"pbranch") and source.pbranch!=self._branch:
+                continue
+            sources.append(source)
+        if len(sources) == 0:
             info = sys.platform()
             if hasattr(os.uname):
-                info += " ".join(os.uname())
+                info += " ".join(os.uname()) + " Python " + self._python_version
             raise UnsupportedPlatformError,info
         # End architecture/Platform stuff
+        
+        source = sources[0]
         
         method = module.xsource[0].pmethod
         source = module.xsource[0].paddr
@@ -261,7 +270,8 @@ class MainApp(object):
         'BootStrap.prefix' : 'runtime',
         'BootStrap.patches' : 'patches',
         'BootStrap.moduleStatus' : 'BootStrap.status.xml',
-        'BootStrap.manifest' : 'config/bootstrap.xml'
+        'BootStrap.manifest' : 'config/bootstrap.xml',
+        'BootStrap.branch' : 'stable'
         }} #: Store all options (init to defaults)
     _configFile = None #: Defines configuration file
     _modules = [] #: The list of modules were bootstrap operates

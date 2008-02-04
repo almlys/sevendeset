@@ -10,8 +10,14 @@
 			Note: Ogre can be compiled without the cg library, but well, you now how things will look without it.
 		</comment>
 		<license>Propietary</license>
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz' method='wget' renamefrom='usr' md5='f6191a01b22f29f7df0b1e1a013aa971' platform='linux' arch='i686' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz' method='wget' renamefrom='usr' md5='f6191a01b22f29f7df0b1e1a013aa971' platform='linux' arch='x86_64' />
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz'
+						method='wget' renamefrom='usr'
+						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						platform='linux' arch='i686' />
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz'
+						method='wget' renamefrom='usr'
+						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						platform='linux' arch='x86_64' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
 		</install>
@@ -22,7 +28,9 @@
 			Base library for openEXR
 		</comment>
 		<license>BSD</license>
-		<source addr='http://download.savannah.nongnu.org/releases/openexr/ilmbase-1.0.1.tar.gz' method='wget' renamefrom='ilmbase-1.0.1' md5='f76f094e69a6079b0beb93d97e2a217e'/>
+		<source addr='http://download.savannah.nongnu.org/releases/openexr/ilmbase-1.0.1.tar.gz'
+						method='wget' renamefrom='ilmbase-1.0.1'
+						md5='f76f094e69a6079b0beb93d97e2a217e'/>
 		<build>
 			<cmd>./configure --prefix=$PREFIX</cmd>
 			<cmd>make -j 2</cmd>
@@ -37,7 +45,9 @@
 			Optional Library for OpenEXR HDR image file format
 		</comment>
 		<license>BSD</license>
-		<source addr='http://download.savannah.nongnu.org/releases/openexr/openexr-1.6.1.tar.gz' method='wget' renamefrom='openexr-1.6.1' md5='11951f164f9c872b183df75e66de145a'/>
+		<source addr='http://download.savannah.nongnu.org/releases/openexr/openexr-1.6.1.tar.gz'
+						method='wget' renamefrom='openexr-1.6.1'
+						md5='11951f164f9c872b183df75e66de145a'/>
 		<build>
 			<cmd>./configure --prefix=$PREFIX</cmd>
 			<cmd>make -j 2</cmd>
@@ -52,7 +62,9 @@
 			Object Oriented Input System
 		</comment>
 		<license>zlib/libpng</license>
-		<source addr='http://prdownloads.sourceforge.net/wgois/ois-1.0RC1.tar.gz' method='wget' renamefrom='ois-1.0RC1' md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
+		<source addr='http://prdownloads.sourceforge.net/wgois/ois-1.0RC1.tar.gz'
+						method='wget' renamefrom='ois-1.0RC1'
+						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
 		<patch addr='ois.patch' />
 		<build>
 			<cmd>./bootstrap</cmd>
@@ -69,7 +81,9 @@
 			GUI
 		</comment>
 		<license>MIT</license>
-		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.5.0b.tar.gz' method='wget' renamefrom='CEGUI-0.5.0' md5='b42322a33c6a06eede76b15f75694a17'/>
+		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.5.0b.tar.gz'
+						method='wget' renamefrom='CEGUI-0.5.0'
+						md5='b42322a33c6a06eede76b15f75694a17'/>
 		<build>
 			<cmd>./configure --prefix=$PREFIX --without-ogre-renderer</cmd>
 			<cmd>make -j 2</cmd>
@@ -85,8 +99,9 @@
 			The mother of the world
 		</comment>
 		<license>LGPLv2.1 or later</license>
-		<!-- <source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-5.tar.bz2' method='wget' renamefrom='ogrenew' md5='efce9ce9e2b0e2d593e45479210bd4af' /> -->
-		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-6.tar.bz2' method='wget' renamefrom='ogrenew' md5='ef1cf73106e0387624bfdd539cdf9de6' />
+		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
+						method='wget' renamefrom='ogrenew'
+						md5='ef1cf73106e0387624bfdd539cdf9de6' />
 		<!-- Some patches should be added here!! -->
 		<build>
 			<cmd>./configure --prefix=$PREFIX --enable-openexr</cmd>
@@ -103,7 +118,16 @@
 			Latest stable version is too old, soo we need to get latest **unstable** from cvs (cross fingers)
 		</comment>
 		<license>GPLv2 or later</license>
-		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML' method='cvs' module='gccxml' />
+		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080204.tar.bz2'
+						method='wget' renamefrom='gccxml20080204'
+						md5='fix-me'
+						branch='stable' />
+		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
+						method='cvs' module='gccxml' revision='20080204'
+						branch='stable' />
+		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
+						method='cvs' module='gccxml'
+						branch='devel' />
 		<build>
 			<cmd cmd='mkdir' path='gccxml-build' />
 			<cmd cmd='cd' path='gccxml-build' />
@@ -122,7 +146,16 @@
 			Code generator for Boost.Python
 		</comment>
 		<license>Boost</license>
-		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml' method='svn' />
+		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080204.tar.bz2'
+						method='wget' renamefrom='pygccxml20080204'
+						md5='fix-me'
+						branch='stable' />
+		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
+						method='svn' revision='1231'
+						branch='stable' />
+		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
+						method='svn'
+						branch='devel' />
 		<install>
 			<cmd cmd='cd' path='pygccxml_dev' />
 			<cmd>python setup.py install --prefix=$PREFIX</cmd>
@@ -170,7 +203,16 @@
 			Python-Ogre
 		</comment>
 		<license>LGPLv2 or lather</license>
-		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre' method='svn' />
+		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/pygthon-ogre20080204.tar.bz2'
+						method='wget' renamefrom='python-ogre20080204'
+						md5='fix-me'
+						branch='stable' />
+		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
+						method='svn' revision='561'
+						branch='stable' />
+		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
+						method='svn'
+						branch='devel' />
 		<patch addr='python-ogre.patch' />
 		<build>
 			<cmd>echo "OK. LONG BUILD PROCESS STARTS NOW!!! - LEFT YOUR COMPUTER ON, AND COME TOMORROW!!"</cmd>
@@ -227,7 +269,10 @@
 			Big package that contains all the above stuff mixed in one item
 		</comment>
 		<license>GPLv3 or later</license>
-		<source addr='http://7d7.almlys.org/builds/runtime.tar.bz2' method='wget' renamefrom='runtime' md5='3b00c3a2591fa481ea54a8e7a4fda288' platform='linux' arch='i686' />
+		<source addr='http://7d7.almlys.org/downloads/builds/runtime_i686_py24_20080129.tar.bz2'
+						method='wget' renamefrom='runtime'
+						md5='3b00c3a2591fa481ea54a8e7a4fda288'
+						platform='linux' arch='i686' python='2.4' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
 		</install>

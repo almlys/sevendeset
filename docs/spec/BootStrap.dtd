@@ -28,8 +28,11 @@
 	renamefrom CDATA #IMPLIED
 	md5 CDATA #IMPLIED
 	module CDATA #IMPLIED
+	revision CDATA #IMPLIED
 	platform CDATA #IMPLIED
-	arch CDATA #IMPLIED>
+	arch CDATA #IMPLIED
+	branch CDATA #IMPLIED
+	python CDATA #IMPLIED>
 
 <!ELEMENT patch EMPTY>
 <!ATTLIST patch

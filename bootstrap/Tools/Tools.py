@@ -89,7 +89,13 @@ class WgetTool(DownloadTool):
 
     def md5(self,filen):
         import md5
-        return md5.new(file(filen).read()).hexdigest()
+        m = md5.new()
+        f = file(filen,'rb')
+        piece = f.read(4096)
+        while len(piece!=0):
+            m.update(piece)
+        return m.hexdigest()
+        f.close()
 
     def get(self,args):
         self.check()
@@ -113,6 +119,7 @@ class WgetTool(DownloadTool):
             print "%s already unpacked, skipping..." %(path,)
         else:
             if os.path.exists(path):
+                print "Removing old version..."
                 shutil.rmtree(path)
 
             self.unpack(file,output)
