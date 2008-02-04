@@ -159,6 +159,7 @@ class WgetTool2(WgetTool):
 
             while True:
                 input = f.read(bsize)
+                fout.write(input)
                 tsize += len(input)
                 if (size == 0 and len(input) == 0):
                     break
@@ -166,7 +167,6 @@ class WgetTool2(WgetTool):
                     break
                 if len(input) == 0:
                     continue
-                fout.write(input)
                 # This is getting dirty
 
                 if tt2-tt1 >= .5:
@@ -183,6 +183,7 @@ class WgetTool2(WgetTool):
                     i = 0
             fout.close()
             f.close()
+            print "\b\rDownloading %s done!" %(what, pchars[i])
         except urllib2.HTTPError,e:
             raise ToolError,e
 
