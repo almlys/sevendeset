@@ -139,9 +139,10 @@ class WgetTool2(WgetTool):
             opener = urllib2.build_opener()
             #opener.addheaders = [('User-Agent', 'sd7/BootStrap (see http://7d7.almlys.org/BootStrap)')]
             f = opener.open(what)
+            print "after open"
             headers = f.info()
             if headers.has_key('Content-Length'):
-                size = headers['Content-Length']
+                size = int(headers['Content-Length'])
             else:
                 size = 0
             bsize = 4098
