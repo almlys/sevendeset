@@ -63,9 +63,9 @@ class WgetTool(DownloadTool):
         
         if pg == 'tar':
             import tarfile
+            print "\b\rExtracting %s %i%%" %(what,0),
             t = tarfile.open(what,mode)
             #t.extractall(where)
-            print "\b\rExtracting %s %i%%" %(what,0),
             ns = len(t.getnames())
             ii = 0
             tt1 = time.time()-1
