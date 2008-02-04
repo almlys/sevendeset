@@ -176,11 +176,10 @@ class WgetTool2(WgetTool):
                         print "\b\rDownloading %s %s" %(what, pchars[i]),
                     sys.stdout.flush()
                     tt1 = tt2
+                    i += 1
+                    if i >= len(pchars):
+                        i = 0
                 tt2 = time.time()
-
-                i += 1
-                if i >= len(pchars):
-                    i = 0
             fout.close()
             f.close()
             print "\b\rDownloading %s done!" %(what,)
