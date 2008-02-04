@@ -155,9 +155,13 @@ class WgetTool2(WgetTool):
             i = 0
             while True:
                 input = f.read(bsize)
-                tsize += bsize
-                if len(input) == 0:
+                tsize += len(input)
+                if (size == 0 and len(input) == 0):
                     break
+                if tsize >= size:
+                    break
+                if len(input) == 0:
+                    continue
                 fout.write(input)
                 if size!=0:
                     print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i]),
