@@ -93,6 +93,7 @@ class WgetTool(DownloadTool):
         piece = f.read(4096)
         while len(piece)!=0:
             m.update(piece)
+            piece = f.read(4096)
         return m.hexdigest()
         f.close()
 
