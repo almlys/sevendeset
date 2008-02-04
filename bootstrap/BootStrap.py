@@ -80,7 +80,27 @@ class BootStrap(object):
             self._arch = options["global"]["BootStrap.arch"]
         else:
             if hasattr(os,"uname"):
+                # Sanity check
+                import struct
+                bytes = struct.calcsize('P')
                 self._arch = os.uname()[4]
+                if self._arch == 'x86_64' and bytes!=8:
+                    raise UnsuportedPlatformError,"""
+Warning, uname says that you are running a 64 bits kernel, but your user-space
+applications are compiled as 32 bits.
+To avoid a broken build, I'm just stopping.
+The only reason on why are you doing this, is because you may want to compile
+sd7 in 64 bits with userspace 32 bits tools (something that I think that it's
+not going to work), you should use 64 bits tools.
+In order to avoid this warning, you must launch this script under the shell
+created by 'linux32'. You can also try to harcode the architecture in the
+config file, but I'm already going to tell you, that is not gonna work. Mainly
+because the embeded tools will be also confused attemting to determine what
+are you attempting to do, the safest way is.
+* 64 bits build: Use 64 bits tools in 64 bits mode.
+* 32 bits build: Use whatever tools inside 32 bits mode.
+Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
+"""
             else:
                 # Needs to be ported (defaulting to 32 bits)
                 self._arch = "i686"
