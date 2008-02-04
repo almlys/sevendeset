@@ -39,8 +39,50 @@ class DownloadTool(Tool):
         print args
 
 
-class WgetTool(DownloadTool):
+class WgetTool2(WgetTool):
     
+    def check(self):
+        pass
+    
+    def download(self,what,where):
+        try:
+            import urllib2
+            opener = urllib2.build_opener()
+            #opener.addheaders = [('User-Agent', 'sd7/BootStrap (see http://7d7.almlys.org/BootStrap)')]
+            f = opener.open(what)
+            headers = f.info()
+            if headers.has_key('Content-Length'):
+                size = headesr['Content-Length']
+            else:
+                size = 0
+            bsize = 4098
+            fout = file(where,'wb')
+            tsize = 0
+            pchars = "|/-\\"
+            i = 0
+            while True:
+                input = f.read(bsize)
+                tsize += bsize
+                if len(input) == 0:
+                    break
+                fout.write(input)
+                if size!=0:
+                    print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i])
+                else:
+                    print "\b\rDownloading %s %s" %(what, pchars[i])
+                i += 1
+                if i >= len(pchars):
+                    i = 0
+            fout.close()
+            f.close()
+        except urllib2.HTTPError,e:
+            print e
+
+
+
+
+class WgetTool(DownloadTool):
+
     def check(self):
         if os.system("wget -V")!=0:
             raise ToolNotInstalled, \
