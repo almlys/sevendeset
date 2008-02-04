@@ -145,7 +145,8 @@ class WgetTool2(WgetTool):
             else:
                 size = 0
             bsize = 4098
-            fout = file(where,'wb')
+            mfname = os.path.basename(f.geturl())
+            fout = file(where + '/' + mfname,'wb')
             tsize = 0
             pchars = "|/-\\"
             i = 0
