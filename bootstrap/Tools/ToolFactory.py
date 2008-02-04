@@ -32,7 +32,7 @@ class _ToolDownloadFactory(object):
     
     def loadTools(self):
         #from Tools import WgetTool, CVSTool
-        self.addTool("wget",Tools.WgetTool)
+        self.addTool("wget",Tools.WgetTool2)
         self.addTool("cvs",Tools.CVSTool)
         self.addTool("svn",Tools.SVNTool)
 
