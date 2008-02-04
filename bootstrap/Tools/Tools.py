@@ -17,7 +17,7 @@ __version__ = "$Revision$"
 
 __all__ = ["WgetTool","WgetTool2","CVSTool","SVNTool","MkdirTool","CdTool"]
 
-
+import sys
 import os
 import shutil
 import time
@@ -72,7 +72,6 @@ class WgetTool(DownloadTool):
             for f in t:
                 if tt2-tt1 >= .5:
                     print "\b\rExtracting %s %i%%" %(what,100*ii/ns),
-                    import sys
                     sys.stdout.flush()
                     tt1 = tt2
                 #print tt1, tt2
@@ -142,7 +141,7 @@ class WgetTool2(WgetTool):
             f = opener.open(what)
             headers = f.info()
             if headers.has_key('Content-Length'):
-                size = headesr['Content-Length']
+                size = headers['Content-Length']
             else:
                 size = 0
             bsize = 4098
@@ -160,13 +159,14 @@ class WgetTool2(WgetTool):
                     print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i])
                 else:
                     print "\b\rDownloading %s %s" %(what, pchars[i])
+                sys.stdout.flush()
                 i += 1
                 if i >= len(pchars):
                     i = 0
             fout.close()
             f.close()
         except urllib2.HTTPError,e:
-            print e
+            raise ToolError,e
 
 
 
