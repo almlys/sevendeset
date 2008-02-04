@@ -123,6 +123,7 @@ class WgetTool(DownloadTool):
                 print "Removing old version..."
                 shutil.rmtree(path)
 
+            print "I'm going to unpack %s" %(file,)
             self.unpack(file,output)
         
             if args.has_key('renamefrom'):
@@ -141,7 +142,7 @@ class WgetTool2(WgetTool):
             opener = urllib2.build_opener()
             #opener.addheaders = [('User-Agent', 'sd7/BootStrap (see http://7d7.almlys.org/BootStrap)')]
             f = opener.open(what)
-            print "after open"
+            print "Opening %s" %(f.geturl())
             headers = f.info()
             if headers.has_key('Content-Length'):
                 size = int(headers['Content-Length'])
@@ -154,13 +155,19 @@ class WgetTool2(WgetTool):
             pchars = "|/-\\"
             i = 0
 
-            tt1 = time.time()-1
+            tt1 = time.time()
             tt2 = time.time()
+            
+            achunk = 0
+            pchunk = 0
+            timer = .5
 
             while True:
                 input = f.read(bsize)
                 fout.write(input)
-                tsize += len(input)
+                sbsize = len(input)
+                tsize += sbsize
+                pchunk += sbsize
                 if (size == 0 and len(input) == 0):
                     break
                 if tsize >= size:
@@ -169,11 +176,20 @@ class WgetTool2(WgetTool):
                     continue
                 # This is getting dirty
 
-                if tt2-tt1 >= .5:
-                    if size!=0:
-                        print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i]),
+                if tt2-tt1 >= timer:
+                    if achunk == 0:
+                        achunk = pchunk
                     else:
-                        print "\b\rDownloading %s %s" %(what, pchars[i]),
+                        achunk = (achunk + pchunk) / 2
+                    pchunk = 0
+
+                    if size!=0:
+                        print "\b\rDownloading %s %i%% %s %i KBps [%i/%iKB]" \
+                        %(what, (tsize * 100 / size), pchars[i],
+                         (achunk/timer)/1024, tsize/1024, size/1024),
+                    else:
+                        print "\b\rDownloading %s %s %i KBps [%iKB]" \
+                        %(what, pchars[i], (achunk/timer)/1024, tsize/1024),
                     sys.stdout.flush()
                     tt1 = tt2
                     i += 1
@@ -182,7 +198,7 @@ class WgetTool2(WgetTool):
                 tt2 = time.time()
             fout.close()
             f.close()
-            print "\b\rDownloading %s done!" %(what,)
+            print "\b\rDownloading %s done!                                   " %(what,)
         except urllib2.HTTPError,e:
             raise ToolError,e
 
