@@ -153,6 +153,10 @@ class WgetTool2(WgetTool):
             tsize = 0
             pchars = "|/-\\"
             i = 0
+
+            tt1 = time.time()-1
+            tt2 = time.time()
+
             while True:
                 input = f.read(bsize)
                 tsize += len(input)
@@ -163,11 +167,17 @@ class WgetTool2(WgetTool):
                 if len(input) == 0:
                     continue
                 fout.write(input)
-                if size!=0:
-                    print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i]),
-                else:
-                    print "\b\rDownloading %s %s" %(what, pchars[i]),
-                sys.stdout.flush()
+                # This is getting dirty
+
+                if tt2-tt1 >= .5:
+                    if size!=0:
+                        print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i]),
+                    else:
+                        print "\b\rDownloading %s %s" %(what, pchars[i]),
+                    sys.stdout.flush()
+                    tt1 = tt2
+                tt2 = time.time()
+
                 i += 1
                 if i >= len(pchars):
                     i = 0
