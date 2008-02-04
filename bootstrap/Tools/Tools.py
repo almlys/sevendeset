@@ -91,7 +91,7 @@ class WgetTool(DownloadTool):
         m = md5.new()
         f = file(filen,'rb')
         piece = f.read(4096)
-        while len(piece!=0):
+        while len(piece)!=0:
             m.update(piece)
         return m.hexdigest()
         f.close()
@@ -158,9 +158,9 @@ class WgetTool2(WgetTool):
                     break
                 fout.write(input)
                 if size!=0:
-                    print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i])
+                    print "\b\rDownloading %s %i%% %s" %(what, (tsize * 100 / size), pchars[i]),
                 else:
-                    print "\b\rDownloading %s %s" %(what, pchars[i])
+                    print "\b\rDownloading %s %s" %(what, pchars[i]),
                 sys.stdout.flush()
                 i += 1
                 if i >= len(pchars):
