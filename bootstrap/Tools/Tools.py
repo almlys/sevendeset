@@ -15,7 +15,7 @@ Some Tools
 
 __version__ = "$Revision$"
 
-__all__ = ["WgetTool","CVSTool","SVNTool","MkdirTool","CdTool"]
+__all__ = ["WgetTool","WgetTool2","CVSTool","SVNTool","MkdirTool","CdTool"]
 
 
 import os
