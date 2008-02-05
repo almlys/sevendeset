@@ -18,9 +18,13 @@
 						method='wget' renamefrom='usr'
 						md5='f6191a01b22f29f7df0b1e1a013aa971'
 						platform='linux' arch='i686' />
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Dec2007_x86_64.tar.gz'
+						method='wget' renamefrom='usr'
+						md5='bc3567a806405c3db12fb46daf450166'
+						platform='linux' arch='x86_64' />
 		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='fix-me'
+						md5='bc3567a806405c3db12fb46daf450166'
 						platform='linux' arch='x86_64' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
@@ -216,7 +220,12 @@
 			python setup.py install --prefix=$PREFIX
 		</comment>
 		<license>MIT</license>
-		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.97.0d20071212.tar.gz' method='wget' renamefrom='scons-0.97.0d20071212' md5='d06327b77552ac0153bb8f93b27b7f13' />
+		<source addr='http://7d7.almlys.org/downloads/depends/scons/scons-0.97.0d20071212.tar.gz'
+						method='wget' renamefrom='scons-0.97.0d20071212'
+						md5='d06327b77552ac0153bb8f93b27b7f13' />
+		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.97.0d20071212.tar.gz'
+						method='wget' renamefrom='scons-0.97.0d20071212'
+						md5='d06327b77552ac0153bb8f93b27b7f13' />
 		<install>
 			<cmd>python setup.py install --prefix=$PREFIX</cmd>
 		</install>
@@ -228,7 +237,12 @@
 			# Need to patch??
 		</comment>
 		<license>Boost</license>
-		<source addr='http://downloads.sourceforge.net/boost/boost_1_34_1.tar.bz2' method='wget' renamefrom='boost_1_34_1' md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
+		<source addr='http://7d7.almlys.org/downloads/depends/boost/boost_1_34_1.tar.bz2'
+						method='wget' renamefrom='boost_1_34_1'
+						md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
+		<source addr='http://downloads.sourceforge.net/boost/boost_1_34_1.tar.bz2'
+						method='wget' renamefrom='boost_1_34_1'
+						md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
 		<patch addr='boost.patch' />
 		<build>
 			<!-- Begin Dirty Hack -->
@@ -245,7 +259,7 @@
 			<cmd cmd='cd' path='${PREFIX}/lib' />
 			<cmd>ln -fs libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
 			<cmd cmd='cd' path='../include' />
-			<cmd>ln -fs boost-1_34_1 boost</cmd>
+			<cmd>ln -fs boost-1_34_1/boost boost</cmd>
 			<!-- Argh -->
 		</install>
 	</module>
