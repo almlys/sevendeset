@@ -257,8 +257,10 @@
 		<install>
 			<cmd>make install</cmd>
 			<!-- This is ugly -->
+			<!--
 			<cmd cmd='cd' path='${PREFIX}/lib' />
 			<cmd>ln -fs libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
+			-->
 			<cmd cmd='cd' path='../include' />
 			<cmd>ln -fs boost-1_34_1/boost boost</cmd>
 			<!-- Argh -->
