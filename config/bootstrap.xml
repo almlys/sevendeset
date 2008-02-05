@@ -213,12 +213,17 @@
 			<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
 			<!-- End Dirty Hack -->
 			<cmd>./configure --with-libraries=python,thread --prefix=$PREFIX</cmd>
+			<cmd>sed -i s/BJAM_CONFIG=/BJAM_CONFIG=release/ Makefile</cmd>
 			<cmd>make</cmd>
 		</build>
 		<install>
 			<cmd>make install</cmd>
+			<!-- This is ugly -->
 			<cmd cmd='cd' path='${PREFIX}/lib' />
 			<cmd>ln -s libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
+			<cmd cmd='cd' path='../include' />
+			<cmd>ln -s boost_1_34_1 boost</cmd>
+			<!-- Argh -->
 		</install>
 	</module>
 
