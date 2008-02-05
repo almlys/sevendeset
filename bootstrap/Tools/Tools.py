@@ -254,6 +254,12 @@ class CVSTool(DownloadTool):
         addr = args['addr']
         path = output + '/' + args['path']
         module = args['module']
+        if args.has_key('revision'):
+            revision = args['revision']
+            extra = " -D %s " %(revision,)
+        else:
+            revision = None
+            extra = ""
 
         cdir = os.getcwd()
         try:
@@ -262,12 +268,12 @@ class CVSTool(DownloadTool):
                 print "%s already exists, skipping..." %(path)
                 if args['update']:
                     os.chdir(args['path'])
-                    if os.system("cvs -z9 update")!=0:
+                    if os.system("cvs -z9 update%s" %(extra,))!=0:
                         raise ToolError                
             else:
                 if os.path.exists(path):
                     shutil.rmtree(path)
-                if os.system("cvs -z9 -d %s co %s" %(addr,module))!=0:
+                if os.system("cvs -z9 -d %s co%s %s" %(addr,extra,module))!=0:
                     raise ToolError
                 if args.has_key('renamefrom'):
                     renpath = output + '/' + args['renamefrom']
@@ -292,6 +298,13 @@ class SVNTool(DownloadTool):
         addr = args['addr']
         path = output + '/' + args['path']
 
+        if args.has_key('revision'):
+            revision = args['revision']
+            extra = " -r %s " %(revision,)
+        else:
+            revision = None
+            extra = ""
+
         cdir = os.getcwd()
         try:
             os.chdir(output)
@@ -299,12 +312,12 @@ class SVNTool(DownloadTool):
                 print "%s already exists, skipping..." %(path)
                 if args['update']:
                     os.chdir(args['path'])
-                    if os.system("svn update")!=0:
+                    if os.system("svn%s update" %(extra,))!=0:
                         raise ToolError                
             else:
                 if os.path.exists(path):
                     shutil.rmtree(path)
-                if os.system("svn co %s" %(addr))!=0:
+                if os.system("svn%s co %s" %(extra,addr))!=0:
                     raise ToolError
                 if args.has_key('renamefrom'):
                     renpath = output + '/' + args['renamefrom']
