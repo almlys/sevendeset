@@ -10,6 +10,10 @@
 			Note: Ogre can be compiled without the cg library, but well, you now how things will look without it.
 		</comment>
 		<license>Propietary</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Dec2007_x86.tar.gz'
+						method='wget' renamefrom='usr'
+						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						platform='linux' arch='i686' />
 		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz'
 						method='wget' renamefrom='usr'
 						md5='f6191a01b22f29f7df0b1e1a013aa971'
@@ -28,6 +32,9 @@
 			Base library for openEXR
 		</comment>
 		<license>BSD</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/openexr/ilmbase-1.0.1.tar.gz'
+						method='wget' renamefrom='ilmbase-1.0.1'
+						md5='f76f094e69a6079b0beb93d97e2a217e'/>
 		<source addr='http://download.savannah.nongnu.org/releases/openexr/ilmbase-1.0.1.tar.gz'
 						method='wget' renamefrom='ilmbase-1.0.1'
 						md5='f76f094e69a6079b0beb93d97e2a217e'/>
@@ -45,6 +52,9 @@
 			Optional Library for OpenEXR HDR image file format
 		</comment>
 		<license>BSD</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/openexr/openexr-1.6.1.tar.gz'
+						method='wget' renamefrom='openexr-1.6.1'
+						md5='11951f164f9c872b183df75e66de145a'/>
 		<source addr='http://download.savannah.nongnu.org/releases/openexr/openexr-1.6.1.tar.gz'
 						method='wget' renamefrom='openexr-1.6.1'
 						md5='11951f164f9c872b183df75e66de145a'/>
@@ -62,6 +72,10 @@
 			Graphics support library
 		</comment>
 		<license>(dual) GPLv2 or later / FreeImage Public License</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/freeimage/FreeImage3100.zip'
+						method='wget' renamefrom='FreeImage'
+						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
+		<build>
 		<source addr='http://downloads.sourceforge.net/freeimage/FreeImage3100.zip'
 						method='wget' renamefrom='FreeImage'
 						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
@@ -85,6 +99,10 @@
 			Object Oriented Input System
 		</comment>
 		<license>zlib/libpng</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/ois/ois-1.0RC1.tar.gz'
+						method='wget' renamefrom='ois-1.0RC1'
+						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
+		<patch addr='ois.patch' />
 		<source addr='http://prdownloads.sourceforge.net/wgois/ois-1.0RC1.tar.gz'
 						method='wget' renamefrom='ois-1.0RC1'
 						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
@@ -104,6 +122,10 @@
 			GUI
 		</comment>
 		<license>MIT</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEGUI-0.5.0b.tar.gz'
+						method='wget' renamefrom='CEGUI-0.5.0'
+						md5='b42322a33c6a06eede76b15f75694a17'/>
+		<build>
 		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.5.0b.tar.gz'
 						method='wget' renamefrom='CEGUI-0.5.0'
 						md5='b42322a33c6a06eede76b15f75694a17'/>
@@ -122,6 +144,9 @@
 			The mother of the world
 		</comment>
 		<license>(dual) LGPLv2.1 or later / unrestricted(comercial)</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
+						method='wget' renamefrom='ogrenew'
+						md5='ef1cf73106e0387624bfdd539cdf9de6' />
 		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
 						method='wget' renamefrom='ogrenew'
 						md5='ef1cf73106e0387624bfdd539cdf9de6' />
@@ -220,9 +245,9 @@
 			<cmd>make install</cmd>
 			<!-- This is ugly -->
 			<cmd cmd='cd' path='${PREFIX}/lib' />
-			<cmd>ln -s libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
+			<cmd>ln -fs libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
 			<cmd cmd='cd' path='../include' />
-			<cmd>ln -s boost_1_34_1 boost</cmd>
+			<cmd>ln -fs boost-1_34_1 boost</cmd>
 			<!-- Argh -->
 		</install>
 	</module>
@@ -235,7 +260,7 @@
 		<license>LGPLv2 or lather</license>
 		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080204.tar.bz2'
 						method='wget' renamefrom='python-ogre'
-						md5='fix-me'
+						md5='7d6c200ccdc0cec4b681d902b597409b'
 						branch='stable' />
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
 						method='svn' revision='561'
