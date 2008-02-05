@@ -22,11 +22,12 @@ __all__ = ["BuildError","InstallError","PatchError","BootStrap","MainApp"]
 import os
 import os.path
 import sys
+import random
 
 from xmlparser import XMLParser
 from Tools import ToolDownloadFactory, ToolFactory
 
-
+class DownloadError(Exception): pass
 class BuildError(Exception): pass
 class InstallError(Exception): pass
 class PatchError(Exception): pass
@@ -160,7 +161,8 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         """
         
         # Architecture/Platform stuff
-        sources = []
+        wget_sources = []
+        svn_sources = []
         for source in module.xsource:
             if hasattr(source,"pplatform") and source.pplatform!=self._platform:
                 continue
@@ -170,19 +172,35 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                 continue
             if hasattr(source,"pbranch") and source.pbranch!=self._branch:
                 continue
-            sources.append(source)
-        if len(sources) == 0:
+            if source.pmethod=='wget':
+                wget_sources.append(source)
+            else:
+                svn_sources.append(source)
+        if len(wget_sources) == 0 and len(svn_sources) == 0:
             info = sys.platform()
             if hasattr(os.uname):
                 info += " ".join(os.uname()) + " Python " + self._python_version
             raise UnsupportedPlatformError,info
         # End architecture/Platform stuff
         
-        source = sources[0]
+        used_sources = []
+        while len(wget_sources) != 0 and len(svn_sources) != 0:
+            if len(wget_sources) == 0:
+                wget_sources = svn_sources
+                svn_sources = []
+            if len(wget_sources) != 0:
+                source = wget_sources[int(random.random() * len(wget_sources))]
+                try:
+                    self._mget_inner(module,source,update,redownload)
+                except ToolError:
+                    print "Cannot download from that source, attemting another one"
+                    continue
+                return
         
-        method = module.xsource[0].pmethod
-        source = module.xsource[0].paddr
-        args=module.xsource[0].attrs
+    def _mget_inner(self,module,xsource,update,redownload):
+        method = xsource.pmethod
+        source = xsource.paddr
+        args = xsource.attrs
         args['name'] = module.pname
         args['path'] = module.pname
         args['downloads'] = self._downloadPath

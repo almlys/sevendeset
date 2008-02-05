@@ -185,11 +185,11 @@ class WgetTool2(WgetTool):
 
                     if size!=0:
                         print "\b\rDownloading %s %i%% %s %i KBps [%i/%iKB]" \
-                        %(what, (tsize * 100 / size), pchars[i],
+                        %(mfname, (tsize * 100 / size), pchars[i],
                          (achunk/timer)/1024, tsize/1024, size/1024),
                     else:
                         print "\b\rDownloading %s %s %i KBps [%iKB]" \
-                        %(what, pchars[i], (achunk/timer)/1024, tsize/1024),
+                        %(mfname, pchars[i], (achunk/timer)/1024, tsize/1024),
                     sys.stdout.flush()
                     tt1 = tt2
                     i += 1
