@@ -34,9 +34,9 @@ mkdir -p $DIST/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI
 
 ## Legal stuff, i need to review it still
 svn2cl
-cp -rvp $PREFIX/README $DIST
-cp -rvp $PREFIX/COPYING $DIST
-cp -rvp $PREFIX/ChangeLog $DIST
+cp -rvp README $DIST
+cp -rvp COPYING $DIST
+cp -rvp ChangeLog $DIST
 ##
 
 cp -rvp $PREFIX/lib/OGRE/*.so $DIST/lib/OGRE
