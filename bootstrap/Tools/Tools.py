@@ -53,18 +53,23 @@ class WgetTool(DownloadTool):
             raise ToolError, "Cannot donwload %s" %(what)
     
     def unpack(self,what,where):
+        # Oye, esto rompe todo lo que hemos aprendido durante estos
+        # ultimos años, con lo bonito que quedaria usar una Factoria
+        # y registrar en ella los tipos soportados (huh)
         if what.endswith('.tar.bz2'):
             mode = 'r:bz2'
             pg = 'tar'
         elif what.endswith('.tar.gz'):
             mode = 'r:gz'
             pg = 'tar'
+        elif what.endswith('.zip'):
+            pg = 'zip'
         else:
             raise ToolError,"Unrecognized packaging format %s" %(what,)
         
         if pg == 'tar':
             import tarfile
-            print "\b\rExtracting %s %i%%" %(what,0),
+            print "\rExtracting %s %i%%" %(what,0),
             t = tarfile.open(what,mode)
             #t.extractall(where)
             ns = len(t.getnames())
@@ -73,7 +78,7 @@ class WgetTool(DownloadTool):
             tt2 = time.time()
             for f in t:
                 if tt2-tt1 >= .5:
-                    print "\b\rExtracting %s %i%%" %(what,100*ii/ns),
+                    print "\rExtracting %s %i%%" %(what,100*ii/ns),
                     sys.stdout.flush()
                     tt1 = tt2
                 #print tt1, tt2
@@ -86,7 +91,36 @@ class WgetTool(DownloadTool):
                 #print os.path.dirname(where + '/' + f.name)
                 os.chmod(os.path.dirname(where + '/' + f.name),0755)
             t.close()
-            print "\b\rExtracting %s done!" %(what)
+            print "\rExtracting %s done!" %(what)
+        elif pg == 'zip':
+            import zipfile
+            print "\rExtracting %s %i%%" %(what,0),
+            t = zipfile.ZipFile(what,'r')
+            ns = len(t.namelist())
+            ii = 0
+            tt1 = time.time()-1
+            tt2 = time.time()
+            for f in t.namelist():
+                if tt2-tt1 >= .5:
+                    print "\rExtracting %s %i%%" %(what,100*ii/ns),
+                    sys.stdout.flush()
+                    tt1 = tt2
+                #print tt1, tt2
+                tt2 = time.time()
+                ii = ii+1
+                
+                #print f
+                base_dir = where + '/' + os.path.dirname(f)
+                if not os.path.exists(base_dir):
+                    os.makedirs(base_dir,0755)
+                if os.path.basename(f) == "":
+                    continue
+                foam = file(where + '/' + f,'wb')
+                foam.write(t.read(f))
+                foam.close()
+            t.close()
+            print "\rExtracting %s done!" %(what)
+
 
     def md5(self,filen):
         import md5
@@ -185,11 +219,11 @@ class WgetTool2(WgetTool):
                     pchunk = 0
 
                     if size!=0:
-                        print "\b\rDownloading %s %i%% %s %i KBps [%i/%iKB]" \
+                        print "\rDownloading %s %i%% %s %i KBps [%i/%iKB]" \
                         %(mfname, (tsize * 100 / size), pchars[i],
                          (achunk/timer)/1024, tsize/1024, size/1024),
                     else:
-                        print "\b\rDownloading %s %s %i KBps [%iKB]" \
+                        print "\rDownloading %s %s %i KBps [%iKB]" \
                         %(mfname, pchars[i], (achunk/timer)/1024, tsize/1024),
                     sys.stdout.flush()
                     tt1 = tt2
@@ -199,7 +233,7 @@ class WgetTool2(WgetTool):
                 tt2 = time.time()
             fout.close()
             f.close()
-            print "\b\rDownloading %s done!                                   " %(what,)
+            print "\rDownloading %s done!                                   " %(what,)
         except urllib2.HTTPError,e:
             raise ToolError,e
 
