@@ -17,6 +17,7 @@ __version__ = "$Revision$"
 __all__ = []
 
 import sys
+import os
 
 from bootstrap.xmlparser import XMLParser
 from common.BaseApp import BaseApplication
