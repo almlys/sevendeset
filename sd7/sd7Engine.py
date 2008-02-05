@@ -38,10 +38,12 @@ class MainApp(BaseApplication):
             e.run()
         except:
             import traceback
+            traceback.print_exc(file=sys.stderr)
+            if not os.path.exists(self.GetCfg('global','system.logdir')):
+                os.mkdir(self.GetCfg('global','system.logdir'))
             trace = file(self.GetCfg('global','system.logdir') + '/traceback.log','w')
             traceback.print_exc(file=trace)
             trace.close()
-            traceback.print_exc(file=sys.stderr)
             try:
                 import wx
                 app = wx.App(redirect=False)
@@ -58,13 +60,15 @@ if __name__ == '__main__':
         app.run()
     except:
         import traceback
+        traceback.print_exc(file=sys.stderr)
         try:
+            if not os.path.exists('log'):
+                os.mkdir('log')
             trace = file("log/traceback.log","w")
             traceback.print_exc(file=trace)
             trace.close()
         except:
             pass
-        traceback.print_exc(file=sys.stderr)
         try:
             import wx
             app = wx.App(redirect=False)
