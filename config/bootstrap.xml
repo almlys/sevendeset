@@ -105,7 +105,6 @@
 		<source addr='http://7d7.almlys.org/downloads/depends/ois/ois-1.0RC1.tar.gz'
 						method='wget' renamefrom='ois-1.0RC1'
 						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
-		<patch addr='ois.patch' />
 		<source addr='http://prdownloads.sourceforge.net/wgois/ois-1.0RC1.tar.gz'
 						method='wget' renamefrom='ois-1.0RC1'
 						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
@@ -154,7 +153,8 @@
 						md5='ef1cf73106e0387624bfdd539cdf9de6' />
 		<!-- Some patches should be added here!! -->
 		<build>
-			<cmd>./configure --prefix=$PREFIX --enable-openexr --enable-threading</cmd>
+			<!--<cmd>./configure - - prefix=$PREFIX - - enable-openexr - - enable-threading</cmd>-->
+			<cmd>./configure --prefix=$PREFIX --enable-openexr</cmd>
 			<cmd>make -j 2</cmd>
 		</build>
 		<install>
@@ -249,7 +249,8 @@
 			<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>
 			<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
 			<!-- End Dirty Hack -->
-			<cmd>./configure --with-libraries=python,thread --prefix=$PREFIX</cmd>
+			<!-- <cmd>./configure - - with-libraries=python,thread - - prefix=$PREFIX</cmd> -->
+			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
 			<cmd>sed -i s/BJAM_CONFIG=/BJAM_CONFIG=release/ Makefile</cmd>
 			<cmd>make</cmd>
 		</build>
