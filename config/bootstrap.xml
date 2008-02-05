@@ -117,7 +117,7 @@
 	</module>
 	
 	
-	<module name='ogre' ignore='no' depends='cg,openexr,cegui,ois'>
+	<module name='ogre' ignore='no' depends='cg,openexr,cegui,ois,boost'>
 		<comment>
 			The mother of the world
 		</comment>
@@ -170,8 +170,8 @@
 		</comment>
 		<license>Boost</license>
 		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080204.tar.bz2'
-						method='wget' renamefrom='pygccxml20080204'
-						md5='fix-me'
+						method='wget' renamefrom='pygccxml'
+						md5='f312abc96c42bd605cddd1a30601011c'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
 						method='svn' revision='1231'
@@ -212,7 +212,7 @@
 			<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>
 			<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
 			<!-- End Dirty Hack -->
-			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
+			<cmd>./configure --with-libraries=python,thread --prefix=$PREFIX</cmd>
 			<cmd>make</cmd>
 		</build>
 		<install>
@@ -226,8 +226,8 @@
 			Python-Ogre
 		</comment>
 		<license>LGPLv2 or lather</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/pygthon-ogre20080204.tar.bz2'
-						method='wget' renamefrom='python-ogre20080204'
+		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080204.tar.bz2'
+						method='wget' renamefrom='python-ogre'
 						md5='fix-me'
 						branch='stable' />
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
