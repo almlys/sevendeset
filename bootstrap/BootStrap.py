@@ -23,6 +23,7 @@ import os
 import os.path
 import sys
 import random
+import re
 
 from xmlparser import XMLParser
 from Tools import ToolDownloadFactory, ToolFactory, ToolError
@@ -120,6 +121,8 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         version = sys.version.split('.')
         version = version[0] + "." + version[1]
         self._python_version = version
+        a,b = os.popen4("gcc -v")
+        self._gcc_version = "".join(re.search('gcc version ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
 
         os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
         os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
@@ -127,6 +130,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         os.environ['CPPFLAGS'] = '-I' + prefix + '/include'
         os.environ['LDFLAGS'] = '-L' + prefix + '/lib'
         os.environ['PKG_CONFIG_PATH'] = prefix + '/lib/pkgconfig'
+        os.environ['MY_GCC_VERSION'] = self._gcc_version
     
 ##    def run(self):
 ##        p = XMLParser()

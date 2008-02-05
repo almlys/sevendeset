@@ -340,5 +340,20 @@ class MkdirTool(Tool):
 class CdTool(Tool):
     
     def run(self,args):
-        os.chdir(args['path'])
+        path = args['path']
+        import re
+        while True:
+            result = re.search("\$\{([a-zA-Z_]+)\}", path)
+            if result == None:
+                break
+            keyword = result.group(1)
+            match = result.group()
+            if os.environ.has_key(keyword):
+                value = os.environ[keyword]
+            else:
+                print "Warning: Undefined keyword %s" %(keyword,)
+                value = ""
+            path = path.replace(match,value)
+        path = path.replace('\\$','$').replace('\\{','{').replace('\\}','}')
+        os.chdir(path)
 

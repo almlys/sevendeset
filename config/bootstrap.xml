@@ -217,6 +217,8 @@
 		</build>
 		<install>
 			<cmd>make install</cmd>
+			<cmd cmd='cd' path='${PREFIX}/lib' />
+			<cmd>ln -s libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
 		</install>
 	</module>
 
