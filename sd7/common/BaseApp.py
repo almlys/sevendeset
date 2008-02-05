@@ -16,7 +16,7 @@ __version__ = "$Revision$"
 
 __all__ = ['BaseApplication',]
 
-import os.path
+import os
 import sys
 
 from MyDict import MyDict
@@ -51,6 +51,8 @@ class BaseApplication(object):
             self._readConfig()
         self._setCmdConfig()
         self._logdir = self.GetCfg('global','system.logdir')
+        if not os.path.exists(self._logdir):
+            os.path.mkdir(self._logdir)
         if redirect:
             self._log = mlog(sys.stdout,self._logdir + '/stdout.log','w')
             self._logerr = mlog(sys.stderr,self._logdir + '/stderr.log','w')
