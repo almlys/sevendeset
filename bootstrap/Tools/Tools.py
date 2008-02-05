@@ -234,7 +234,8 @@ class WgetTool2(WgetTool):
             fout.close()
             f.close()
             print "\rDownloading %s done!                                   " %(what,)
-        except urllib2.HTTPError,e:
+        #except urllib2.HTTPError,e:
+        except Exception,e:
             raise ToolError,e
 
 

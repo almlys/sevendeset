@@ -16,7 +16,7 @@
 						platform='linux' arch='i686' />
 		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						md5='fix-me'
 						platform='linux' arch='x86_64' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
@@ -80,7 +80,7 @@
 	</module>
 	
 	
-	<module name='ois' ignore='no'>
+	<module name='ois' ignore='no' depends='freeimage' >
 		<comment>
 			Object Oriented Input System
 		</comment>
@@ -142,8 +142,8 @@
 		</comment>
 		<license>GPLv2 or later</license>
 		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080204.tar.bz2'
-						method='wget' renamefrom='gccxml20080204'
-						md5='fix-me'
+						method='wget' renamefrom='gccxml'
+						md5='436e9a81a66415c6a9e93ee8252170a7'
 						branch='stable' />
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
 						method='cvs' module='gccxml' revision='20080204'
