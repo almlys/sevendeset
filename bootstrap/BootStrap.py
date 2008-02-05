@@ -25,7 +25,7 @@ import sys
 import random
 
 from xmlparser import XMLParser
-from Tools import ToolDownloadFactory, ToolFactory
+from Tools import ToolDownloadFactory, ToolFactory, ToolError
 
 class DownloadError(Exception): pass
 class BuildError(Exception): pass
@@ -184,18 +184,21 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         # End architecture/Platform stuff
         
         used_sources = []
-        while len(wget_sources) != 0 and len(svn_sources) != 0:
+        while len(wget_sources) != 0 or len(svn_sources) != 0:
             if len(wget_sources) == 0:
                 wget_sources = svn_sources
                 svn_sources = []
             if len(wget_sources) != 0:
                 source = wget_sources[int(random.random() * len(wget_sources))]
+                wget_sources.remove(source)
                 try:
                     self._mget_inner(module,source,update,redownload)
-                except ToolError:
+                except ToolError,e:
+                    print e
                     print "Cannot download from that source, attemting another one"
                     continue
                 return
+        raise DownloadError,"Cannot download from any suitable location"
         
     def _mget_inner(self,module,xsource,update,redownload):
         method = xsource.pmethod

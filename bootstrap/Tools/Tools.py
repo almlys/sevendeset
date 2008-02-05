@@ -25,6 +25,7 @@ import time
 
 class ToolNotInstalled(Exception): pass
 class ToolError(Exception): pass
+class ChecksumError(Exception): pass
 
 
 class Tool(object):
@@ -114,7 +115,7 @@ class WgetTool(DownloadTool):
         print "MD5 %s" %(md5,)
         if args.has_key('md5'):
             if md5!=args['md5']:
-                raise ToolError, "Checksum missmatch, source package may have been altered!"
+                raise ChecksumError, "Checksum missmatch, source package may have been altered!"
 
         if os.path.exists(path) and not args['update'] and not args['redownload']:
             print "%s already unpacked, skipping..." %(path,)

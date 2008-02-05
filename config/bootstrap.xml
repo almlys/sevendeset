@@ -57,6 +57,29 @@
 		</install>
 	</module>
 
+	<module name='freeimage' ignore='no' >
+		<comment>
+			Graphics support library
+		</comment>
+		<license>(dual) GPLv2 or later / FreeImage Public License</license>
+		<source addr='http://downloads.sourceforge.net/freeimage/FreeImage3100.zip'
+						method='wget' renamefrom='FreeImage'
+						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
+		<build>
+			<!-- Dirty patch grabben from python-ogre distribution -->
+			<cmd>sed --in-place -s 's|/usr/include|\$(DESTINC)|' Makefile.*</cmd>
+			<cmd>sed --in-place -s 's|/usr/lib|\$(DESTLIB)|' Makefile.*</cmd>
+			<cmd>sed --in-place -s 's|-o root -g root||' Makefile.*</cmd>
+			<cmd>sed --in-place -s 's|ldconfig||' Makefile.*</cmd>
+			<!-- End dirty patch -->
+			<cmd>make</cmd>
+		</build>
+		<install>
+			<cmd>make DESTINC=$PREFIX/include DESTLIB=$PREFIX/lib install</cmd>
+		</install>
+	</module>
+	
+	
 	<module name='ois' ignore='no'>
 		<comment>
 			Object Oriented Input System
@@ -98,7 +121,7 @@
 		<comment>
 			The mother of the world
 		</comment>
-		<license>LGPLv2.1 or later</license>
+		<license>(dual) LGPLv2.1 or later / unrestricted(comercial)</license>
 		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
 						method='wget' renamefrom='ogrenew'
 						md5='ef1cf73106e0387624bfdd539cdf9de6' />
