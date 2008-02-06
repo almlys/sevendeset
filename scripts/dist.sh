@@ -60,8 +60,8 @@ cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI/*.so $DIST
 
 FILENAMEDATE=`date +%Y%m%d%H%M%S`
 
-FILENAME=$NDIST_$FILENAMEDATE.tar.bz2
+FILENAME=${NDIST}_${FILENAMEDATE}.tar.bz2
 
 cd $PDIST
 
-echo tar cfvj $FILENAME $NDIST
+tar cfvj $FILENAME $NDIST
