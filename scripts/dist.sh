@@ -22,7 +22,9 @@ PYTHONVERSION_WITHOUTDOTS=`python -c "$PYSHELL"`
 
 export PYTHONPATH=`pwd`:$PREFIX/lib/python$PYTHONVERSION/site-packages
 
-DIST=dist/sd7runtime_`uname -m`_py$PYTHONVERSION_WITHOUTDOTS
+PDIST=dist
+NDIST=sd7runtime_linux_`uname -m`_py$PYTHONVERSION_WITHOUTDOTS
+DIST=$PDIST/$NDIST
 
 
 mkdir -p $DIST
@@ -58,6 +60,8 @@ cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI/*.so $DIST
 
 FILENAMEDATE=`date +%Y%m%d%H%M%S`
 
-FILENAME=$DIST_`uname -n`_$FILENAMEDATE.tar.bz2
+FILENAME=$NDIST_$FILENAMEDATE.tar.bz2
 
-tar cfvj $FILENAME $DIST
+cd $PDIST
+
+tar cfvj $FILENAME $NDIST
