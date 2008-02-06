@@ -339,9 +339,15 @@
 			Big package that contains all the above stuff mixed in one item
 		</comment>
 		<license>GPLv3 or later</license>
+		<!--
 		<source addr='http://7d7.almlys.org/downloads/builds/runtime_i686_py24_20080129.tar.bz2'
 						method='wget' renamefrom='runtime'
 						md5='3b00c3a2591fa481ea54a8e7a4fda288'
+						platform='linux' arch='i686' python='2.4' />
+		-->
+		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py24_20080206001024.tar.bz2'
+						method='wget' renamefrom='sd7runtime_linux_i686_py24'
+						md5='727ecb5222dda896400965a090cc5fe9'
 						platform='linux' arch='i686' python='2.4' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
