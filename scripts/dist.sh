@@ -64,4 +64,4 @@ FILENAME=$NDIST_$FILENAMEDATE.tar.bz2
 
 cd $PDIST
 
-tar cfvj $FILENAME $NDIST
+echo tar cfvj $FILENAME $NDIST
