@@ -350,7 +350,9 @@
 						md5='727ecb5222dda896400965a090cc5fe9'
 						platform='linux' arch='i686' python='2.4' />
 		<install>
-			<cmd>cp -rvp * $PREFIX</cmd>
+			<cmd>mv -vf * $PREFIX</cmd>
+			<cmd cmd='cd' path='../' />
+			<cmd>rmdir binary_depends</cmd>
 		</install>
 	</module>
 	
