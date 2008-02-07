@@ -181,10 +181,11 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
             else:
                 svn_sources.append(source)
         if len(wget_sources) == 0 and len(svn_sources) == 0:
-            info = sys.platform()
-            if hasattr(os.uname):
-                info += " ".join(os.uname()) + " Python " + self._python_version
-            raise UnsupportedPlatformError,info
+            info = sys.platform
+            if hasattr(os,"uname"):
+                info += " " + " ".join(os.uname())
+            info += " Python " + self._python_version
+            raise UnsuportedPlatformError,info
         # End architecture/Platform stuff
         
         used_sources = []
