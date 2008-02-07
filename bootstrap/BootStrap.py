@@ -118,7 +118,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         # Enviorment vars
         prefix = os.environ['PREFIX'] = self._prefix
 
-        version = sys.version.split('.')
+        version = sys.version_info
         version = version[0] + "." + version[1]
         self._python_version = version
         a,b = os.popen4("gcc -v")

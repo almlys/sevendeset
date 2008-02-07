@@ -16,7 +16,7 @@ export LD_PRELOAD=$LD_LIBRARY_PATH/libCEGUIBase.so
 
 PYSHELL="
 import sys
-version = sys.version.split('.')
+version = sys.version_info
 print \"%s.%s\" % (version[0], version[1])
 "
 PYTHONVERSION=`python -c "$PYSHELL"`
