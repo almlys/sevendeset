@@ -52,7 +52,7 @@ class BaseApplication(object):
         self._setCmdConfig()
         self._logdir = self.GetCfg('global','system.logdir')
         if not os.path.exists(self._logdir):
-            os.mkdir(self._logdir)
+            os.qmkdir(self._logdir)
         if redirect:
             self._log = mlog(sys.stdout,self._logdir + '/stdout.log','w')
             self._logerr = mlog(sys.stderr,self._logdir + '/stderr.log','w')
