@@ -119,7 +119,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         prefix = os.environ['PREFIX'] = self._prefix
 
         version = sys.version_info
-        version = version[0] + "." + version[1]
+        version = str(version[0]) + "." + str(version[1])
         self._python_version = version
         a,b = os.popen4("gcc -v")
         self._gcc_version = "".join(re.search('gcc version ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
