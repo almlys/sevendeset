@@ -15,7 +15,7 @@ echo "Using python $PYTHONVERSION"
 
 PYSHELL="
 import sys
-version = sys.version.split('.')
+version = sys.version_info
 print \"%s%s\" % (version[0], version[1])
 "
 PYTHONVERSION_WITHOUTDOTS=`python -c "$PYSHELL"`
