@@ -409,14 +409,23 @@
 						md5='3b00c3a2591fa481ea54a8e7a4fda288'
 						platform='linux' arch='i686' python='2.4' />
 		-->
-		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py24_20080206001024.tar.bz2'
+		<!--<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py24_20080206001024.tar.bz2'
 						method='wget' renamefrom='sd7runtime_linux_i686_py24'
 						md5='727ecb5222dda896400965a090cc5fe9'
 						platform='linux' arch='i686' python='2.4' />
 		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py25_20080207110502.tar.bz2'
 						method='wget' renamefrom='sd7runtime_linux_i686_py25'
 						md5='68b6754e67006a28187b1603a9dce657'
+						platform='linux' arch='i686' python='2.5' /> -->
+		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py24_20080320171926.tar.bz2'
+						method='wget' renamefrom='sd7runtime_linux_i686_py24'
+						md5='b308ac56dcd2e9219c33c3436939f17b'
+						platform='linux' arch='i686' python='2.4' />
+		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py25_20080320210336.tar.bz2'
+						method='wget' renamefrom='sd7runtime_linux_i686_py25'
+						md5='b61ab125eb50445894858fa199c73d2e'
 						platform='linux' arch='i686' python='2.5' />
+
 		<install>
 			<cmd>mv -vf * $PREFIX</cmd>
 			<cmd cmd='cd' path='../' />
