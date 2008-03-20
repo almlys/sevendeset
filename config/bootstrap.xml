@@ -217,12 +217,16 @@
 			Latest stable version is too old, soo we need to get latest **unstable** from cvs (cross fingers)
 		</comment>
 		<license>GPLv2 or later</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080204.tar.bz2'
+		<!-- <source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080204.tar.bz2'
 						method='wget' renamefrom='gccxml'
 						md5='436e9a81a66415c6a9e93ee8252170a7'
+						branch='stable' /> -->
+		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080320.tar.bz2'
+						method='wget' renamefrom='gccxml'
+						md5='13fa36e86ebd7cd7470ce977b6076fdf'
 						branch='stable' />
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
-						method='cvs' module='gccxml' revision='20080204'
+						method='cvs' module='gccxml' revision='20080320'
 						branch='stable' />
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
 						method='cvs' module='gccxml'
