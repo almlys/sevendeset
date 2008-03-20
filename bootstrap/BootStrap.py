@@ -200,7 +200,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                     self._mget_inner(module,source,update,redownload)
                 except ToolError,e:
                     print e
-                    print "Cannot download from that source, attemting another one"
+                    print "Cannot download from that source, attempting another one"
                     continue
                 return
         raise DownloadError,"Cannot download from any suitable location"

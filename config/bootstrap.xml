@@ -10,21 +10,21 @@
 			Note: Ogre can be compiled without the cg library, but well, you now how things will look without it.
 		</comment>
 		<license>Propietary</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Dec2007_x86.tar.gz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Jan2008_x86.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						md5='c26a8fd98a4ed8b9a2e418a04554d41a'
 						platform='linux' arch='i686' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86.tar.gz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0012/Cg-2.0_Jan2008_x86.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='f6191a01b22f29f7df0b1e1a013aa971'
+						md5='c26a8fd98a4ed8b9a2e418a04554d41a'
 						platform='linux' arch='i686' />
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Dec2007_x86_64.tar.gz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Jan2008_x86_64.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='bc3567a806405c3db12fb46daf450166'
+						md5='41d0c09e09e191c1847620a13696cce7'
 						platform='linux' arch='x86_64' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0010/Cg-2.0_Dec2007_x86_64.tar.gz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0012/Cg-2.0_Jan2008_x86_64.tar.gz'
 						method='wget' renamefrom='usr'
-						md5='bc3567a806405c3db12fb46daf450166'
+						md5='41d0c09e09e191c1847620a13696cce7'
 						platform='linux' arch='x86_64' />
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
@@ -95,13 +95,55 @@
 			<cmd>make DESTINC=$PREFIX/include DESTLIB=$PREFIX/lib install</cmd>
 		</install>
 	</module>
-	
-	
+
+	<module name='pcre' ignore='no' >
+		<comment>
+			Regular expression library
+			(Not installed on the UdL Fedora's, or it's not the correct version)
+		</comment>
+		<license>BSD</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/pcre/pcre-7.6.tar.bz2'
+						method='wget' renamefrom='pcre-7.6'
+						md5='2af38e083fb90ef60fa9eda7cc290e86' />
+		<source addr='http://downloads.sourceforge.net/pcre/pcre-7.6.tar.bz2'
+						method='wget' renamefrom='pcre-7.6'
+						md5='2af38e083fb90ef60fa9eda7cc290e86' />
+		<build>
+			<cmd>./configure --prefix=$PREFIX --enable-unicode-properties</cmd>
+			<cmd>make -j 2</cmd>
+		</build>
+		<install>
+			<cmd>make install</cmd>
+		</install>
+	</module>
+
+	<module name='zziplib' ignore='no' >
+		<comment>
+			Library for opening zip files
+		</comment>
+		<license>LGPL/MPL</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/zziplib/zziplib-0.13.49.tar.bz2'
+						method='wget' renamefrom='zziplib-0.13.49'
+						md5='5f7b88ebb2bcd7e8044328482d079661' />
+		<source addr='http://downloads.sourceforge.net/zziplib/zziplib-0.13.49.tar.bz2'
+						method='wget' renamefrom='zziplib-0.13.49'
+						md5='5f7b88ebb2bcd7e8044328482d079661' />
+		<build>
+			<cmd>./configure --prefix=$PREFIX --datadir=$PREFIX/share</cmd>
+			<cmd>make -j 2</cmd>
+		</build>
+		<install>
+			<cmd>make install</cmd>
+		</install>
+	</module>
+
+
 	<module name='ois' ignore='no' depends='freeimage' >
 		<comment>
 			Object Oriented Input System
 		</comment>
 		<license>zlib/libpng</license>
+		<!--
 		<source addr='http://7d7.almlys.org/downloads/depends/ois/ois-1.0RC1.tar.gz'
 						method='wget' renamefrom='ois-1.0RC1'
 						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
@@ -109,6 +151,13 @@
 						method='wget' renamefrom='ois-1.0RC1'
 						md5='05cbd131fb0477e1cbd4b115ccef2c90'/>
 		<patch addr='ois.patch' />
+		-->
+		<source addr='http://7d7.almlys.org/downloads/depends/ois/ois_1.2.0.tar.gz'
+						method='wget'
+						md5='6a8cedad04f095127ca1455162fec955'/>
+		<source addr='http://downloads.sourceforge.net/wgois/ois_1.2.0.tar.gz'
+						method='wget'
+						md5='6a8cedad04f095127ca1455162fec955'/>
 		<build>
 			<cmd>./bootstrap</cmd>
 			<cmd>./configure --prefix=$PREFIX</cmd>
@@ -145,12 +194,12 @@
 			The mother of the world
 		</comment>
 		<license>(dual) LGPLv2.1 or later / unrestricted(comercial)</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-linux_osx-v1-4-7.tar.bz2'
 						method='wget' renamefrom='ogrenew'
-						md5='ef1cf73106e0387624bfdd539cdf9de6' />
-		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-6.tar.bz2'
+						md5='f44cba3f7362f6d8ca4187dee0d588ef' />
+		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-linux_osx-v1-4-7.tar.bz2'
 						method='wget' renamefrom='ogrenew'
-						md5='ef1cf73106e0387624bfdd539cdf9de6' />
+						md5='f44cba3f7362f6d8ca4187dee0d588ef' />
 		<!-- Some patches should be added here!! -->
 		<build>
 			<!--<cmd>./configure - - prefix=$PREFIX - - enable-openexr - - enable-threading</cmd>-->
@@ -196,12 +245,16 @@
 			Code generator for Boost.Python
 		</comment>
 		<license>Boost</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080204.tar.bz2'
+		<!-- <source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080204.tar.bz2'
 						method='wget' renamefrom='pygccxml'
 						md5='f312abc96c42bd605cddd1a30601011c'
+						branch='stable' /> -->
+		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080320.tar.bz2'
+						method='wget' renamefrom='pygccxml'
+						md5='97e8dfc0ceb72412fb63f683e66c4c21'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
-						method='svn' revision='1231'
+						method='svn' revision='1283'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
 						method='svn'
@@ -273,12 +326,17 @@
 			Python-Ogre
 		</comment>
 		<license>LGPLv2 or lather</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080204.tar.bz2'
+		<!-- <source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080204.tar.bz2'
+						method='wget' renamefrom='python-ogre'
+						md5='7d6c200ccdc0cec4b681d902b597409b'
+						branch='stable' />-->
+		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080318.tar.bz2'
 						method='wget' renamefrom='python-ogre'
 						md5='7d6c200ccdc0cec4b681d902b597409b'
 						branch='stable' />
+
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
-						method='svn' revision='561'
+						method='svn' revision='580'
 						branch='stable' />
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
 						method='svn'
