@@ -203,7 +203,7 @@
 		<!-- Some patches should be added here!! -->
 		<build>
 			<!--<cmd>./configure - - prefix=$PREFIX - - enable-openexr - - enable-threading</cmd>-->
-			<cmd>./configure --prefix=$PREFIX --enable-openexr</cmd>
+			<cmd>./configure --prefix=$PREFIX --enable-openexr --with-gui=Xt --disable-devil --enable-freeimage</cmd>
 			<cmd>make -j 2</cmd>
 		</build>
 		<install>
