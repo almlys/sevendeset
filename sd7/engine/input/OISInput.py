@@ -53,8 +53,9 @@ class OISInput(SubSystem):
 
         #print dir(self._InputManager)
         self.log('Found %i Keyboards, %i Mouses and %i JoySticks/GamePads,etc...' \
-            %(self._InputManager.numKeyBoards(),self._InputManager.numMice(),
-            self._InputManager.numJoysticks()))
+            %(self._InputManager.getNumberOfDevices(OIS.Type.OISKeyboard),
+            self._InputManager.getNumberOfDevices(OIS.Type.OISMouse),
+            self._InputManager.getNumberOfDevices(OIS.Type.OISJoyStick)))
 
 
         self._Keyboard = self._InputManager.createInputObjectKeyboard(OIS.OISKeyboard,True)
