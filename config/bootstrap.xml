@@ -336,7 +336,7 @@
 						branch='stable' />-->
 		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080318.tar.bz2'
 						method='wget' renamefrom='python-ogre'
-						md5='7d6c200ccdc0cec4b681d902b597409b'
+						md5='e59e2f41d9a3c271f0574373c4e5dd47'
 						branch='stable' />
 
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
