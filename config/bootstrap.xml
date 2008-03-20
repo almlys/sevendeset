@@ -381,6 +381,8 @@
 			<cmd>cp -rfv packages_2.5/ogre/physics/bullet packages_2.4/ogre/physics</cmd>
 			<cmd>cp -rfv packages_2.5/ogre/physics/PhysX packages_2.4/ogre/physics</cmd>
 			<cmd>cp -rfv packages_2.5/ogre/physics/NxOgre packages_2.4/ogre/physics</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/NxOgre packages_2.4/ogre/physics/NxOgre_09</cmd>
+			<cmd>cp -rfv packages_2.5/ogre/physics/NxOgre packages_2.5/ogre/physics/NxOgre_09</cmd>
 			<cmd>cp -rfv packages_2.5/ogre/physics/OgreBulletC packages_2.4/ogre/physics</cmd>
 			<cmd>cp -rfv packages_2.5/ogre/physics/OgreBulletD packages_2.4/ogre/physics</cmd>
 			<cmd>cp -rfv packages_2.5/ogre/addons packages_2.4/ogre</cmd>
