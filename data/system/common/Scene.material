@@ -1,0 +1,66 @@
+material Material.002/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 1.000000 0.000000 0.000000
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}
+material Material.001/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0.188968 0.000000 0.579199
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}
+material Material.003/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0.000000 1.000000 0.226965
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}
+material Material.005/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0.000000 0.921970 1.000000
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}
+material Material.004/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0.964525 1.000000 0.000000
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}
+material Material/SOLID
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0.531918 0.279170 0.000000
+			specular 0.500000 0.500000 0.500000 12.500000
+		}
+	}
+}

@@ -110,7 +110,7 @@ class OgreRenderer(SubSystem,RendererInterface):
         #ogre.ResourceGroupManager.getSingleton().\
         #addResourceLocation("data/system/OgreCore.zip", "Zip", "Bootstrap")
         ogre.ResourceGroupManager.getSingleton().\
-        addResourceLocation("data/system/common", "FileSystem", "General")
+        addResourceLocation("data/system/common", "FileSystem", "General",True)
 
 
     def _configure(self):
@@ -204,6 +204,8 @@ class OgreRenderer(SubSystem,RendererInterface):
         self._createCamera()
         self._createViewports()
 
+        #STOP HERE! - TODO - Query For hardware capabilities and set the values
+        # according to them.
         ogre.TextureManager.getSingleton().setDefaultNumMipmaps(5)
         #Set Anisotropic
         ogre.MaterialManager.getSingleton().setDefaultAnisotropy(8)
@@ -212,9 +214,96 @@ class OgreRenderer(SubSystem,RendererInterface):
         #self._createResourceListener()
         self._loadResources()
 
-        #self._createScene()
+        self._createScene()
         self._createFrameListener()
         return True
+    
+    def _createScene(self):
+        self._sceneManager.ambientLight = 0.25, 0.25, 0.25
+
+        #World ground
+        plane = ogre.Plane((0, 1, 0), 0)
+        #self.floor = ode.GeomPlane(self.space, (0,1,0), 0.0)
+
+        mm = ogre.MeshManager.getSingleton()
+        mm.createPlane('ground', ogre.ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME,
+                       plane, 1500, 1500, 20, 20, True, 1, 5, 5, (0, 0, 1))
+
+        ent = self._sceneManager.createEntity("GroundEntity", "ground")
+        self._sceneManager.rootSceneNode.createChildSceneNode().attachObject(ent)
+        ent.setMaterialName("Material.002/SOLID")
+
+        # Ogre ball 1
+        ent1 = self._sceneManager.createEntity("ball1", "Sphere.mesh")
+        node1 = self._sceneManager.rootSceneNode.createChildSceneNode()
+        node1.attachObject(ent1)
+        node1.scale = ((1.8, 1.8, 1.8))
+
+        # ODE ball 1
+        #body1 = ode.Body(self.world)
+        #M = ode.Mass()
+        #M.setSphere(500, 0.05)
+        #M.mass = 50
+        #body1.setMass(M)
+        #body1.setPosition((10, 100, 0))
+        #geom = ode.GeomSphere(self.space, 50.0)
+        #geom.setBody(body1)
+
+        # Add ball 1 to the body list
+        #self.bodyList.append((body1, node1))
+
+        #ent = sceneManager.createEntity("Ninja", "ninja.mesh")
+        #node = sceneManager.rootSceneNode.createChildSceneNode("NinjaNode")
+        #node.attachObject(ent)
+
+        ent = self._sceneManager.createEntity("Cube", "Cube.mesh")
+        node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
+        node.attachObject(ent)
+        node.translate(0,10,0)
+
+        #body1 = ode.Body(self.world)
+        #M = ode.Mass()
+        #M.mass = 30
+        #M.setSphere(500, 0.05)
+        #body1.setMass(M)
+        #body1.setPosition((11, 500, 0))
+        #geom = ode.GeomSphere(self.space, 5.0)
+        #geom.setBody(body1)
+        #self.bodyList.append((body1, node))
+
+
+        ent2 = self._sceneManager.createEntity("Circle", "Cube.001.mesh")
+        node2 = self._sceneManager.rootSceneNode.createChildSceneNode("CircleNode")
+        node2.attachObject(ent2)
+
+        #body1 = ode.Body(self.world)
+        #M = ode.Mass()
+        #M.setSphere(500, 0.05)
+        #M.mass = 10.5
+        #body1.setMass(M)
+        #body1.setPosition((9, 550, 0))
+        #geom = ode.GeomSphere(self.space, 5.0)
+        #geom.setBody(body1)
+        #self.bodyList.append((body1, node2))
+
+
+        light = self._sceneManager.createLight("Light1")
+        light.type = ogre.Light.LT_POINT
+        light.position = 250, 150, 250
+        light.diffuseColour = 1, 1, 1
+        light.specularColour = 1, 1, 1
+
+        # create the first camera node/pitch node
+        node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode1", (-400, 200, 400))
+        node.yaw(ogre.Degree(-45))  # look at the ninja
+
+        node = node.createChildSceneNode("PitchNode1")
+        node.attachObject(self._camera)
+
+        # create the second camera node/pitch node
+        node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode2", (0, 200, 400))
+        node.createChildSceneNode("PitchNode2")
+
     
     def addEventListener(self, listenner):
         self._subscribers.append(listenner)
