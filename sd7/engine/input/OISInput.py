@@ -23,6 +23,7 @@ from sd7.engine.subsystem import SubSystem as SubSystem
 from sd7.engine.Events import EventType
 
 class OISInput(SubSystem):
+    """ OIS Input subsytem """
     
     _InputConsumers = []
     
@@ -30,13 +31,28 @@ class OISInput(SubSystem):
         SubSystem.__init__(self,'OISInput',True,options)
     
     def initialize(self):
+        """ Initialization """
+        
         if not SubSystem.initialize(self):
             return False
         self.log('Starting up OISInput')
         
+        if not self._initializeOIS():
+            return False
+        
+        return True
+    
+    def _initializeOIS(self):
+        """ Creates the root OIS InputManager """
+        # Window handle
         params = [("WINDOW",self._config['_RootWindowHandle']),
                 ('XAutoRepeatOn','true')]
         
+        # mouse grab/hide only on fullscreen mode
+        # Notice the current code is platform dependent!!!
+        # It will do nothing on non-linux systems since the options have
+        # other names, I think that upstream (OIS maintainers), should have
+        # used a set of generic options mapped to the corresponding OS attrs
         if self._config['graphics.fullscreen'].lower() != 'true' :
             params.append(('x11_mouse_grab','false'))
             params.append(('x11_mouse_hide','false'))
@@ -44,6 +60,11 @@ class OISInput(SubSystem):
         
         self._InputManager = OIS.createPythonInputSystem(params)
         
+        self._printOISVersion()
+        return self._initalizeAndRegisterListenners()
+    
+    def _printOISVersion(self):
+        """ Prints to the logs which version of OIS are we using """
         v = self._InputManager.getVersionNumber()
         c = 0x000000FF & v # Vendetta
         b = (0x0000FF00 & v) >> 8
@@ -51,7 +72,9 @@ class OISInput(SubSystem):
         
         self.log('OIS Version %i.%i.%i' %(a,b,c))
 
-        #print dir(self._InputManager)
+    def _initalizeAndRegisterListenners(self):
+        """ Initializes all the avaliable InputDevices, and associates them to
+        the corresponding listenners """
         self.log('Found %i Keyboards, %i Mouses and %i JoySticks/GamePads,etc...' \
             %(self._InputManager.getNumberOfDevices(OIS.Type.OISKeyboard),
             self._InputManager.getNumberOfDevices(OIS.Type.OISMouse),
@@ -100,6 +123,7 @@ class OISInput(SubSystem):
             self.update()
 
     def windowResized(self, w, h):
+        """ Update the Mouse area size, according to the new window size """
         m = self._Mouse.getMouseState()
         m.width = int(w)
         m.height = int(h)
@@ -107,6 +131,7 @@ class OISInput(SubSystem):
         m.Y.abs = int(h) / 2
     
     def update(self):
+        """ Update all devices (this any callbacks for any input event) """
         self._Keyboard.capture()
         self._Mouse.capture()
         for joy in self._Joys:
@@ -114,6 +139,9 @@ class OISInput(SubSystem):
 
 
 class MyKeyListener(OIS.KeyListener):
+    """ Keyboard Key Listenner, there can be only be ONE, if you want to
+    controll aditional keyboards attached to the systems then OIS is not
+     he suitable API, altough you first will need to fight with your OS"""
     
     def __init__(self, subscriber):
         OIS.KeyListener.__init__(self)
@@ -127,6 +155,8 @@ class MyKeyListener(OIS.KeyListener):
 
 
 class MyMouseListener(OIS.MouseListener):
+    """ Mouse Listenner, there can be only ONE, if you want to control
+    more read MyKeyListener docstring """
     
     def __init__(self, subscriber):
         OIS.MouseListener.__init__(self)
@@ -143,6 +173,7 @@ class MyMouseListener(OIS.MouseListener):
 
 
 class MyJoyStickListener(OIS.JoyStickListener):
+    """ Our OS may have, more than one Joystick, gamepad, etc.. device"""
     
     def __init__(self, joyid, subscriber):
         OIS.JoyStickListener.__init__(self)

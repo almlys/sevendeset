@@ -40,10 +40,15 @@ class Engine(object):
         from renderer.OgreRenderer import OgreRenderer as Renderer
         self._renderer = Renderer(self._options["global"])
         self._renderer.initialize()
+        
+        # Start up the input system
         from input.OISInput import OISInput as Input
         self._input = Input(self._options["global"])
         self._input.initialize()
+        # Integrate it in the renderer loop (will change in iteration 2)
         self._renderer.addEventListener(self._input)
+        
+        
         #from physics.ODEPhysics import ODEPhysics as Physics
         #self._physics = Physics(self._options["global"])
         #from audio.OpenALAudio import OpenALAudio as Audio
