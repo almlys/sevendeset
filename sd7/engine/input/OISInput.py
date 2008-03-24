@@ -30,6 +30,9 @@ class OISInput(SubSystem):
     def __init__(self,options=None):
         SubSystem.__init__(self,'OISInput',True,options)
     
+    def __del__(self):
+        self.log("Destroying Input")
+    
     def initialize(self):
         """ Initialization """
         

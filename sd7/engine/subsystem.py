@@ -68,7 +68,7 @@ class SubSystem(object):
             raise "Cannot reinit"
         self._initialized = True
         self._setConfigDefaults()
-        self._logFolder = self._config["system.logdir"]
+        self._logDir = self._config["system.logdir"]
         if not os.path.exists(self._logDir):
             os.mkdir(self._logDir)
         self._openLog()

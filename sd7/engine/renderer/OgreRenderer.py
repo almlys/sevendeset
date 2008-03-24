@@ -20,7 +20,7 @@ import os
 import os.path
 
 import ogre.renderer.OGRE as ogre
-import ogre.io.OIS as OIS
+#import ogre.io.OIS as OIS
 
 from sd7.engine.subsystem import SubSystem as SubSystem
 from sd7.engine.Events import Event, EventType
@@ -36,7 +36,8 @@ class OgreRenderer(SubSystem,RendererInterface):
         SubSystem.__init__(self,'OgreRenderer',True,options)
         RendererInterface.__init__(self,options)
 
-    #def __del__(self):
+    def __del__(self):
+        self.log("Destroying Renderer")
         #del self._renderWindow
         #del self._sceneManager
 
@@ -74,7 +75,7 @@ class OgreRenderer(SubSystem,RendererInterface):
             import psyco
             psyco.full()
             if self._config["python.psyco.log"].lower() == "enabled":
-                psyco.log(self._logFolder + "/psyco.log")
+                psyco.log(self._logDir + "/psyco.log")
         except ImportError:
            pass
 
@@ -306,19 +307,54 @@ class OgreRenderer(SubSystem,RendererInterface):
 
     
     def addEventListener(self, listenner):
+        """ Register a event listener """
         self._subscribers.append(listenner)
     
     def removeEventListener(self, listenner):
+        """ Remove a event listenner """
         self._subscribers.remove(listenner)
+
+    def getRenderWindow(self):
+        """ Returns a reference to the render window """
+        return OgreWindow(self._renderWindow)
+    
+    def getSceneManager(self):
+        return SceneManager(self._sceneManager)
+
+    def getGUIGlueArgs(self):
+        """ This gets required args to initialize and glue the GUI,
+        should not be used for nothing else """
+        return (self._renderWindow, ogre.RENDER_QUEUE_OVERLAY, False, 0, self._sceneManager)
+
 
 
 class OgreWindow(object):
     
     def __init__(self, window):
         self._renderWindow = window
+    
+    def _getOgreRenderWindow(self):
+        return self._renderWindow
         
     def getMetrics(self):
-        return self._renderWindow.getMetrics()
+        dir(self._renderWindow)
+        help(self._renderWindow.getMetrics)
+        # Seems that I or upstream has broken getMetric
+        w = 0
+        h = 0
+        c = 0
+        l = 0
+        t = 0
+        w,h,c,l,t = self._renderWindow.getMetrics(w,h,c,l,t)
+        return w,h,c,l,t
+
+class SceneManager(object):
+    
+    def __init__(self, sceneManager):
+        self._sceneManager = sceneManager
+    
+    def _getOgreSceneManager(self):
+        return self._sceneManager
 
 
 class Frame(object):

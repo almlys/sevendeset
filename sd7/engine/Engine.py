@@ -48,6 +48,13 @@ class Engine(object):
         # Integrate it in the renderer loop (will change in iteration 2)
         self._renderer.addEventListener(self._input)
         
+        # Start up the GUI system
+        from gui.cegui import CEGUIRenderer as GUI
+        self._gui = GUI(self._options["global"],
+                        "Ogre",self._renderer.getGUIGlueArgs())
+        self._gui.initialize()
+        # CeguiOgreRenderer is already integrated into the rendering pipeline
+        
         
         #from physics.ODEPhysics import ODEPhysics as Physics
         #self._physics = Physics(self._options["global"])
@@ -55,7 +62,13 @@ class Engine(object):
         #self._audio = Audio(self._options["global"])
         #from networking.sd7Net import sd7Net as NetCore
         #self._netcore = NetCore(self._options["global"])
-        
+
+    def __del__(self):
+        """ Stuff needs to be deleted in the correct order, if not someting
+        terrible will happen """
+        del self._gui
+        del self._input
+        del self._renderer
 
     def run(self):
         self._renderer.renderLoop()
