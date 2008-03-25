@@ -27,6 +27,7 @@ class CEGUIRenderer(SubSystem):
     _renderer = None
     _device_type = "Ogre"
     _device = None
+    _mouseWheel = 0
     
     def __init__(self,options=None,type="Ogre",args=None):
         SubSystem.__init__(self,'CEGUIRenderer',True,options)
@@ -101,4 +102,33 @@ class CEGUIRenderer(SubSystem):
         
         frame.setText("Title sd7")
         
+    def mouseMoved(self,mstate):
+        #self._guiSystem.injectMouseMove(mstate.X.rel,mstate.Y.rel)
+        print mstate.X.abs,mstate.Y.abs
+        self._guiSystem.injectMousePosition(mstate.X.abs,mstate.Y.abs)
+        # Determine also if we moved the wheel
+        if self._mouseWheel!=mstate.Z.abs:
+            self._mouseWheel = mstate.Z.abs
+            self._guiSystem.injectMouseWheelChange(self._mouseWheel)
+
+    def _translateMouseButton(self,id):
+        if id ==0:
+            return cegui.LeftButton
+        elif id ==1:
+            return cegui.RightButton
+        elif id ==2:
+            return cegui.MiddleButton
+        elif id ==3:
+            return cegui.X1Button
+        elif id ==4:
+            return cegui.X2Button
+        else:
+            return CEGUI.LeftButton
+
+    def mousePressed(self,mstate,id):
+        self._guiSystem.injectMouseButtonDown(self._translateMouseButton(id))
+
+    def mouseReleased(self,mstate,id):
+        self._guiSystem.injectMouseButtonUp(self._translateMouseButton(id))
+
 

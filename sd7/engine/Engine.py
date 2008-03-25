@@ -53,6 +53,8 @@ class Engine(object):
         self._gui = GUI(self._options["global"],
                         "Ogre",self._renderer.getGUIGlueArgs())
         self._gui.initialize()
+        # The GUI listens for Input events
+        self._input.addEventListener(self._gui)
         # CeguiOgreRenderer is already integrated into the rendering pipeline
         
         

@@ -86,13 +86,14 @@ class OISInput(SubSystem):
 
         self._Keyboard = self._InputManager.createInputObjectKeyboard(OIS.OISKeyboard,True)
         self.log('Found keyboard %s' %(self._Keyboard.vendor(),))
-        self._KeyListenner = MyKeyListener(self)
+        self._KeyListenner = MyKeyListener(self._InputConsumers)
         self._Keyboard.setEventCallback(self._KeyListenner)
         self.log('Translation mode is %s' %(self._Keyboard.getTextTranslation(),))
 
         self._Mouse = self._InputManager.createInputObjectMouse(OIS.OISMouse,True)
         self.log('Found mouse %s' %(self._Mouse.vendor(),))
-        self._MouseListenner = MyMouseListener(self)
+        self._MouseListenner = MyMouseListener(self._Mouse.getMouseState(),
+            self._InputConsumers)
         self._Mouse.setEventCallback(self._MouseListenner)
 
         self._Joys = []
@@ -103,7 +104,7 @@ class OISInput(SubSystem):
                 joy = self._InputManager.createInputObjectJoyStick(OIS.OISJoyStick,True)
                 self.log('Found joy%i %s with %i buttons, %i axes, %i hats' \
                 %(id,joy.vendor(),joy.buttons(),joy.axes(),joy.hats()))
-                joylisten = MyJoyStickListener(id,self)
+                joylisten = MyJoyStickListener(id,self._InputConsumers)
                 joy.setEventCallback(joylisten)
                 self._JoyListenners.append(joylisten)
                 self._Joys.append(joy)
@@ -130,8 +131,12 @@ class OISInput(SubSystem):
         m = self._Mouse.getMouseState()
         m.width = int(w)
         m.height = int(h)
-        m.X.abs = int(w) / 2
-        m.Y.abs = int(h) / 2
+        print w,h
+        if m.X.abs == 0:
+            m.X.abs = 6
+            m.Y.abs = 6
+        #m.X.abs = int(w) / 2
+        #m.Y.abs = int(h) / 2
     
     def update(self):
         """ Update all devices (this any callbacks for any input event) """
@@ -140,15 +145,23 @@ class OISInput(SubSystem):
         for joy in self._Joys:
             joy.capture()
 
+    def addEventListener(self, listenner):
+        """ Register a event listener """
+        self._InputConsumers.append(listenner)
+    
+    def removeEventListener(self, listenner):
+        """ Remove a event listenner """
+        self._InputConsumers.remove(listenner)
+
 
 class MyKeyListener(OIS.KeyListener):
     """ Keyboard Key Listenner, there can be only be ONE, if you want to
     controll aditional keyboards attached to the systems then OIS is not
      he suitable API, altough you first will need to fight with your OS"""
     
-    def __init__(self, subscriber):
+    def __init__(self, subscribers):
         OIS.KeyListener.__init__(self)
-        self._subscriber = subscriber
+        self._subscribers = subscribers
 
     def keyPressed(self, evt):
         print "Key pressed %i %s" %(evt.key,evt.text)
@@ -157,31 +170,54 @@ class MyKeyListener(OIS.KeyListener):
         print "Key released %i %s" %(evt.key,evt.text)
 
 
+class MouseState(object):
+    """ Store the mouse state """
+    
+    def __init__(self,mstate):
+        self._mstate = mstate
+    
+    def __getattribute__(self,name):
+        if name=='X':
+            return self._mstate.X
+        elif name=='Y':
+            return self._mstate.Y
+        elif name=='Z':
+            return self._mstate.Z
+        return object.__getattribute__(self,name)
+
+
 class MyMouseListener(OIS.MouseListener):
     """ Mouse Listenner, there can be only ONE, if you want to control
     more read MyKeyListener docstring """
     
-    def __init__(self, subscriber):
+    def __init__(self, mstate, subscribers):
         OIS.MouseListener.__init__(self)
-        self._subscriber = subscriber
+        self._subscribers = subscribers
+        self._mstate = MouseState(mstate)
     
     def mouseMoved(self, evt):
-        print "Mouse moved"
+        for sub in self._subscribers:
+            # evt contains a reference to the mouse state
+            sub.mouseMoved(self._mstate)
     
     def mousePressed(self, evt, id):
-        print "Mouse Pressed"
+        for sub in self._subscribers:
+            sub.mousePressed(self._mstate,id)
+        
     
     def mouseReleased(self, evt, id):
-        print "Mouse Released"
+        for sub in self._subscribers:
+            sub.mouseReleased(self._mstate,id)
+
 
 
 class MyJoyStickListener(OIS.JoyStickListener):
     """ Our OS may have, more than one Joystick, gamepad, etc.. device"""
     
-    def __init__(self, joyid, subscriber):
+    def __init__(self, joyid, subscribers):
         OIS.JoyStickListener.__init__(self)
         self._joyid = joyid
-        self._subscriber = subscriber
+        self._subscribers = subscribers
     
     def buttonPressed(self, evt, btn):
         print "Button pressed"
