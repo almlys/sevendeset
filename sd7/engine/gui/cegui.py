@@ -104,12 +104,13 @@ class CEGUIRenderer(SubSystem):
         
     def mouseMoved(self,mstate):
         #self._guiSystem.injectMouseMove(mstate.X.rel,mstate.Y.rel)
-        print mstate.X.abs,mstate.Y.abs
+        #print mstate.X.abs,mstate.Y.abs
         self._guiSystem.injectMousePosition(mstate.X.abs,mstate.Y.abs)
         # Determine also if we moved the wheel
         if self._mouseWheel!=mstate.Z.abs:
             self._mouseWheel = mstate.Z.abs
             self._guiSystem.injectMouseWheelChange(self._mouseWheel)
+            print self._mouseWheel
 
     def _translateMouseButton(self,id):
         if id ==0:
@@ -123,7 +124,7 @@ class CEGUIRenderer(SubSystem):
         elif id ==4:
             return cegui.X2Button
         else:
-            return CEGUI.LeftButton
+            return cegui.LeftButton
 
     def mousePressed(self,mstate,id):
         self._guiSystem.injectMouseButtonDown(self._translateMouseButton(id))
