@@ -122,7 +122,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         version = str(version[0]) + "." + str(version[1])
         self._python_version = version
         a,b = os.popen4("gcc -v")
-        self._gcc_version = "".join(re.search('gcc .* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
+        self._gcc_version = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
 
         os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
         os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'

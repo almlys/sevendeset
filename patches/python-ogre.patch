@@ -23,7 +23,7 @@
 +#LIB_Boost = 'libboost_python-gcc41-1_34_1'
 +import re
 +a,b = os.popen4("gcc -v")
-+MY_GCC_VERSION = "".join(re.search('gcc version ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
++MY_GCC_VERSION = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
 +LIB_Boost = 'libboost_python-gcc%s-1_34_1' %(MY_GCC_VERSION,)
  
  # in Linux we need to code in the Relative path for the library
