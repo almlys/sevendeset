@@ -111,6 +111,7 @@ class CEGUIRenderer(SubSystem):
             self._mouseWheel = mstate.Z.abs
             self._guiSystem.injectMouseWheelChange(self._mouseWheel)
             print self._mouseWheel
+            
 
     def _translateMouseButton(self,id):
         if id ==0:

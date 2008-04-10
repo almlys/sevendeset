@@ -102,15 +102,18 @@ class OISInput(SubSystem):
         while True:
             try:
                 joy = self._InputManager.createInputObjectJoyStick(OIS.OISJoyStick,True)
-                self.log('Found joy%i %s with %i buttons, %i axes, %i hats' \
-                %(id,joy.vendor(),joy.buttons(),joy.axes(),joy.hats()))
-                joylisten = MyJoyStickListener(id,self._InputConsumers)
-                joy.setEventCallback(joylisten)
-                self._JoyListenners.append(joylisten)
-                self._Joys.append(joy)
-                id += 1
             except:
                 break
+            self.log('Found joy%i %s with %i buttons, %i axes, %i hats' \
+                %(id,joy.vendor(),
+                joy.getNumberOfComponents(OIS.OIS_Button),
+                joy.getNumberOfComponents(OIS.OIS_Axis),
+                joy.getNumberOfComponents(OIS.OIS_POV)))
+            joylisten = MyJoyStickListener(id,self._InputConsumers)
+            joy.setEventCallback(joylisten)
+            self._JoyListenners.append(joylisten)
+            self._Joys.append(joy)
+            id += 1
         
         self.windowResized(self._config['graphics.width'],self._config['graphics.height'])
         
