@@ -1,5 +1,5 @@
---- /home/sd7/development/check_service/python-ogre.new/environment.py	2008-05-04 18:11:23.000000000 +0200
-+++ environment.py	2008-05-04 21:47:23.000000000 +0200
+--- python-ogre.new/environment.py	2008-05-04 18:11:23.000000000 +0200
++++ python-ogre/environment.py	2008-05-04 21:47:23.000000000 +0200
 @@ -742,10 +742,11 @@
  
      include_dirs = [Config.PATH_Boost
@@ -24,8 +24,8 @@
                  Config.PATH_LIB_PhysX
                  ]
      CheckIncludes=[]
---- /home/sd7/development/check_service/python-ogre.new/PythonOgreConfig_posix.py	2008-03-19 16:21:02.000000000 +0100
-+++ PythonOgreConfig_posix.py	2008-05-04 21:50:30.000000000 +0200
+--- python-ogre.new/PythonOgreConfig_posix.py	2008-03-19 16:21:02.000000000 +0100
++++ python-ogre/PythonOgreConfig_posix.py	2008-05-04 21:50:30.000000000 +0200
 @@ -11,16 +11,23 @@
  MAC_cflags = ' --gccxml-cxxflags "-DCF_OPEN_SOURCE -D_POSIX_C_SOURCE -isysroot /Developer/SDKs/MacOSX10.4u.sdk"'
  
