@@ -59,7 +59,7 @@ class WgetTool(DownloadTool):
         if what.endswith('.tar.bz2'):
             mode = 'r:bz2'
             pg = 'tar'
-        elif what.endswith('.tar.gz'):
+        elif what.endswith('.tar.gz') or what.endswith('.tgz'):
             mode = 'r:gz'
             pg = 'tar'
         elif what.endswith('.zip'):

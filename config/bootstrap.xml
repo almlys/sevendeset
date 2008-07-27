@@ -10,22 +10,24 @@
 			Note: Ogre can be compiled without the cg library, but well, you now how things will look without it.
 		</comment>
 		<license>Propietary</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Jan2008_x86.tar.gz'
+
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='c26a8fd98a4ed8b9a2e418a04554d41a'
+						md5='nil'
 						platform='linux' arch='i686' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0012/Cg-2.0_Jan2008_x86.tar.gz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0015/Cg-2.0_May2008_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='c26a8fd98a4ed8b9a2e418a04554d41a'
+						md5='nil'
 						platform='linux' arch='i686' />
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_Jan2008_x86_64.tar.gz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86_64.tgz'
 						method='wget' renamefrom='usr'
-						md5='41d0c09e09e191c1847620a13696cce7'
+						md5='f0923e9fe9c0e0f1b1f49e9069c59815'
 						platform='linux' arch='x86_64' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0012/Cg-2.0_Jan2008_x86_64.tar.gz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0015/Cg-2.0_May2008_x86_64.tgz'
 						method='wget' renamefrom='usr'
-						md5='41d0c09e09e191c1847620a13696cce7'
+						md5='f0923e9fe9c0e0f1b1f49e9069c59815'
 						platform='linux' arch='x86_64' />
+
 		<install>
 			<cmd>cp -rvp * $PREFIX</cmd>
 		</install>
@@ -62,10 +64,14 @@
 		<source addr='http://download.savannah.nongnu.org/releases/openexr/openexr-1.6.1.tar.gz'
 						method='wget' renamefrom='openexr-1.6.1'
 						md5='11951f164f9c872b183df75e66de145a'/>
+		<patch addr="openexr.patch" />
 		<build>
 			<cmd>./configure --prefix=$PREFIX</cmd>
 			<cmd>make -j 2</cmd>
 		</build>
+		<clean>
+			<cmd>make distclean</cmd>
+		</clean>
 		<install>
 			<cmd>make install</cmd>
 		</install>

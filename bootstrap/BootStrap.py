@@ -29,9 +29,11 @@ from xmlparser import XMLParser
 from Tools import ToolDownloadFactory, ToolFactory, ToolError
 
 class DownloadError(Exception): pass
+class CommandError(Exception): pass
 class BuildError(Exception): pass
 class InstallError(Exception): pass
 class PatchError(Exception): pass
+class CleanError(Exception): pass
 class ModuleNotFoundError(Exception): pass
 class UnsuportedPlatformError(Exception): pass
 
@@ -245,8 +247,8 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
             os.chdir(self._outputPath + '/' + module.pname)
             print "Patching %s" %(source,)
             if (os.system("patch -N -i %s -p1" %(source,))!=0):
-                #raise PatchError
-                pass
+                raise PatchError
+                #pass
             f = file(check,"w")
             f.close()
             #os.utime(check,None)
@@ -259,43 +261,53 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
     def patch(self,module_name,args=[]):
         self._mpatch(self._searchModule(module_name))
 
-    def _mbuild(self,module):
-        if not hasattr(module,"xbuild"):
-            return
+    def _run_cmd(self,module,family):
+        """
+        Runs a command
+        @param module The module name
+        @family Family can be, build, install and clean
+        @returns True if commands were succesfully run
+        @throws Exception On command error
+        """
+        xfamily = "x" + family
+        if not hasattr(module,xfamily):
+            return False
         cdir = os.getcwd()
         try:
             os.chdir(self._outputPath + '/' + module.pname)
-            for cmd in module.xbuild[0].xcmd:
+            for cmd in getattr(module,xfamily)[0].xcmd:
                 if hasattr(cmd,"pcmd"):
                     self._ToolFactory.run(cmd.pcmd,cmd.attrs)
                 elif (os.system(cmd.data)!=0):
-                    raise BuildError
+                    raise CommandError,family + ":" + cmd.data
         except Exception,e:
-            os.chdir(cdir)
             raise e
-        os.chdir(cdir)
+        finally:
+            os.chdir(cdir)
+
+    def _mbuild(self,module):
+        """
+        Runs build command batch
+        """
+        self._run_cmd(module,"build")
 
     def build(self,module_name,args=[]):
+        """
+        Builds the specified module
+        """
         self._mbuild(self._searchModule(module_name))
 
     def _minstall(self,module):
-        if not hasattr(module,"xinstall"):
-            return
-        cdir = os.getcwd()
-        try:
-            os.chdir(self._outputPath + '/' + module.pname)
-            for cmd in module.xinstall[0].xcmd:
-                if hasattr(cmd,"pcmd"):
-                    self._ToolFactory.run(cmd.pcmd,cmd.attrs)
-                elif (os.system(cmd.data)!=0):
-                    raise InstallError
-        except Exception,e:
-            os.chdir(cdir)
-            raise e
-        os.chdir(cdir)
+        self._run_cmd(module,"install")
 
     def install(self,module_name,args=[]):
         self._minstall(self._searchModule(module_name))
+
+    def _mclean(self,module):
+        self._run_cmd(module,"clean")
+
+    def clean(self,module_name,args=[]):
+        self._mclean(self._searchModule(module_name))
 
     def auto(self,module_name,args=[]):
         self.get(module_name)
