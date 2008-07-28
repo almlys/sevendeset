@@ -123,12 +123,12 @@
 			(Not installed on the UdL Fedora's, or it's not the correct version)
 		</comment>
 		<license>BSD</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/pcre/pcre-7.6.tar.bz2'
-						method='wget' renamefrom='pcre-7.6'
-						md5='2af38e083fb90ef60fa9eda7cc290e86' />
-		<source addr='http://downloads.sourceforge.net/pcre/pcre-7.6.tar.bz2'
-						method='wget' renamefrom='pcre-7.6'
-						md5='2af38e083fb90ef60fa9eda7cc290e86' />
+		<source addr='http://7d7.almlys.org/downloads/depends/pcre/pcre-7.7.tar.bz2'
+						method='wget' renamefrom='pcre-7.7'
+						md5='4b2e9cde1f7227448dddba59843efa0b' />
+		<source addr='http://downloads.sourceforge.net/pcre/pcre-7.7.tar.bz2'
+						method='wget' renamefrom='pcre-7.7'
+						md5='4b2e9cde1f7227448dddba59843efa0b' />
 		<build>
 			<cmd>./configure --prefix=$PREFIX --enable-unicode-properties</cmd>
 			<cmd>make -j 2</cmd>
