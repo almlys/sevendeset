@@ -234,8 +234,9 @@
 		<!-- Some patches should be added here!! -->
 		<build>
 			<!--<cmd>./configure - - prefix=$PREFIX - - enable-openexr - - enable-threading</cmd>-->
-			<cmd>./configure --prefix=$PREFIX --enable-openexr --with-gui=Xt --disable-devil --enable-freeimage</cmd>
+			<cmd>./configure --prefix=$PREFIX  --exec-prefix=$PREFIX --libdir=$PREFIX/lib --enable-openexr --with-gui=Xt --disable-devil --enable-freeimage</cmd>
 			<cmd>make -j 2</cmd>
+			<cmd>sed --in-place -s "s|/usr/local/lib/OGRE|${PREFIX}/lib/OGRE|" Samples/Common/bin/plugins.cfg</cmd>
 		</build>
 		<install>
 			<cmd>make install</cmd>
