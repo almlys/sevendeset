@@ -75,3 +75,13 @@
  
  # in Linux we need to code in the Relative path for the library
  RPATH=os.path.join('\\$$ORIGIN',os.pardir,os.pardir, 'lib') #+ '\'' 
+--- python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py	2008-07-28 01:53:57.000000000 +0200
++++ python-ogre/packages_2.5/ogre/gui/CEGUI/__init__.py	2008-07-29 00:02:23.000000000 +0200
+@@ -13,6 +13,6 @@
+ 
+ from _cegui_ import *
+ ## Make sure we are using a sane XML parser
+-System.setDefaultXMLParserName("TinyXMLParser")
++#System.setDefaultXMLParserName("TinyXMLParser")
+ 
+ warnings.resetwarnings( ) 

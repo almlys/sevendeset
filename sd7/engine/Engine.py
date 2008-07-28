@@ -27,7 +27,7 @@ class Engine(object):
         else:
             self._options = {"global" : {} }
             
-        # Find plugin list
+        print "** Find plugin list **"
         if self._options.has_key("engine.OgreRenderer.plugins"):
             self._options["global"]["_engine.OgreRenderer.plugins"] = \
             self._options["engine.OgreRenderer.plugins"]
@@ -36,12 +36,14 @@ class Engine(object):
         #                "RenderSystem_GL" : "enabled",
         #    }
         
-        # Start up the renderer
+        print "** Start up the renderer **"
         from renderer.OgreRenderer import OgreRenderer as Renderer
+        print "->new"
         self._renderer = Renderer(self._options["global"])
+        print "->init"
         self._renderer.initialize()
         
-        # Start up the input system
+        print "** Start up the input system **"
         from input.OISInput import OISInput as Input
         self._input = Input(self._options["global"])
         self._input.initialize()

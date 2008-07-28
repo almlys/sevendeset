@@ -131,15 +131,25 @@ class OgreRenderer(SubSystem,RendererInterface):
             self.log("No Renderer was found in your system!")
             return False
         else:
+            self.log("root.initialize")
             self._root.initialise(False)
+            self.log("checking window properties...")
             fullScreen = self._config["graphics.fullscreen"].lower() == "true"
             w=int(self._config["graphics.width"])
             h=int(self._config["graphics.height"])
 
+            self.log("Creating window... %sx%s fullscreen:%i" %(w,h,fullScreen))
             self._renderWindow = self._root.createRenderWindow(
                 self._config["_window.name"], w, h, fullScreen)
+            self.log("saving window handle")
+            #print dir(self._renderWindow)
+            #print self._renderWindow.getCustomAttributeInt
+            #help(self._renderWindow.getCustomAttributeInt)
+            print "Window HANDLE: %i" %(self._renderWindow.getCustomAttributeUnsignedLong("WINDOW"),)
             self._config["_RootWindowHandle"] = \
-                str(self._renderWindow.getCustomAttributeInt("WINDOW"))
+                str(self._renderWindow.getCustomAttributeUnsignedLong("WINDOW"))
+                # 64 bits, guy, it's a long, if not KAAAAAAABOOOOOOOOOUMMMMMMMMMMMMMMM!!!
+            self.log("Window created..")
             return True
 
     def _chooseSceneManager(self):
@@ -189,17 +199,21 @@ class OgreRenderer(SubSystem,RendererInterface):
         self._root = ogre.Root("","","")
         
         # Load Plugins
+        self.log("Loading plugins")
         self._loadPlugins(self._config["Engine.OgreRenderer.PluginsPath"],
         self._config["_engine.OgreRenderer.plugins"])
 
         # The next option avoids flickering of the framerate stats
         self._root.setFrameSmoothingPeriod(5.0)
 
+        self.log("Setting up resources...")
         self._setUpResources()
+        self.log("Configuring...")
         # Load configuration
         if not self._configure():
             return False
         
+        self.log("Choosing scene Manager...")
         self._chooseSceneManager()
         #self._createWorld()
         self._createCamera()

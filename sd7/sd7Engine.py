@@ -35,8 +35,11 @@ class MainApp(BaseApplication):
     def run(self):
         try:
             self._options['global']['_window.name'] = self.GetAppVersion()
+            print "Startup...."
             e = Engine(self._options)
+            print "Run..."
             e.run()
+            print "END OK"
         except:
             import traceback
             traceback.print_exc(file=sys.stderr)
