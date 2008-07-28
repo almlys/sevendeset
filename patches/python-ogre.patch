@@ -1,32 +1,27 @@
---- python-ogre.new/environment.py	2008-05-04 18:11:23.000000000 +0200
-+++ python-ogre/environment.py	2008-05-04 21:47:23.000000000 +0200
-@@ -742,10 +742,11 @@
- 
-     include_dirs = [Config.PATH_Boost
-                     ,Config.PATH_INCLUDE_CEGUI
+--- python-ogre.orig/environment.py	2008-07-28 01:53:59.000000000 +0200
++++ python-ogre/environment.py	2008-07-28 16:08:06.000000000 +0200
+@@ -853,12 +853,13 @@
+             [0, 'echo WARNING - Check that RTTI is enabled in the compiler options',''],
+             [0, 'echo Then ensure that OgreGUIRender is compiled with this version of CEGUI','']
+             ]         
+-    include_dirs = [Config.PATH_Boost
+-                    ,Config.PATH_INCLUDE_CEGUI
 -                    ,Config.PATH_CEGUI
 -                    , Config.PATH_INCLUDE_Ogre_CEGUIRenderer
-+                    ,Config.LOCAL_INCLUDE
++    include_dirs = [#sd7#Config.PATH_Boost
++                    Config.PATH_INCLUDE_CEGUI
 +                    #sd7#,Config.PATH_CEGUI
 +                    #sd7#, Config.PATH_INCLUDE_Ogre_CEGUIRenderer
                      , Config.PATH_INCLUDE_Ogre
 -                    , Config.PATH_INCLUDE_Ogre_Dependencies ## needed as OgreCEGUI uses CEGUI/.. in #includes
 +                    #sd7#, Config.PATH_INCLUDE_Ogre_Dependencies ## needed as OgreCEGUI uses CEGUI/.. in #includes
++                    , Config.LOCAL_INCLUDE
                      ]
                    
      lib_dirs = [ Config.PATH_LIB_Boost
-@@ -1007,7 +1008,7 @@
-         CCFLAGS = ' -DNX_LINUX -DLINUX -DNX_DISABLE_FLUIDS '                
-     lib_dirs = [Config.PATH_LIB_Boost,
-                 Config.PATH_LIB_Ogre_OgreMain,
--                Config.PATH_LIB_NxOgre,
-+#                Config.PATH_LIB_NxOgre,
-                 Config.PATH_LIB_PhysX
-                 ]
-     CheckIncludes=[]
---- python-ogre.new/PythonOgreConfig_posix.py	2008-03-19 16:21:02.000000000 +0100
-+++ python-ogre/PythonOgreConfig_posix.py	2008-05-04 21:50:30.000000000 +0200
-@@ -11,16 +11,23 @@
+--- python-ogre.orig/PythonOgreConfig_posix.py	2008-07-28 01:53:59.000000000 +0200
++++ python-ogre/PythonOgreConfig_posix.py	2008-07-28 15:48:36.000000000 +0200
+@@ -11,16 +11,24 @@
  MAC_cflags = ' --gccxml-cxxflags "-DCF_OPEN_SOURCE -D_POSIX_C_SOURCE -isysroot /Developer/SDKs/MacOSX10.4u.sdk"'
  
  # the base of the /usr/... dircetory structure that we are using
@@ -41,17 +36,18 @@
 +LOCAL_INCLUDE = os.path.join(ROOT_DIR, 'include')
  
  ## path to the root of your boost dir, should have 'libs', 'boost' subdirectories
--PATH_Boost = os.path.join(LOCAL_INCLUDE, 'boost-1_34_1')
-+PATH_Boost = os.path.join(LOCAL_INCLUDE, 'boost-1_35')
+-PATH_Boost = os.path.join(LOCAL_INCLUDE, 'boost-1_35')
++BOOST_VERSION = "1_35" # TODO: I want some code here that detects boost version
++PATH_Boost = os.path.join(LOCAL_INCLUDE, "boost-" + BOOST_VERSION)
  ## Path to your boost_pythonxxxx lib file
  PATH_LIB_Boost = LOCAL_LIB
  ## and the name of the boost python library
--LIB_Boost = 'libboost_python-gcc41-1_34_1'
-+#LIB_Boost = 'libboost_python-gcc41-1_34_1'
+-LIB_Boost = 'libboost_python-gcc42-mt-1_35'
++#LIB_Boost = 'libboost_python-gcc42-mt-1_35'
 +import re
 +a,b = os.popen4("gcc -v")
 +MY_GCC_VERSION = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
-+LIB_Boost = 'libboost_python-gcc%s-1_35_0' %(MY_GCC_VERSION,)
++LIB_Boost = 'libboost_python-gcc%s-mt-%s' %(MY_GCC_VERSION,BOOST_VERSION)
  
  # in Linux we need to code in the Relative path for the library
  RPATH=os.path.join('\\$$ORIGIN',os.pardir,os.pardir, 'lib') #+ '\'' 
