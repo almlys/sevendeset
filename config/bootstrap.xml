@@ -248,17 +248,13 @@
 			Latest stable version is too old, soo we need to get latest **unstable** from cvs (cross fingers)
 		</comment>
 		<license>GPLv2 or later</license>
-		<!-- <source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080320.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080727.tar.bz2'
 						method='wget' renamefrom='gccxml'
-						md5='13fa36e86ebd7cd7470ce977b6076fdf'
-						branch='stable' /> -->
-		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080504.tar.bz2'
-						method='wget' renamefrom='gccxml'
-						md5='25461b1563a3dda9350c134318d23352'
+						md5='be6e0a5c5f4b92c4294a376b9904ca8f'
 						branch='stable' />
 
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
-						method='cvs' module='gccxml' revision='20080504'
+						method='cvs' module='gccxml' revision='20080727'
 						branch='stable' />
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
 						method='cvs' module='gccxml'
@@ -281,16 +277,12 @@
 			Code generator for Boost.Python
 		</comment>
 		<license>Boost</license>
-		<!-- <source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080320.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080727.tar.bz2'
 						method='wget' renamefrom='pygccxml'
-						md5='97e8dfc0ceb72412fb63f683e66c4c21'
-						branch='stable' /> -->
-		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080504.tar.bz2'
-						method='wget' renamefrom='pygccxml'
-						md5='a43c3ffdeb862262341085f45306da7b'
+						md5='03ef0633b7e028d834fe44f362092173'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
-						method='svn' revision='1316'
+						method='svn' revision='1379'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
 						method='svn'
@@ -309,18 +301,12 @@
 			python setup.py install --prefix=$PREFIX
 		</comment>
 		<license>MIT</license>
-		<!-- <source addr='http://7d7.almlys.org/downloads/depends/scons/scons-0.97.0d20071212.tar.gz'
-						method='wget' renamefrom='scons-0.97.0d20071212'
-						md5='d06327b77552ac0153bb8f93b27b7f13' />
-		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.97.0d20071212.tar.gz'
-						method='wget' renamefrom='scons-0.97.0d20071212'
-						md5='d06327b77552ac0153bb8f93b27b7f13' /> -->
-		<source addr='http://7d7.almlys.org/downloads/depends/scons/scons-0.98.3.tar.gz'
-						method='wget' renamefrom='scons-0.98.3'
-						md5='0b81b8338d356dcef3b3923d9602dfde' />
-		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.98.3.tar.gz'
-						method='wget' renamefrom='scons-0.98.3'
-						md5='0b81b8338d356dcef3b3923d9602dfde' />
+		<source addr='http://7d7.almlys.org/downloads/depends/scons/scons-0.98.5.tar.gz'
+						method='wget' renamefrom='scons-0.98.5'
+						md5='640dfc99a29523a06dbeaac299a3e0a0' />
+		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.98.5.tar.gz'
+						method='wget' renamefrom='scons-0.98.5'
+						md5='640dfc99a29523a06dbeaac299a3e0a0' />
 
 		<install>
 			<cmd>python setup.py install --prefix=$PREFIX</cmd>
