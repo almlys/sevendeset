@@ -12,7 +12,7 @@ export LD_LIBRARY_PATH=$PREFIX/lib
 export CPPFLAGS=-I$PREFIX/include
 export LDFLAGS=-L$PREFIX/lib
 export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
-export LD_PRELOAD=$LD_LIBRARY_PATH/libCEGUIBase.so
+#export LD_PRELOAD=$LD_LIBRARY_PATH/libCEGUIBase.so
 
 PYSHELL="
 import sys
