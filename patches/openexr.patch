@@ -1,0 +1,22 @@
+diff -Naur openexr-1.6.1/exrenvmap/main.cpp openexr/exrenvmap/main.cpp
+--- openexr-1.6.1/exrenvmap/main.cpp	2007-04-25 03:07:51.000000000 +0200
++++ openexr/exrenvmap/main.cpp	2008-07-28 00:34:14.000000000 +0200
+@@ -45,6 +45,7 @@
+ #include <iostream>
+ #include <exception>
+ #include <stdlib.h>
++#include <cstring>
+ 
+ using namespace Imf;
+ using namespace std;
+diff -Naur openexr-1.6.1/exrmaketiled/main.cpp openexr/exrmaketiled/main.cpp
+--- openexr-1.6.1/exrmaketiled/main.cpp	2007-04-25 03:08:45.000000000 +0200
++++ openexr/exrmaketiled/main.cpp	2008-07-28 00:33:36.000000000 +0200
+@@ -46,6 +46,7 @@
+ #include <exception>
+ #include <string>
+ #include <stdlib.h>
++#include <cstring>
+ 
+ using namespace Imf;
+ using namespace std;

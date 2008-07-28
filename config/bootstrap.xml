@@ -13,11 +13,11 @@
 
 		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='nil'
+						md5='311069e73186b3a7837d35df08b714c8'
 						platform='linux' arch='i686' />
 		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0015/Cg-2.0_May2008_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='nil'
+						md5='311069e73186b3a7837d35df08b714c8'
 						platform='linux' arch='i686' />
 		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86_64.tgz'
 						method='wget' renamefrom='usr'
@@ -82,13 +82,27 @@
 			Graphics support library
 		</comment>
 		<license>(dual) GPLv2 or later / FreeImage Public License</license>
+		<!-- This version is broken on 64 bits platforms 
 		<source addr='http://7d7.almlys.org/downloads/depends/freeimage/FreeImage3100.zip'
 						method='wget' renamefrom='FreeImage'
 						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
 		<source addr='http://downloads.sourceforge.net/freeimage/FreeImage3100.zip'
 						method='wget' renamefrom='FreeImage'
 						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
-		<!-- Please use subversion version of Freeimage for 64 bits -->
+		-->
+
+		<source addr='http://7d7.almlys.org/downloads/depends/freeimage/freeimage20080727.tar.bz2'
+						method='wget' renamefrom='freeimage'
+						md5='c4b145fbefd4c7869a8c7180ce4ba20e'
+						branch='stable' />
+
+		<source addr=':pserver:anonymous@freeimage.cvs.sourceforge.net:/cvsroot/freeimage'
+						method='cvs' module='FreeImage' revision='20080727' renamefrom='FreeImage'
+						branch='stable' />
+		<source addr=':pserver:anonymous@freeimage.cvs.sourceforge.net:/cvsroot/freeimage'
+						method='cvs' module='FreeImage' renamefrom='FreeImage'
+						branch='devel' />
+
 		<build>
 			<!-- Dirty patch grabben from python-ogre distribution -->
 			<cmd>sed --in-place -s 's|/usr/include|\$(DESTINC)|' Makefile.*</cmd>
