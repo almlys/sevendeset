@@ -226,10 +226,10 @@
 		</comment>
 		<license>(dual) LGPLv2.1 or later / unrestricted(comercial)</license>
 		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-v1-4-9.tar.bz2'
-						method='wget' renamefrom='ogrenew'
+						method='wget' renamefrom='ogre'
 						md5='8a73fbcf42fd6b156b2567839d0cd125' />
 		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-v1-4-9.tar.bz2'
-						method='wget' renamefrom='ogrenew'
+						method='wget' renamefrom='ogre'
 						md5='8a73fbcf42fd6b156b2567839d0cd125' />
 		<!-- Some patches should be added here!! -->
 		<build>
