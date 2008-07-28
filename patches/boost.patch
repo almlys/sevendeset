@@ -1,14 +1,23 @@
 diff -Naur boost_1_35_0/boost/python/detail/preprocessor.hpp boost/boost/python/detail/preprocessor.hpp
---- boost_1_35_0/boost/python/detail/preprocessor.hpp	2004-07-26 02:32:12.000000000 +0200
-+++ boost/boost/python/detail/preprocessor.hpp	2008-07-28 14:58:50.000000000 +0200
-@@ -26,7 +26,7 @@
+--- boost_1_35_0/boost/python/detail/preprocessor.hpp   2004-07-26 02:32:12.000000000 +0200
++++ boost/boost/python/detail/preprocessor.hpp 2008-07-28 16:25:07.000000000 +0200
+@@ -5,6 +5,8 @@
+ #ifndef PREPROCESSOR_DWA200247_HPP
+ # define PREPROCESSOR_DWA200247_HPP
+
++#define BOOST_PYTHON_NO_PY_SIGNATURES
++
+ # include <boost/preprocessor/cat.hpp>
+ # include <boost/preprocessor/comma_if.hpp>
+ # include <boost/preprocessor/repeat.hpp>
+@@ -26,7 +28,7 @@
  # endif
- 
+
  # ifndef BOOST_PYTHON_MAX_ARITY
 -#  define BOOST_PYTHON_MAX_ARITY 15
 +#  define BOOST_PYTHON_MAX_ARITY 19
  # endif
- 
+
  # ifndef BOOST_PYTHON_MAX_BASES
 diff -Naur boost_1_35_0/libs/python/build/Jamfile.v2 boost/libs/python/build/Jamfile.v2
 --- boost_1_35_0/libs/python/build/Jamfile.v2	2007-11-25 19:38:02.000000000 +0100
