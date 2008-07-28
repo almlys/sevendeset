@@ -1,6 +1,30 @@
 --- python-ogre.orig/environment.py	2008-07-28 01:53:59.000000000 +0200
-+++ python-ogre/environment.py	2008-07-28 16:08:06.000000000 +0200
-@@ -853,12 +853,13 @@
++++ python-ogre/environment.py	2008-07-28 21:39:21.000000000 +0200
+@@ -513,8 +513,11 @@
+         gccp = subprocess.Popen (["gcc", "--version"], stdout=subprocess.PIPE)
+         gcc_version = gccp.communicate()[0].split('\n')[0].split()[2].split('.')
+        
+-        # FIXME: Should this be the multithreaded version!? 
+-        lib = "boost_python-gcc%s%s-%s" % (gcc_version[0], gcc_version[1], base[6:])
++        # FIXME: Should this be the multithreaded version!?
++        # Almlys Says: Yes, should be, do you have any clue how to atomatically detect it
++        # well i prefer the mt version, I don't know what changed that it now build the mt one
++        # istead of the non one. well, this should work
++        lib = "boost_python-gcc%s%s-mt-%s" % (gcc_version[0], gcc_version[1], base[6:])
+ 
+ class boost_python_index:
+     active = True
+@@ -532,7 +535,8 @@
+             [0,'PREFIX=%s make install' % PREFIX, os.path.join(os.getcwd(), base)],
+         ]
+    
+-    lib = boost.lib.replace("python", "python_index")
++    #lib = boost.lib.replace("python", "python_index")
++    lib = boost.lib
+ 
+ ####################################################
+ ##
+@@ -853,12 +857,13 @@
              [0, 'echo WARNING - Check that RTTI is enabled in the compiler options',''],
              [0, 'echo Then ensure that OgreGUIRender is compiled with this version of CEGUI','']
              ]         
