@@ -460,13 +460,13 @@
 						md5='b61ab125eb50445894858fa199c73d2e'
 						platform='linux' arch='i686' python='2.5' /> -->
 
-		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py25_WAITING.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_i686_py25_20080730231553.tar.bz2'
 						method='wget' renamefrom='sd7runtime_linux_i686_py25'
-						md5='a'
+						md5='eace81d64ecea28ee5eeb4c2ec855dfc'
 						platform='linux' arch='i686' python='2.5' />
-		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_x86_64_py25_20080728225139.tar.bz2'
-						method='wget' renamefrom='sd7runtime_linux_i686_py25'
-						md5='15a8c8a019b6cd27b916c161c8cf8e65'
+		<source addr='http://7d7.almlys.org/downloads/builds/sd7runtime_linux_x86_64_py25_20080730165757.tar.bz2'
+						method='wget' renamefrom='sd7runtime_linux_x86_64_py25'
+						md5='d4be18741ac174d890e05640abe9c7b9'
 						platform='linux' arch='x86_64' python='2.5' />
 
 
