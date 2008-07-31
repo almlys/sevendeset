@@ -477,4 +477,64 @@
 		</install>
 	</module>
 	
+	<module name='wx'>
+		<comment>WxWidgets Library</comment>
+		<license>wxWindows Licence</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/wx/wxWidgets-2.8.8.tar.gz'
+						method='wget' renamefrom='wxWidgets-2.8.8'
+						md5='55ffbf4c09233a00d92b01c0eed6a3dc' />
+		<source addr='http://prdownloads.sourceforge.net/wxwindows/wxWidgets-2.8.8.tar.gz'
+						method='wget' renamefrom='wxWidgets-2.8.8'
+						md5='55ffbf4c09233a00d92b01c0eed6a3dc' />
+		<build>
+			<cmd>mkdir -p build_gtk</cmd>
+			<cmd cmd='cd' path='build_gtk' />
+			<cmd>../configure --prefix=$PREFIX --enable-optimise --with-opengl</cmd>
+			<cmd>make</cmd>
+		</build>
+		<install>
+			<cmd cmd='cd' path='build_gtk' />
+			<cmd>make install</cmd>
+		</install>
+	</module>
+	
+	<!-- Tools -->
+	<module name='CELayoutEditor' depends='wx'>
+		<comment>CEGUI Layout Editor</comment>
+		<license>GPLv2 or later</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CELayoutEditor-0.6.1.tar.gz'
+						method='wget' renamefrom='CELayoutEditor-0.6.1'
+						md5='e146f2cc45da8589ee7b8f9774e81959' />
+		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CELayoutEditor-0.6.1.tar.gz'
+						method='wget' renamefrom='CELayoutEditor-0.6.1'
+						md5='e146f2cc45da8589ee7b8f9774e81959' />
+		<patch addr='CELayoutEditor.patch' />
+		<build>
+			<cmd>./configure --prefix=$PREFIX</cmd>
+			<cmd>make</cmd>
+		</build>
+		<install>
+			<cmd>make install</cmd>
+		</install>
+	</module>
+
+	<module name='CEImagesetEditor' depends='wx'>
+		<comment>CEGUI Image Editor</comment>
+		<license>GPLv2 or later</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEImagesetEditor-0.6.1.tar.gz'
+						method='wget' renamefrom='CEImagesetEditor-0.6.1'
+						md5='99d2e1f57a600dee2a38c2432e20ce4e' />
+		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEImagesetEditor-0.6.1.tar.gz'
+						method='wget' renamefrom='CEImagesetEditor-0.6.1'
+						md5='99d2e1f57a600dee2a38c2432e20ce4e' />
+		<build>
+			<cmd>./configure --prefix=$PREFIX</cmd>
+			<cmd>make</cmd>
+		</build>
+		<install>
+			<cmd>make install</cmd>
+		</install>
+	</module>
+	
+	
 </bootstrap>

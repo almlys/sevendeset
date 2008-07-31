@@ -1,0 +1,65 @@
+diff -Naur CELayoutEditor-0.6.1/inc/StringHelper.h CELayoutEditor/inc/StringHelper.h
+--- CELayoutEditor-0.6.1/inc/StringHelper.h	2007-12-18 18:46:29.000000000 +0100
++++ CELayoutEditor/inc/StringHelper.h	2008-07-31 16:02:57.000000000 +0200
+@@ -116,6 +116,14 @@
+         return str;
+     }
+ 
++		static wxString ToWXString(const char str[]) {
++				return str;
++		}
++
++		static CEGUI::String ToCEGUIString(const char str[]) {
++				return str;
++		}
++
+     /** Converts a wxWidgets string into a CEGUI string, Unicode proof.
+      * @access public static 
+      * @qualifier none
+diff -Naur CELayoutEditor-0.6.1/src/CELayoutEditor.cpp CELayoutEditor/src/CELayoutEditor.cpp
+--- CELayoutEditor-0.6.1/src/CELayoutEditor.cpp	2008-06-25 23:20:45.000000000 +0200
++++ CELayoutEditor/src/CELayoutEditor.cpp	2008-07-31 16:54:36.000000000 +0200
+@@ -248,7 +248,7 @@
+ 
+     // Assign the log filename
+     // NOTE: The file will be output to the current directory (where the executable is located)
+-    CEGUI::Logger::getSingleton().setLogFilename("CELayoutEditor.log", false);
++    CEGUI::Logger::getSingleton().setLogFilename("log/CELayoutEditor.log", false);
+ 
+     // Set informative logging level
+     CEGUI::Logger::getSingleton().setLoggingLevel (CEGUI::Informative);
+@@ -606,8 +606,8 @@
+         report->AddFile(wxGetCwd() + wxT("\\CELayoutEditor.log"), wxT("CELayoutEditor log file"));
+         report->AddFile(wxGetCwd() + wxT("\\CELayoutEditor.ini"), wxT("CELayoutEditor configuration file"));
+     #else
+-        report->AddFile(wxGetCwd() + wxT("/CELayoutEditor.log"), wxT("CELayoutEditor log file"));
+-        report->AddFile(wxGetCwd() + wxT("/CELayoutEditor.ini"), wxT("CELayoutEditor configuration file"));
++        report->AddFile(wxGetCwd() + wxT("/log/CELayoutEditor.log"), wxT("CELayoutEditor log file"));
++        report->AddFile(wxGetCwd() + wxT("/config/CELayoutEditor.ini"), wxT("CELayoutEditor configuration file"));
+     #endif // __WINDOWS__
+ 
+     // Display a preview window if so desired to the let the user review the report and 
+diff -Naur CELayoutEditor-0.6.1/src/EditorFrame.cpp CELayoutEditor/src/EditorFrame.cpp
+--- CELayoutEditor-0.6.1/src/EditorFrame.cpp	2008-06-22 21:20:43.000000000 +0200
++++ CELayoutEditor/src/EditorFrame.cpp	2008-07-31 16:21:33.000000000 +0200
+@@ -401,7 +401,7 @@
+ void EditorFrame::InitializeCEGUI()
+ {
+     // Setup support for TGA,JPG and PNG
+-    CEGUI::OpenGLRenderer::setDefaultImageCodecName("SILLYImageCodec");
++    CEGUI::OpenGLRenderer::setDefaultImageCodecName("FreeImageImageCodec");
+     //CEGUI::OpenGLRenderer::setDefaultImageCodecName("TGAImageCodec");
+ 
+     m_GUIRenderer = new CEGUI::OpenGLRenderer (0);
+diff -Naur CELayoutEditor-0.6.1/src/Options.cpp CELayoutEditor/src/Options.cpp
+--- CELayoutEditor-0.6.1/src/Options.cpp	2007-12-18 18:46:29.000000000 +0100
++++ CELayoutEditor/src/Options.cpp	2008-07-31 16:16:16.000000000 +0200
+@@ -54,7 +54,7 @@
+ #define PATH_SCHEMES            "SchemesPath" 
+ #define SUPPORTED_PROPERTIES    "SupportedProperties"
+ 
+-#define INI_FILE    "CELayoutEditor.ini"
++#define INI_FILE    "config/CELayoutEditor.ini"
+ #define INI_SECTION "SETTINGS"
+ 
+ //////////////////////////////////////////////////////////////////////////
