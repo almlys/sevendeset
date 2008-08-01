@@ -139,6 +139,7 @@ class OgreRenderer(SubSystem,RendererInterface):
             h=int(self._config["graphics.height"])
 
             self.log("Creating window... %sx%s fullscreen:%i" %(w,h,fullScreen))
+            # Throws OGREException if VideoCard is not found (cannot create GLXContext)
             self._renderWindow = self._root.createRenderWindow(
                 self._config["_window.name"], w, h, fullScreen)
             self.log("saving window handle")

@@ -19,7 +19,6 @@ __all__ = []
 import sys
 import os
 
-from bootstrap.xmlparser import XMLParser
 from common.BaseApp import BaseApplication
 from sd7.engine import Engine
 

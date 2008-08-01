@@ -28,8 +28,14 @@ class CEGUIRenderer(SubSystem):
     _device_type = "Ogre"
     _device = None
     _mouseWheel = 0
+    _controller = None
     
     def __init__(self,options=None,type="Ogre",args=None):
+        """
+        @param options: Set of options to configure the GUI
+        @param type: String with the type of renderer, Ogre is the only currently one allowed
+        @param args: Specific arguments of the renderer, required to glue both systems
+        """
         SubSystem.__init__(self,'CEGUIRenderer',True,options)
         self._device_type = type
         self._device_args = args
@@ -40,6 +46,13 @@ class CEGUIRenderer(SubSystem):
         # KABOUUM!!
         del self._guiSystem
         del self._renderer
+
+    def setController(self,ctrl):
+        """
+        Sets a Controller class, with the desired implementation
+        """
+        self._controller = ctrl
+        self._controller.register(self)
 
     def initialize(self):
         """ Initialization """
