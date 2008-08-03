@@ -39,6 +39,8 @@ class ChatApp(Controller):
         self._gui.subscribeEvent("Chat/ChatWindow/ChatOkBtn",
             self._gui.getEvent("PushButton/EventClicked"),self.onInput)
     
+        self._gui.getObject("Chat/ChatWindow/ChatBox").setText("Connection code is missing")
+    
         # get Net and watch for incomming messages
         #self._net = wathever
         #self._net.subscribeMsg("chat,",self.onMsg)
@@ -46,6 +48,8 @@ class ChatApp(Controller):
     
     def onInput(self,e):
         msg = self._gui.getObject("Chat/ChatWindow/ChatInput").getText()
+        history = self._gui.getObject("Chat/ChatWindow/ChatBox")
+        history.setText("\n".join(str(history.getText()).split("\n")[:10]) + "You: " + msg)
         print msg
         #self._net.sendMsg("chat",msg)
     
