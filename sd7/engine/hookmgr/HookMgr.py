@@ -26,6 +26,7 @@ class HookMgr(SubSystem):
     
     __controller_map = {}
     __controller_cache = {}
+    __autostart_list = []
     
     def __init__(self,options=None):
         """
@@ -34,6 +35,9 @@ class HookMgr(SubSystem):
         @param args: Specific arguments of the renderer, required to glue both systems
         """
         SubSystem.__init__(self,'HookMgr',True,options)
+
+    def __del__(self):
+        self.stopAutomaticControllers()
 
     def initialize(self):
         SubSystem.initialize(self)
@@ -57,6 +61,8 @@ class HookMgr(SubSystem):
                 for p in c.xparam:
                     print "  %s : %s" %(p.pname,p.data)
                     params[p.pname] = p.data
+            if hasattr(c,"pautostart") and c.pautostart.lower()=="true":
+                self.__autostart_list.append(c.pname)
             self.__addController(c.pname,c.pbind,params)
 
     def getController(self,name):
@@ -73,10 +79,21 @@ class HookMgr(SubSystem):
             try:
                 module = __import__(path, globals(), locals(), [klass,])
                 kls = getattr(module, klass)(params)
+                kls.setLogFunc(self.log)
                 self.__saveControllerToCache(name,kls)
                 return kls
             except ImportError,e:
                 raise HookNotFoundError,"Cannot find %s:%s" %(name,ctrl)
         return None
+    
+    def destroyController(self,name):
+        # If reference count gets to 0 it will be destroyed...
+        self.__controller_cache.pop(name)
 
-
+    def startAutomaticControllers(self):
+        for c in self.__autostart_list:
+            self.getController(c).initialize()
+    
+    def stopAutomaticControllers(self):
+        for c in self.__autostart_list.reverse():
+            self.destroyController(c)

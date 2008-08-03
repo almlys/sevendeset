@@ -17,19 +17,30 @@ __version__ = "$Revision$"
 __all__ = ["Engine"]
 
 
-class Engine(object):
+class _Engine(object):
     
+    _instance = None
     _options = None
     _renderer = None
     _input = None
     _gui = None
+    _hookmgr = None
     
     def __init__(self,options=None):
+        _Engine._instance = self
         self.__loadDefaults(options)
         self.__loadHooks()
         self.__startRenderer()
         self.__startInput()
         self.__startGUI()
+        self._hookmgr.startAutomaticControllers()
+
+    def __del__(self):
+        """ Stuff needs to be deleted in the correct order, if not someting
+        terrible will happen """
+        del self._gui
+        del self._input
+        del self._renderer
 
     def __loadDefaults(self,options):
         if options!=None:
@@ -69,6 +80,7 @@ class Engine(object):
         self._gui.initialize()
         # The GUI listens for Input events
         self._input.addEventListener(self._gui)
+        self._renderer.addEventListener(self._gui)
         # CeguiOgreRenderer is already integrated into the rendering pipeline
         
     def __startPhysics(self):
@@ -91,13 +103,17 @@ class Engine(object):
         self._hookmgr = HookMgr(self._options["global"])
         self._hookmgr.initialize()
 
-    def __del__(self):
-        """ Stuff needs to be deleted in the correct order, if not someting
-        terrible will happen """
-        del self._gui
-        del self._input
-        del self._renderer
+    def getGUI(self):
+        return self._gui
+
 
     def run(self):
         self._renderer.renderLoop()
 
+
+
+def Engine(options=None):
+    if _Engine._instance == None:
+        print "Created unique instance of the engine"
+        _Engine(options)
+    return _Engine._instance

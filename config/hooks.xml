@@ -11,11 +11,12 @@
 	<controller name='basicInput' bind='sd7.system.basicInput.MyBasicInputHandler' target='main' />
 	<controller name='startup' bind='sd7.system.startup.StartupHandler' target='main' />
 	
+	<controller name='chatapp' bind='sd7.logic.chatapp.ChatApp' autostart='true' />
+	
 	<!-- Associate an event with an object -->
 	<event name='input' bind='basicInput' />
 	
 	<event name='system.startup' bind='startup' />
-
 
 	
 	

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+        <Window Type="TaharezLook/FrameWindow" Name="Chat/ChatWindow" >
+            <Property Name="Text" Value="sd7 - Chat" />
+            <Property Name="TitlebarFont" Value="Commonwealth-10" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.2475,0},{0.211667,0},{0.747502,0},{0.641667,0}}" />
+            <Window Type="TaharezLook/MultiLineEditbox" Name="Chat/ChatWindow/ChatBox" >
+                <Property Name="Text" >
+Hello how is going all?
+
+Example text
+</Property>
+                <Property Name="ReadOnly" Value="True" />
+                <Property Name="MaxTextLength" Value="4294967295" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0300001,0},{0.13351,0},{0.973333,0},{0.8276,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Editbox" Name="Chat/ChatWindow/ChatInput" >
+                <Property Name="Text" Value="Enter text here and press &lt;ENTER&gt;" />
+                <Property Name="MaxTextLength" Value="4294967295" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.031667,0},{0.85273,0},{0.734166,0},{0.972011,0}}" />
+            </Window>
+            <Window Type="TaharezLook/SystemButton" Name="Chat/ChatWindow/ChatOkBtn" >
+                <Property Name="Text" Value="Send" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.76,0},{0.847797,0},{0.956666,0},{0.969689,0}}" />
+            </Window>
+    </Window>
+</GUILayout>

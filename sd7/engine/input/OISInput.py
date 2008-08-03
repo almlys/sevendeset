@@ -132,8 +132,8 @@ class OISInput(SubSystem):
     def windowResized(self, w, h):
         """ Update the Mouse area size, according to the new window size """
         m = self._Mouse.getMouseState()
-        m.width = int(w)
-        m.height = int(h)
+        m.width = int(w)*2
+        m.height = int(h)*2
         print w,h
         if m.X.abs == 0:
             m.X.abs = 6
@@ -160,7 +160,7 @@ class OISInput(SubSystem):
 class MyKeyListener(OIS.KeyListener):
     """ Keyboard Key Listenner, there can be only be ONE, if you want to
     controll aditional keyboards attached to the systems then OIS is not
-     he suitable API, altough you first will need to fight with your OS"""
+     the suitable API, altough you first will need to fight with your OS"""
     
     def __init__(self, subscribers):
         OIS.KeyListener.__init__(self)
@@ -168,9 +168,13 @@ class MyKeyListener(OIS.KeyListener):
 
     def keyPressed(self, evt):
         print "Key pressed %i %s" %(evt.key,evt.text)
+        for sub in self._subscribers:
+            sub.keyPressed(evt)
     
     def keyReleased(self, evt):
         print "Key released %i %s" %(evt.key,evt.text)
+        for sub in self._subscribers:
+            sub.keyReleased(evt)
 
 
 class MouseState(object):

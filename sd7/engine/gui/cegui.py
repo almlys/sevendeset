@@ -29,6 +29,7 @@ class CEGUIRenderer(SubSystem):
     _device = None
     _mouseWheel = 0
     _controller = None
+    _eventSubscribers = {}
     
     def __init__(self,options=None,type="Ogre",args=None):
         """
@@ -52,7 +53,7 @@ class CEGUIRenderer(SubSystem):
         Sets a Controller class, with the desired implementation
         """
         self._controller = ctrl
-        self._controller.register(self)
+        #self._controller.register("gui",self)
 
     def initialize(self):
         """ Initialization """
@@ -64,8 +65,12 @@ class CEGUIRenderer(SubSystem):
         if not self._initCEGUI():
             return False
         
+        if self._controller!=None:
+            self._controller.initialize()
+        
         self._loadResources()
-        self._test()
+        self._createRootWindow()
+        #self._test()
         
         return True
 
@@ -100,21 +105,72 @@ class CEGUIRenderer(SubSystem):
         self._guiSystem.setDefaultMouseCursor("TaharezLook",  "MouseArrow")
         cegui.FontManager.getSingleton().createFont("Commonwealth-10.font")
 
+    def _createRootWindow(self):
+        self._wmgr = cegui.WindowManager.getSingleton()
+        self._rootw = self._wmgr.createWindow("DefaultWindow", "root")
+        self._guiSystem.setGUISheet(self._rootw)
+
+
     def _test(self):
-        # we will make extensive use of the WindowManager.
-        wmgr = cegui.WindowManager.getSingleton()
-        rootw = wmgr.createWindow("DefaultWindow", "root")
-        self._guiSystem.setGUISheet(rootw)
-        
-        frame = wmgr.createWindow("TaharezLook/FrameWindow", "mainWindow")
-        rootw.addChildWindow(frame)
+        frame = self._wmgr.createWindow("TaharezLook/FrameWindow", "mainWindow")
+        self._rootw.addChildWindow(frame)
         
         frame.setPosition(cegui.UVector2(cegui.UDim(0.25, 0),
             cegui.UDim(0.25, 0)))
         frame.setSize(cegui.UVector2(cegui.UDim(0.5,0), cegui.UDim(0.5,0)))
         
         frame.setText("Title sd7")
+
+    def loadView(self,name,parent="root"):
+        """ Loads a set of Windows conforming a view
+            @param name: The name of the file containing the layout definition
+            @param parent: The name of the parent window
+        """
+        self.log("Loading layout %s" %(name,))
+        guiLayout = self._wmgr.loadWindowLayout(name)
+        self._wmgr.getWindow(parent).addChildWindow(guiLayout)
+        #self._rootw.addChildWindow(guiLayout)
+    
+    
+    def getObject(self,name):
+        return self._wmgr.getWindow(name)
+    
+    def subscribeEvent(self,ctrl_name,event,func):
+        """
+        Bind and event to a function
+        @param ctrl_name: The name of the window/control to watch for events
+        """
+        wctrl = self._wmgr.getWindow(ctrl_name)
+        #self._addEvent(ctrl_name,event,func)
+        #wctrl.subscribeEvent(event, self, "_processEvents")
+        # Se podria hacer con un Proxy
+        wctrl.subscribeEvent(event, func.im_self, func.__name__)
+
+
+    #def _processEvents(self, e):
+    #    print e.window.getName()
+    #    print dir(e)
+    #    print help(e)
+
+    #def _addEvent(self,ctrl_name,event,func):
+    #    if self._eventSubscribers.has_key(ctrl_name):
+    #        self._eventSubscribers[ctrl_name][event] = func
+    #    else:
+    #        self._eventSubscribers[ctrl_name] = {event : func}
         
+
+    def getEvent(self,str):
+        """
+        Returns the selected event name
+        @param str: Name of the event to find
+        """
+        klass, event = str.split("/")
+        return getattr(getattr(cegui,klass),event)
+
+#    def processEvent(self, ev):
+#        if type == EventType.FRAME_STARTED
+
+
     def mouseMoved(self,mstate):
         #self._guiSystem.injectMouseMove(mstate.X.rel,mstate.Y.rel)
         #print mstate.X.abs,mstate.Y.abs
@@ -146,4 +202,12 @@ class CEGUIRenderer(SubSystem):
     def mouseReleased(self,mstate,id):
         self._guiSystem.injectMouseButtonUp(self._translateMouseButton(id))
 
+    def keyPressed(self,ev):
+        print ev.key
+        self._guiSystem.injectKeyDown(ev.key)
+        self._guiSystem.injectChar(ev.text)
+
+    def keyReleased(self,ev):
+        self._guiSystem.injectKeyUp(ev.key)
+        
 
