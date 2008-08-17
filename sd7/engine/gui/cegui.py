@@ -48,12 +48,12 @@ class CEGUIRenderer(SubSystem):
         del self._guiSystem
         del self._renderer
 
-    def setController(self,ctrl):
-        """
-        Sets a Controller class, with the desired implementation
-        """
-        self._controller = ctrl
-        #self._controller.register("gui",self)
+    #def setController(self,ctrl):
+    #    """
+    #    Sets a Controller class, with the desired implementation
+    #    """
+    #    self._controller = ctrl
+    #    #self._controller.register("gui",self)
 
     def initialize(self):
         """ Initialization """

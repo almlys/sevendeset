@@ -5,9 +5,11 @@
 	<!-- Define a object that will do some things
 			 The object will be instanciancied when it is used
 	-->
-	<controller name='gui' bind='sd7.logic.gui.GUI' >
-		<param name='test'>Test</param>
+	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='true' >
+		<param name='layout'>main.layout</param>
 	</controller>
+	
+	
 	<controller name='basicInput' bind='sd7.system.basicInput.MyBasicInputHandler' target='main' />
 	<controller name='startup' bind='sd7.system.startup.StartupHandler' target='main' />
 	

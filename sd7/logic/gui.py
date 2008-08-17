@@ -17,26 +17,31 @@ __version__ = "$Revision$"
 __all__ = ["GUI"]
 
 from sd7.engine.controller import Controller
-
+from sd7.engine import Engine
 
 class GUI(Controller):
-    
+
     __name__ = "GUI"
+    _params = {}
     
     def __init__(self,params):
         Controller.__init__(self,params)
-        print params
+        self._params = params
 
     def initialize(self):
         Controller.initialize(self)
         self.log("Initializing %s" %(self.__name__))
-        self._loadResources()
-        self._loadMainGUI()
+
+        # get the GUI and load the chat View
+        self._gui = Engine().getGUI()
+        self._gui.loadView(self._params["layout"])
+        # Watch for input events
+        #self._gui.subscribeEvent("Chat/ChatWindow/ChatOkBtn",
+        #    self._gui.getEvent("PushButton/EventClicked"),self.onInput)
     
-    def _loadResources(self):
-        pass
+        #self._gui.getObject("Chat/ChatWindow/ChatBox").setText("Connection code is missing")
     
-    def _loadMainGUI(self):
-        pass
-        
-    
+        # get Net and watch for incomming messages
+        #self._net = wathever
+        #self._net.subscribeMsg("chat,",self.onMsg)
+

@@ -76,7 +76,7 @@ class _Engine(object):
         from gui.cegui import CEGUIRenderer as GUI
         self._gui = GUI(self._options["global"],
                         "Ogre",self._renderer.getGUIGlueArgs())
-        self._gui.setController(self._hookmgr.getController("gui"))
+        #self._gui.setController(self._hookmgr.getController("gui"))
         self._gui.initialize()
         # The GUI listens for Input events
         self._input.addEventListener(self._gui)
