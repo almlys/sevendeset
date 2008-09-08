@@ -34,7 +34,7 @@ class Controller(object):
 
     def log(self,msg):
         if self._debugmsg and not self.__logFunc==None:
-            self.__logFunc(self.__name__ + ":" + msg)
+            self.__logFunc(self.__class__.__name__ + ":" + msg)
 
     def setLogFunc(self,log):
         self.__logFunc = log

@@ -21,8 +21,6 @@ from sd7.engine import Engine
 
 class ChatApp(Controller):
     
-    __name__ = "Chat"
-    
     def __init__(self,params):
         Controller.__init__(self,params)
         print "Init chat app"
@@ -30,7 +28,7 @@ class ChatApp(Controller):
 
     def initialize(self):
         Controller.initialize(self)
-        self.log("Initializing %s" %(self.__name__))
+        self.log("Initializing %s" %(self.__class__.__name__))
 
         # get the GUI and load the chat View
         self._gui = Engine().getGUI()
