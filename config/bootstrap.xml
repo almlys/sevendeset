@@ -536,5 +536,43 @@
 		</install>
 	</module>
 	
+	<module name='blender' >
+		<comment>Blender3d</comment>
+		<license>GPLv2 or later</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/blender/blender-2.47.tar.gz'
+						method='wget' renamefrom='blender-2.47'
+						md5='750f3be3214e15334e96afcc866c9f48' />
+		<source addr='http://download.blender.org/source/blender-2.47.tar.gz'
+						method='wget' renamefrom='blender-2.47'
+						md5='750f3be3214e15334e96afcc866c9f48' />
+	</module>
 	
+	<module name='blender-bin' >
+		<comment>Blender3d</comment>
+		<license>GPLv2 or later</license>
+		<source addr='http://7d7.almlys.org/downloads/depends/blender/blender-2.47-linux-glibc236-py25-x86_64.tar.bz2'
+						method='wget' renamefrom='blender-2.47-linux-glibc236-py25-x86_64'
+						md5='b7e14c76bb1351166ee312cea4d71a3c' />
+		<source addr='http://download.blender.org/release/Blender2.47/blender-2.47-linux-glibc236-py25-x86_64.tar.bz2'
+						method='wget' renamefrom='blender-2.47-linux-glibc236-py25-x86_64'
+						md5='b7e14c76bb1351166ee312cea4d71a3c' />
+	</module>
+
+	<module name='ogre-exporter' >
+		<comment>Ogre Blender Exporter</comment>
+		<license>..</license>
+		<source addr='https://ogre.svn.sourceforge.net/svnroot/ogre/trunk/Tools/BlenderExport'
+				method='svn' renamefrom='BlenderExport'
+				 />
+	</module>
+
+	<module name='ogre-dotexporter' >
+		<comment>Ogre Blender Exporter</comment>
+		<license>..</license>
+		<source addr='https://ogreaddons.svn.sourceforge.net/svnroot/ogreaddons/trunk/blendersceneexporter'
+				method='svn' renamefrom='blendersceneexporter'
+				 />
+	</module>
+
+
 </bootstrap>
