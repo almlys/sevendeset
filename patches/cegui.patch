@@ -1,0 +1,11 @@
+--- cegui.orig/RendererModules/directfbRenderer/directfb-renderer.cpp	2008-11-12 12:48:04.000000000 +0100
++++ cegui/RendererModules/directfbRenderer/directfb-renderer.cpp	2009-06-02 18:22:44.000000000 +0200
+@@ -22,6 +22,8 @@
+  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  *   OTHER DEALINGS IN THE SOFTWARE.
+  ***************************************************************************/
++#include <algorithm>
++
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
