@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.python.project</type>
+    <configuration>
+        <data xmlns="http://nbpython.dev.java.net/ns/php-project/1">
+            <name>sd7</name>
+            <sources>
+                <root id="src.bootstrap.dir"/>
+                <root id="src.sd7.dir"/>
+            </sources>
+            <tests/>
+        </data>
+    </configuration>
+</project>
