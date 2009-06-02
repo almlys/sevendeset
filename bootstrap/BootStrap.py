@@ -116,9 +116,10 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
             os.makedirs(self._outputPath,0755)
         if not os.path.exists(self._prefix):
             os.makedirs(self._prefix,0755)
-            if self._arch == 'x86_64':
+        if not os.path.exists(self._prefix+"/lib64") and self._arch == 'x86_64':
+            if not os.path.exists(self._prefix+"/lib"):
                 os.makedirs(self._prefix+"/lib",0755)
-                os.symlink(self._prefix+"/lib",self._prefix+"/lib64")
+            os.symlink(self._prefix+"/lib",self._prefix+"/lib64")
 
         # Enviorment vars
         prefix = os.environ['PREFIX'] = self._prefix
