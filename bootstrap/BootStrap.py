@@ -133,7 +133,10 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
         os.environ['PYTHONPATH'] = os.getcwd() + ":" + prefix + '/lib/python' + version + '/site-packages'
         os.environ['CPPFLAGS'] = '-I' + prefix + '/include'
-        os.environ['LDFLAGS'] = '-L' + prefix + '/lib'
+        aux = ""
+        if os.environ.has_key('LDFLAGS'):
+            aux = os.environ['LDFLAGS'] + " "
+        os.environ['LDFLAGS'] = aux + '-L' + prefix + '/lib'
         os.environ['PKG_CONFIG_PATH'] = prefix + '/lib/pkgconfig'
         os.environ['MY_GCC_VERSION'] = self._gcc_version
     
