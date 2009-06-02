@@ -14,17 +14,17 @@
 
 __version__ = "$Revision$"
 
-__all__ = ["mlog"]
+__all__ = ["Mlog"]
 
 
-class mlog(object):
+class Mlog(object):
     def __init__(self,handle,filename,mode="w"):
         self.file=file(filename,mode)
         self.handle=handle
     def write(self,x):
         self.handle.write(x.encode("utf-8"))
         self.file.write(x.encode("utf-8"))
-    def flush():
+    def flush(self):
         self.handle.flush()
         self.file.flush()
     def close(self):

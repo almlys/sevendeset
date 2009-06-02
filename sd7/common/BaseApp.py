@@ -20,7 +20,7 @@ import os
 import sys
 
 from MyDict import MyDict
-from sdlogger import mlog
+from sdlogger import Mlog
 from bootstrap.xmlparser import XMLParser
 
 
@@ -50,12 +50,14 @@ class BaseApplication(object):
         if os.path.isfile(self._configFile):
             self._readConfig()
         self._setCmdConfig()
-        self._logdir = self.GetCfg('global','system.logdir')
+        self._logdir = self.getCfg('global','system.logdir')
+        if self._logdir==None:
+            self._logdir="log"
         if not os.path.exists(self._logdir):
             os.mkdir(self._logdir)
         if redirect:
-            self._log = mlog(sys.stdout,self._logdir + '/stdout.log','w')
-            self._logerr = mlog(sys.stderr,self._logdir + '/stderr.log','w')
+            self._log = Mlog(sys.stdout,self._logdir + '/stdout.log','w')
+            self._logerr = Mlog(sys.stderr,self._logdir + '/stderr.log','w')
             self._old_stdout = sys.stdout
             self._old_stderr = sys.stderr
             sys.stdout = self._log
@@ -116,12 +118,12 @@ class BaseApplication(object):
     
     def _setConfigDefaults(self):
         """ Set the default configuration values """
-        if self.GetCfg('global','app.gettext.locales') == None:
-            self.SetCfg('global','app.gettext.locales','data/system/locales')
-        if self.GetCfg('global','app.gettext.domain') == None:
-            self.SetCfg('global','app.gettext.domain',self._getGettextDomain())
-        if self.GetCfg('global','system.logdir') == None:
-            self.SetCfg('global','system.logdir','log')
+        if self.getCfg('global','app.gettext.locales') == None:
+            self.setCfg('global','app.gettext.locales','data/system/locales')
+        if self.getCfg('global','app.gettext.domain') == None:
+            self.setCfg('global','app.gettext.domain',self._getGettextDomain())
+        if self.getCfg('global','system.logdir') == None:
+            self.setCfg('global','system.logdir','log')
     
     def _getGettextDomain(self):
         return "Undefined"
@@ -158,12 +160,12 @@ class BaseApplication(object):
         out.write("</sd7config>")
         out.close()
 
-    def SetCfg(self,section,key,value):
+    def setCfg(self,section,key,value):
         if not self._options.has_key(section):
             self._options[section] = MyDict()
         self._options[section][key] = value
 
-    def GetCfg(self,section,key):
+    def getCfg(self,section,key):
         """ Gets a configuration value """
         if self._options.has_key(section) and self._options[section].has_key(key):
             return self._options[section][key]
@@ -173,14 +175,14 @@ class BaseApplication(object):
         """Installs GetText"""
         import gettext
         if lang == None:
-            gettext.install(self.GetCfg("global","app.gettext.domain"),
-                            self.GetCfg("global","app.gettext.locales"),True)
+            gettext.install(self.getCfg("global","app.gettext.domain"),
+                            self.getCfg("global","app.gettext.locales"),True)
         else:
-            gettext.translation(self.GetCfg("global","app.gettext.domain"),
-                                self.GetCfg("global","app.gettext.locales"),
+            gettext.translation(self.getCfg("global","app.gettext.domain"),
+                                self.getCfg("global","app.gettext.locales"),
                                 (lang,)).install(True)
 
-    def GetLanguages(self):
+    def getLanguages(self):
         """ Returns all available languages """
         try:
             return self.__Languages
@@ -190,21 +192,21 @@ class BaseApplication(object):
             # Dirty hardcoded ugly LangDict
             _ = lambda x : x
             LangDict={"en":_("English"),"es":_("Spanish"),"ca":_("Catalan")}
-            for lan in dircache.listdir(self.GetCfg("global","app.gettext.locales")):
+            for lan in dircache.listdir(self.getCfg("global","app.gettext.locales")):
                 if lan in LangDict:
                     self.__Languages[lan]=LangDict[lan]
                 else:
                     self.__Languages[lan]=lan
             return self.__Languages
 
-    def SetLanguage(self,lang):
+    def setLanguage(self,lang):
         """ Sets the application language """
         #import locale
         #locale.setlocale(locale.LC_ALL, (lang,"utf-8"))
         self.__Language=lang
         self._installGettext(lang)
 
-    def GetLanguage(self):
+    def getLanguage(self):
         """ Returns current application language """
         try:
             return self.__Language
@@ -213,7 +215,7 @@ class BaseApplication(object):
             self.__Language=locale.getdefaultlocale()[0][:2]
             return self.__Language
 
-    def GetAppVersion(self):
+    def getAppVersion(self):
         """ Returns thea application version """
         return "$Revision$"
 

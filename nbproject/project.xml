@@ -5,7 +5,6 @@
         <data xmlns="http://nbpython.dev.java.net/ns/php-project/1">
             <name>sd7</name>
             <sources>
-                <root id="src.bootstrap.dir"/>
                 <root id="src.sd7.dir"/>
             </sources>
             <tests/>

@@ -14,7 +14,7 @@ sd7 Main Entry Point file and Application
 
 __version__ = "$Revision$"
 
-__all__ = []
+__all__ = ["MainApp","runsd7"]
 
 import sys
 import os
@@ -33,7 +33,7 @@ class MainApp(BaseApplication):
     
     def run(self):
         try:
-            self._options['global']['_window.name'] = self.GetAppVersion()
+            self._options['global']['_window.name'] = self.getAppVersion()
             print "Startup...."
             e = Engine(self._options)
             print "Run..."
@@ -42,22 +42,22 @@ class MainApp(BaseApplication):
         except:
             import traceback
             traceback.print_exc(file=sys.stderr)
-            if not os.path.exists(self.GetCfg('global','system.logdir')):
-                os.mkdir(self.GetCfg('global','system.logdir'))
-            trace = file(self.GetCfg('global','system.logdir') + '/traceback.log','w')
+            if not os.path.exists(self.getCfg('global','system.logdir')):
+                os.mkdir(self.getCfg('global','system.logdir'))
+            trace = file(self.getCfg('global','system.logdir') + '/traceback.log','w')
             traceback.print_exc(file=trace)
             trace.close()
             try:
                 import wx
                 app = wx.App(redirect=False)
-                wx.MessageBox(traceback.format_exc(),'Traceback - ' + self.GetAppVersion(),wx.ICON_ERROR)
+                wx.MessageBox(traceback.format_exc(),'Traceback - ' + self.getAppVersion(),wx.ICON_ERROR)
             except ImportError:
                 pass
 
-    def GetAppVersion(self):
+    def getAppVersion(self):
         return "sd7 Alchera pre-alpha v0.1 $Revision$"
 
-if __name__ == '__main__':
+def runsd7():
     try:
         app = MainApp(sys.argv)
         app.run()
@@ -79,3 +79,6 @@ if __name__ == '__main__':
         except ImportError:
             pass
     print "App Terminated"
+
+if __name__ == '__main__':
+    runsd7()
