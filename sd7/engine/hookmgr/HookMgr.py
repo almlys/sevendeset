@@ -19,6 +19,7 @@ __all__ = ["HookMgr"]
 from sd7.engine.subsystem import SubSystem as SubSystem
 from bootstrap.xmlparser import XMLParser
 
+from sd7.engine.Events import EventType
 
 class HookNotFoundError(Exception): pass
 
@@ -83,7 +84,7 @@ class HookMgr(SubSystem):
                 self.__saveControllerToCache(name,kls)
                 return kls
             except ImportError,e:
-                raise HookNotFoundError,"Cannot find %s:%s" %(name,ctrl)
+                raise HookNotFoundError,"Cannot find %s:%s:%s" %(name,ctrl,e)
         return None
     
     def destroyController(self,name):
@@ -97,3 +98,16 @@ class HookMgr(SubSystem):
     def stopAutomaticControllers(self):
         for c in self.__autostart_list.reverse():
             self.destroyController(c)
+
+    def processEvent(self, evt):
+        id = evt.getType()
+        if id in [EventType.KEY_PRESSED,EventType.KEY_RELEASED,
+        EventType.MOUSE_PRESSED,EventType.MOUSE_RELEASED,EventType.MOUSE_MOVED]:
+            for c in self.__controller_cache:
+                if self.__controller_cache[c].processEvent(evt):
+                    break
+        else:
+            for c in self.__controller_cache:
+                self.__controller_cache[c].processEvent(evt)
+
+

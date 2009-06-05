@@ -17,6 +17,7 @@ __version__ = "$Revision$"
 __all__ = ['OISInput',]
 
 
+from sd7.engine.Events import Event
 import ogre.io.OIS as OIS
 
 from sd7.engine.subsystem import SubSystem as SubSystem
@@ -157,6 +158,14 @@ class OISInput(SubSystem):
         self._InputConsumers.remove(listenner)
 
 
+class KeyboardState(object):
+
+    def __init__(self,device,key,text):
+        self.device = device
+        self.key = key
+        self.text = text
+
+
 class MyKeyListener(OIS.KeyListener):
     """ Keyboard Key Listenner, there can be only be ONE, if you want to
     controll aditional keyboards attached to the systems then OIS is not
@@ -167,14 +176,18 @@ class MyKeyListener(OIS.KeyListener):
         self._subscribers = subscribers
 
     def keyPressed(self, evt):
-        print "Key pressed %i %s" %(evt.key,evt.text)
+        print "Key pressed %i %s" %(evt.key, evt.text)
+        ev = Event(EventType.KEY_PRESSED, KeyboardState(evt.device, evt.key, evt.text))
         for sub in self._subscribers:
-            sub.keyPressed(evt)
+            if sub.processEvent(ev):
+                return
     
     def keyReleased(self, evt):
-        print "Key released %i %s" %(evt.key,evt.text)
+        print "Key released %i %s" %(evt.key, evt.text)
+        ev = Event(EventType.KEY_RELEASED, KeyboardState(evt.device, evt.key, evt.text))
         for sub in self._subscribers:
-            sub.keyReleased(evt)
+            if sub.processEvent(ev):
+                return
 
 
 class MouseState(object):
@@ -192,6 +205,9 @@ class MouseState(object):
             return self._mstate.Z
         return object.__getattribute__(self,name)
 
+    def setButtonId(self,id):
+        self.id = id
+
 
 class MyMouseListener(OIS.MouseListener):
     """ Mouse Listenner, there can be only ONE, if you want to control
@@ -203,18 +219,26 @@ class MyMouseListener(OIS.MouseListener):
         self._mstate = MouseState(mstate)
     
     def mouseMoved(self, evt):
+        # evt contains a reference to the mouse state
+        ev = Event(EventType.MOUSE_MOVED, self._mstate)
         for sub in self._subscribers:
-            # evt contains a reference to the mouse state
-            sub.mouseMoved(self._mstate)
+            if sub.processEvent(ev):
+                return
     
     def mousePressed(self, evt, id):
+        self._mstate.setButtonId(id)
+        ev = Event(EventType.MOUSE_PRESSED, self._mstate)
         for sub in self._subscribers:
-            sub.mousePressed(self._mstate,id)
+            if sub.processEvent(ev):
+                return
         
     
     def mouseReleased(self, evt, id):
+        self._mstate.setButtonId(id)
+        ev = Event(EventType.MOUSE_RELEASED, self._mstate)
         for sub in self._subscribers:
-            sub.mouseReleased(self._mstate,id)
+            if sub.processEvent(ev):
+                return
 
 
 

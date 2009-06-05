@@ -16,6 +16,7 @@ __version__ = "$Revision$"
 
 __all__ = ['Event']
 
+
 class EventType(object):
     WIN_CLOSED = 0
     WIN_MOVED = 1
@@ -23,6 +24,20 @@ class EventType(object):
     WIN_FOCUS = 3
     FRAME_STARTED = 4
     FRAME_ENDED = 5
+    #Input events
+    KEY_PRESSED = 6
+    KEY_RELEASED = 7
+    MOUSE_MOVED = 8
+    MOUSE_PRESSED = 9
+    MOUSE_RELEASED = 10
+    
+    stype = ["WIN_CLOSED","WIN_MOVED","WIN_RESIZED","WIN_FOCUS","FRAME_STARTED",
+    "FRAME_ENDED","KEY_PRESSED","KEY_RELEASED","MOUSE_MOVED","MOUSE_PRESSED",
+    "MOUSE_RELEASED"]
+
+
+def toString(type):
+    return EventType.stype[type]
 
 
 class Event(object):
@@ -37,4 +52,5 @@ class Event(object):
     def getObject(self):
         return self._object
 
-
+    def __str__(self):
+        return "Event type: %i, %s" %(self._type,toString(self._type))

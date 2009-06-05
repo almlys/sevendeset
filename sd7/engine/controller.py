@@ -16,7 +16,7 @@ __version__ = "$Revision$"
 
 __all__ = ['Controller',]
 
-
+from sd7.engine.Events import EventType
 
 class Controller(object):
 
@@ -42,9 +42,13 @@ class Controller(object):
     def register(self,who):
         self._view = who
 
-
     def processEvent(self,evt):
-        return True
+        if evt.getType() == EventType.FRAME_STARTED or \
+        evt.getType() == EventType.FRAME_ENDED or \
+        evt.getType() == EventType.MOUSE_MOVED:
+            return False
+        self.log("Unprocessed event " + str(evt))
+        return False
 
     def initialize(self):
         pass

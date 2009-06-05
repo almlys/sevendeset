@@ -20,7 +20,7 @@ __all__ = ['SubSystem',]
 import os
 import time
 
-
+from Events import EventType
 
 class SubSystem(object):
 
@@ -65,7 +65,7 @@ class SubSystem(object):
     def initialize(self):
         """Initialize the render engine"""
         if self._initialized:
-            raise "Cannot reinit"
+            raise Exception,"Cannot reinit"
         self._initialized = True
         self._setConfigDefaults()
         self._logDir = self._config["system.logdir"]
@@ -78,4 +78,10 @@ class SubSystem(object):
         return self._initialized
 
     def processEvent(self,evt):
-        return True
+        if evt.getType() == EventType.FRAME_STARTED or \
+        evt.getType() == EventType.FRAME_ENDED or \
+        evt.getType() == EventType.MOUSE_MOVED:
+            return False
+        self.log("Unprocessed event " + str(evt))
+        return False
+

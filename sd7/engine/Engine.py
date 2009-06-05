@@ -33,7 +33,7 @@ class _Engine(object):
         self.__startRenderer()
         self.__startInput()
         self.__startGUI()
-        self._hookmgr.startAutomaticControllers()
+        self.__startLogic()
 
     def __del__(self):
         """ Stuff needs to be deleted in the correct order, if not someting
@@ -102,6 +102,12 @@ class _Engine(object):
         from hookmgr.HookMgr import HookMgr as HookMgr
         self._hookmgr = HookMgr(self._options["global"])
         self._hookmgr.initialize()
+
+    def __startLogic(self):
+        self._hookmgr.startAutomaticControllers()
+        #The Hooks (Logic) will listen to render and input events
+        self._input.addEventListener(self._hookmgr)
+        self._renderer.addEventListener(self._hookmgr)
 
     def getGUI(self):
         return self._gui

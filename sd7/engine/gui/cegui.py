@@ -20,7 +20,7 @@ __all__ = ["CEGUIRenderer"]
 import ogre.gui.CEGUI as cegui
 
 from sd7.engine.subsystem import SubSystem as SubSystem
-
+from sd7.engine.Events import EventType
 
 class CEGUIRenderer(SubSystem):
     
@@ -167,9 +167,19 @@ class CEGUIRenderer(SubSystem):
         klass, event = str.split("/")
         return getattr(getattr(cegui,klass),event)
 
-#    def processEvent(self, ev):
-#        if type == EventType.FRAME_STARTED
-
+    def processEvent(self, ev):
+        type = ev.getType()
+        if type == EventType.KEY_PRESSED:
+            return self.keyPressed(ev.getObject())
+        elif type == EventType.KEY_RELEASED:
+            return self.keyReleased(ev.getObject())
+        elif type == EventType.MOUSE_MOVED:
+            return self.mouseMoved(ev.getObject())
+        elif type == EventType.MOUSE_PRESSED:
+            return self.mousePressed(ev.getObject(), ev.getObject().id)
+        elif type == EventType.MOUSE_RELEASED:
+            return self.mouseReleased(ev.getObject(), ev.getObject().id)
+        return False
 
     def mouseMoved(self,mstate):
         #self._guiSystem.injectMouseMove(mstate.X.rel,mstate.Y.rel)
@@ -180,6 +190,7 @@ class CEGUIRenderer(SubSystem):
             self._mouseWheel = mstate.Z.abs
             self._guiSystem.injectMouseWheelChange(self._mouseWheel)
             print self._mouseWheel
+        return True
             
 
     def _translateMouseButton(self,id):
@@ -198,16 +209,20 @@ class CEGUIRenderer(SubSystem):
 
     def mousePressed(self,mstate,id):
         self._guiSystem.injectMouseButtonDown(self._translateMouseButton(id))
+        return True
 
     def mouseReleased(self,mstate,id):
         self._guiSystem.injectMouseButtonUp(self._translateMouseButton(id))
+        return True
 
     def keyPressed(self,ev):
         print ev.key
         self._guiSystem.injectKeyDown(ev.key)
         self._guiSystem.injectChar(ev.text)
+        return True
 
     def keyReleased(self,ev):
         self._guiSystem.injectKeyUp(ev.key)
+        return True
         
 
