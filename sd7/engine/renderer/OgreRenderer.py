@@ -246,12 +246,18 @@ class OgreRenderer(SubSystem,RendererInterface):
                        plane, 1500, 1500, 20, 20, True, 1, 5, 5, (0, 0, 1))
 
         ent = self._sceneManager.createEntity("GroundEntity", "ground")
-        self._sceneManager.rootSceneNode.createChildSceneNode().attachObject(ent)
+        try:
+            self._sceneManager.rootSceneNode.createChildSceneNode().attachObject(ent)
+        except AttributeError:
+            self._sceneManager.getRootSceneNode().createChildSceneNode().attachObject(ent)
         ent.setMaterialName("Material.002/SOLID")
 
         # Ogre ball 1
         ent1 = self._sceneManager.createEntity("ball1", "Sphere.mesh")
-        node1 = self._sceneManager.rootSceneNode.createChildSceneNode()
+        try:
+            node1 = self._sceneManager.rootSceneNode.createChildSceneNode()
+        except AttributeError:
+            node1 = self._sceneManager.getRootSceneNode().createChildSceneNode()
         node1.attachObject(ent1)
         node1.scale = ((1.8, 1.8, 1.8))
 
@@ -273,7 +279,10 @@ class OgreRenderer(SubSystem,RendererInterface):
         #node.attachObject(ent)
 
         ent = self._sceneManager.createEntity("Cube", "Cube.mesh")
-        node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
+        try:
+            node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
+        except AttributeError:
+            node = self._sceneManager.getRootSceneNode().createChildSceneNode("CubeNode")
         node.attachObject(ent)
         node.translate(0,10,0)
 
@@ -289,7 +298,10 @@ class OgreRenderer(SubSystem,RendererInterface):
 
 
         ent2 = self._sceneManager.createEntity("Circle", "Cube.001.mesh")
-        node2 = self._sceneManager.rootSceneNode.createChildSceneNode("CircleNode")
+        try:
+            node2 = self._sceneManager.rootSceneNode.createChildSceneNode("CircleNode")
+        except AttributeError:
+            node2 = self._sceneManager.getRootSceneNode().createChildSceneNode("CircleNode")
         node2.attachObject(ent2)
 
         #body1 = ode.Body(self.world)
@@ -310,14 +322,20 @@ class OgreRenderer(SubSystem,RendererInterface):
         light.specularColour = 1, 1, 1
 
         # create the first camera node/pitch node
-        node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode1", (-400, 200, 400))
+        try:
+            node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode1", (-400, 200, 400))
+        except AttributeError:
+            node = self._sceneManager.getRootSceneNode().createChildSceneNode("CamNode1", (-400, 200, 400))
         node.yaw(ogre.Degree(-45))  # look at the ninja
 
         node = node.createChildSceneNode("PitchNode1")
         node.attachObject(self._camera)
 
         # create the second camera node/pitch node
-        node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode2", (0, 200, 400))
+        try:
+            node = self._sceneManager.rootSceneNode.createChildSceneNode("CamNode2", (0, 200, 400))
+        except AttributeError:
+            node = self._sceneManager.getRootSceneNode().createChildSceneNode("CamNode2", (0, 200, 400))
         node.createChildSceneNode("PitchNode2")
 
     

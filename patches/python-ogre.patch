@@ -1,52 +1,44 @@
---- python-ogre.orig/environment.py	2008-07-28 01:53:59.000000000 +0200
-+++ python-ogre/environment.py	2008-07-28 21:39:21.000000000 +0200
-@@ -513,8 +513,11 @@
-         gccp = subprocess.Popen (["gcc", "--version"], stdout=subprocess.PIPE)
-         gcc_version = gccp.communicate()[0].split('\n')[0].split()[2].split('.')
-        
--        # FIXME: Should this be the multithreaded version!? 
--        lib = "boost_python-gcc%s%s-%s" % (gcc_version[0], gcc_version[1], base[6:])
-+        # FIXME: Should this be the multithreaded version!?
-+        # Almlys Says: Yes, should be, do you have any clue how to atomatically detect it
-+        # well i prefer the mt version, I don't know what changed that it now build the mt one
-+        # istead of the non one. well, this should work
-+        lib = "boost_python-gcc%s%s-mt-%s" % (gcc_version[0], gcc_version[1], base[6:])
- 
- class boost_python_index:
-     active = True
-@@ -532,7 +535,8 @@
-             [0,'PREFIX=%s make install' % PREFIX, os.path.join(os.getcwd(), base)],
+--- python-ogre.orig/environment.py	2009-06-02 22:47:09.000000000 +0200
++++ python-ogre/environment.py	2009-06-05 20:58:48.000000000 +0200
+@@ -673,7 +673,7 @@
          ]
-    
--    lib = boost.lib.replace("python", "python_index")
-+    #lib = boost.lib.replace("python", "python_index")
-+    lib = boost.lib
+         libs = [boost.lib,  'OgreMain']
+         lib_dirs = [Config.LOCAL_LIB]
+-        include_dirs = [boost.PATH, Config.PATH_INCLUDE_Ogre]
++        include_dirs = [Config.PATH_INCLUDE_Ogre] #[boost.PATH, Config.PATH_INCLUDE_Ogre]
+         CCFLAGS = ' -D__PYTHONOGRE_BUILD_CODE '
  
- ####################################################
- ##
-@@ -853,12 +857,13 @@
-             [0, 'echo WARNING - Check that RTTI is enabled in the compiler options',''],
-             [0, 'echo Then ensure that OgreGUIRender is compiled with this version of CEGUI','']
-             ]         
--    include_dirs = [Config.PATH_Boost
--                    ,Config.PATH_INCLUDE_CEGUI
--                    ,Config.PATH_CEGUI
--                    , Config.PATH_INCLUDE_Ogre_CEGUIRenderer
-+    include_dirs = [#sd7#Config.PATH_Boost
-+                    Config.PATH_INCLUDE_CEGUI
-+                    #sd7#,Config.PATH_CEGUI
-+                    #sd7#, Config.PATH_INCLUDE_Ogre_CEGUIRenderer
-                     , Config.PATH_INCLUDE_Ogre
--                    , Config.PATH_INCLUDE_Ogre_Dependencies ## needed as OgreCEGUI uses CEGUI/.. in #includes
-+                    #sd7#, Config.PATH_INCLUDE_Ogre_Dependencies ## needed as OgreCEGUI uses CEGUI/.. in #includes
-+                    , Config.LOCAL_INCLUDE
-                     ]
-                   
-     lib_dirs = [ Config.PATH_LIB_Boost
---- python-ogre.orig/PythonOgreConfig_posix.py	2008-07-28 01:53:59.000000000 +0200
-+++ python-ogre/PythonOgreConfig_posix.py	2008-07-28 15:48:36.000000000 +0200
-@@ -11,16 +11,24 @@
- MAC_cflags = ' --gccxml-cxxflags "-DCF_OPEN_SOURCE -D_POSIX_C_SOURCE -isysroot /Developer/SDKs/MacOSX10.4u.sdk"'
+ 
+@@ -763,7 +763,7 @@
+         libs.append("User32") # needed for static linking
+ 
+     include_dirs = [
+-        boost.PATH,
++        #sd7#boost.PATH,
+         Config.PATH_INCLUDE_OIS,
+     ]
+     lib_dirs = [
+@@ -931,12 +931,13 @@
+             [0, 'echo Then ensure that OgreGUIRender is compiled with this version of CEGUI', '']
+         ]
+     include_dirs = [
+-        boost.PATH,
++        #sd7#boost.PATH,
+         Config.PATH_INCLUDE_CEGUI,
+-        Config.PATH_CEGUI,
++        #sd7#Config.PATH_CEGUI,
+         Config.PATH_INCLUDE_Ogre_CEGUIRenderer,
+         Config.PATH_INCLUDE_Ogre,
+-        Config.PATH_INCLUDE_Ogre_Dependencies, ## needed as OgreCEGUI uses CEGUI/.. in #includes
++        #sd7#Config.PATH_INCLUDE_Ogre_Dependencies, ## needed as OgreCEGUI uses CEGUI/.. in #includes
++        Config.LOCAL_INCLUDE
+     ]
+ 
+     lib_dirs = [
+--- python-ogre.orig/PythonOgreConfig_posix.py	2009-06-02 22:47:09.000000000 +0200
++++ python-ogre/PythonOgreConfig_posix.py	2009-06-05 17:37:32.000000000 +0200
+@@ -8,9 +8,12 @@
+ SDK = False
  
  # the base of the /usr/... dircetory structure that we are using
 -ROOT_DIR = os.path.join(BASE_DIR,'root')
@@ -60,28 +52,4 @@
 +LOCAL_INCLUDE = os.path.join(ROOT_DIR, 'include')
  
  ## path to the root of your boost dir, should have 'libs', 'boost' subdirectories
--PATH_Boost = os.path.join(LOCAL_INCLUDE, 'boost-1_35')
-+BOOST_VERSION = "1_35" # TODO: I want some code here that detects boost version
-+PATH_Boost = os.path.join(LOCAL_INCLUDE, "boost-" + BOOST_VERSION)
- ## Path to your boost_pythonxxxx lib file
- PATH_LIB_Boost = LOCAL_LIB
- ## and the name of the boost python library
--LIB_Boost = 'libboost_python-gcc42-mt-1_35'
-+#LIB_Boost = 'libboost_python-gcc42-mt-1_35'
-+import re
-+a,b = os.popen4("gcc -v")
-+MY_GCC_VERSION = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
-+LIB_Boost = 'libboost_python-gcc%s-mt-%s' %(MY_GCC_VERSION,BOOST_VERSION)
- 
- # in Linux we need to code in the Relative path for the library
- RPATH=os.path.join('\\$$ORIGIN',os.pardir,os.pardir, 'lib') #+ '\'' 
---- python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py	2008-07-28 01:53:57.000000000 +0200
-+++ python-ogre/packages_2.5/ogre/gui/CEGUI/__init__.py	2008-07-29 00:02:23.000000000 +0200
-@@ -13,6 +13,6 @@
- 
- from _cegui_ import *
- ## Make sure we are using a sane XML parser
--System.setDefaultXMLParserName("TinyXMLParser")
-+#System.setDefaultXMLParserName("TinyXMLParser")
- 
- warnings.resetwarnings( ) 
+ PATH_Boost = None

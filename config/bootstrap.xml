@@ -11,21 +11,21 @@
 		</comment>
 		<license>Propietary</license>
 
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86.tgz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_April2009_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='311069e73186b3a7837d35df08b714c8'
+						md5='acb2a5e6b2b05f04be3b37cb758ae002'
 						platform='linux' arch='i686' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0015/Cg-2.0_May2008_x86.tgz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.2_April2009_x86.tgz'
 						method='wget' renamefrom='usr'
-						md5='311069e73186b3a7837d35df08b714c8'
+						md5='acb2a5e6b2b05f04be3b37cb758ae002'
 						platform='linux' arch='i686' />
-		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.0_May2008_x86_64.tgz'
+		<source addr='http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_April2009_x86_64.tgz'
 						method='wget' renamefrom='usr'
-						md5='f0923e9fe9c0e0f1b1f49e9069c59815'
+						md5='59b487d2d729d34e0696bb967f250409'
 						platform='linux' arch='x86_64' />
-		<source addr='http://developer.download.nvidia.com/cg/Cg_2.0/2.0.0015/Cg-2.0_May2008_x86_64.tgz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cg/Cg-2.2_April2009_x86_64.tgz'
 						method='wget' renamefrom='usr'
-						md5='f0923e9fe9c0e0f1b1f49e9069c59815'
+						md5='59b487d2d729d34e0696bb967f250409'
 						platform='linux' arch='x86_64' />
 
 		<install>
@@ -91,6 +91,7 @@
 						md5='2e57135e26bb487cc8e13ee7b7e0a595' />
 		-->
 
+		<!--
 		<source addr='http://7d7.almlys.org/downloads/depends/freeimage/freeimage20080727.tar.bz2'
 						method='wget' renamefrom='freeimage'
 						md5='c4b145fbefd4c7869a8c7180ce4ba20e'
@@ -102,6 +103,14 @@
 		<source addr=':pserver:anonymous@freeimage.cvs.sourceforge.net:/cvsroot/freeimage'
 						method='cvs' module='FreeImage' renamefrom='FreeImage'
 						branch='devel' />
+		-->
+		
+		<source addr='http://7d7.almlys.org/downloads/depends/freeimage/FreeImage3120.zip'
+						method='wget' renamefrom='FreeImage'
+						md5='47b259102f776a4bcd7affc00942f3b4' />
+		<source addr='http://downloads.sourceforge.net/freeimage/FreeImage3120.zip'
+						method='wget' renamefrom='FreeImage'
+						md5='47b259102f776a4bcd7affc00942f3b4' />
 
 		<build>
 			<!-- Dirty patch grabben from python-ogre distribution -->
@@ -123,12 +132,12 @@
 			(Not installed on the UdL Fedora's, or it's not the correct version)
 		</comment>
 		<license>BSD</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/pcre/pcre-7.7.tar.bz2'
-						method='wget' renamefrom='pcre-7.7'
-						md5='4b2e9cde1f7227448dddba59843efa0b' />
-		<source addr='http://downloads.sourceforge.net/pcre/pcre-7.7.tar.bz2'
-						method='wget' renamefrom='pcre-7.7'
-						md5='4b2e9cde1f7227448dddba59843efa0b' />
+		<source addr='http://7d7.almlys.org/downloads/depends/pcre/pcre-7.9.tar.bz2'
+						method='wget' renamefrom='pcre-7.9'
+						md5='b6a9669d1863423f01ea46cdf00f93dc' />
+		<source addr='http://downloads.sourceforge.net/pcre/pcre-7.9.tar.bz2'
+						method='wget' renamefrom='pcre-7.9'
+						md5='b6a9669d1863423f01ea46cdf00f93dc' />
 		<build>
 			<cmd>./configure --prefix=$PREFIX --enable-unicode-properties</cmd>
 			<cmd>make -j 2</cmd>
@@ -143,12 +152,12 @@
 			Library for opening zip files
 		</comment>
 		<license>LGPL/MPL</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/zziplib/zziplib-0.13.49.tar.bz2'
-						method='wget' renamefrom='zziplib-0.13.49'
-						md5='5f7b88ebb2bcd7e8044328482d079661' />
-		<source addr='http://downloads.sourceforge.net/zziplib/zziplib-0.13.49.tar.bz2'
-						method='wget' renamefrom='zziplib-0.13.49'
-						md5='5f7b88ebb2bcd7e8044328482d079661' />
+		<source addr='http://7d7.almlys.org/downloads/depends/zziplib/zziplib-0.13.54.tar.bz2'
+						method='wget' renamefrom='zziplib-0.13.54'
+						md5='7bbeee86d75d1bbcc96d07c6df9de544' />
+		<source addr='http://downloads.sourceforge.net/zziplib/zziplib-0.13.54.tar.bz2'
+						method='wget' renamefrom='zziplib-0.13.54'
+						md5='7bbeee86d75d1bbcc96d07c6df9de544' />
 		<build>
 			<cmd>./configure --prefix=$PREFIX --datadir=$PREFIX/share</cmd>
 			<cmd>make -j 2</cmd>
@@ -194,22 +203,14 @@
 			GUI
 		</comment>
 		<license>MIT</license>
-		<!--
-		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEGUI-0.5.0b.tar.gz'
-						method='wget' renamefrom='CEGUI-0.5.0'
-						md5='b42322a33c6a06eede76b15f75694a17'/>
-		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.5.0b.tar.gz'
-						method='wget' renamefrom='CEGUI-0.5.0'
-						md5='b42322a33c6a06eede76b15f75694a17'/>
-		-->
-		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEGUI-0.6.1.tar.gz'
-						method='wget' renamefrom='CEGUI-0.6.1'
-						md5='aee37f8532ecbdc0b87efbaebafdf148'/>
-		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.6.1.tar.gz'
-						method='wget' renamefrom='CEGUI-0.6.1'
-						md5='aee37f8532ecbdc0b87efbaebafdf148'/>
 
-
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEGUI-0.6.2b.tar.gz'
+						method='wget' renamefrom='CEGUI-0.6.2'
+						md5='4fbd95e5a2ac1c7acf2a8f5df3ac6b93'/>
+		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.6.2b.tar.gz'
+						method='wget' renamefrom='CEGUI-0.6.2'
+						md5='4fbd95e5a2ac1c7acf2a8f5df3ac6b93'/>
+		<patch addr="cegui.patch" />
 		<build>
 			<cmd>./configure --prefix=$PREFIX --without-ogre-renderer --with-default-image-codec=FreeImageImageCodec --with-default-xml-parser=ExpatParser --enable-freeimage --enable-samples --disable-tinyxml --enable-expat </cmd>
 			<cmd>make -j 2</cmd>
@@ -225,13 +226,14 @@
 			The mother of the world
 		</comment>
 		<license>(dual) LGPLv2.1 or later / unrestricted(comercial)</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-v1-4-9.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/ogre/ogre-v1-6-2.tar.bz2'
 						method='wget' renamefrom='ogre'
-						md5='8a73fbcf42fd6b156b2567839d0cd125' />
-		<source addr='http://prdownloads.sourceforge.net/ogre/ogre-v1-4-9.tar.bz2'
+						md5='0f7e80fc255ad6ffe77151e4a08010be' />
+		<source addr='http://downloads.sourceforge.net/ogre/ogre-v1-6-2.tar.bz2'
 						method='wget' renamefrom='ogre'
-						md5='8a73fbcf42fd6b156b2567839d0cd125' />
+						md5='0f7e80fc255ad6ffe77151e4a08010be' />
 		<!-- Some patches should be added here!! -->
+		<patch addr='ogre.patch' />
 		<build>
 			<!--<cmd>./configure - - prefix=$PREFIX - - enable-openexr - - enable-threading</cmd>-->
 			<cmd>./configure --prefix=$PREFIX  --exec-prefix=$PREFIX --libdir=$PREFIX/lib --enable-openexr --with-gui=Xt --disable-devil --enable-freeimage</cmd>
@@ -249,13 +251,13 @@
 			Latest stable version is too old, soo we need to get latest **unstable** from cvs (cross fingers)
 		</comment>
 		<license>GPLv2 or later</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20080727.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/gccxml/gccxml20090602.tar.bz2'
 						method='wget' renamefrom='gccxml'
-						md5='be6e0a5c5f4b92c4294a376b9904ca8f'
+						md5='b448928c4e660039c7a77b8a52c125f3'
 						branch='stable' />
 
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
-						method='cvs' module='gccxml' revision='20080727'
+						method='cvs' module='gccxml' revision='20090602'
 						branch='stable' />
 		<source addr=':pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML'
 						method='cvs' module='gccxml'
@@ -278,12 +280,12 @@
 			Code generator for Boost.Python
 		</comment>
 		<license>Boost</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20080727.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/pygccxml/pygccxml20090602.tar.bz2'
 						method='wget' renamefrom='pygccxml'
-						md5='03ef0633b7e028d834fe44f362092173'
+						md5='9eec9809f91fee80375968e3d9821020'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
-						method='svn' revision='1379'
+						method='svn' revision='1737'
 						branch='stable' />
 		<source addr='https://pygccxml.svn.sourceforge.net/svnroot/pygccxml'
 						method='svn'
@@ -302,12 +304,12 @@
 			python setup.py install --prefix=$PREFIX
 		</comment>
 		<license>MIT</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/scons/scons-0.98.5.tar.gz'
-						method='wget' renamefrom='scons-0.98.5'
-						md5='640dfc99a29523a06dbeaac299a3e0a0' />
-		<source addr='http://prdownloads.sourceforge.net/scons/scons-0.98.5.tar.gz'
-						method='wget' renamefrom='scons-0.98.5'
-						md5='640dfc99a29523a06dbeaac299a3e0a0' />
+		<source addr='http://7d7.almlys.org/downloads/depends/scons/scons-1.2.0.d20090223.tar.gz'
+						method='wget' renamefrom='scons-1.2.0.d20090223'
+						md5='79b55937be8efc7ff1409a8ca9f9823d' />
+		<source addr='http://downloads.sourceforge.net/scons/scons-1.2.0.d20090223.tar.gz'
+						method='wget' renamefrom='scons-1.2.0.d20090223'
+						md5='79b55937be8efc7ff1409a8ca9f9823d' />
 
 		<install>
 			<cmd>python setup.py install --prefix=$PREFIX</cmd>
@@ -320,39 +322,35 @@
 			# Need to patch??
 		</comment>
 		<license>Boost</license>
-		<!-- <source addr='http://7d7.almlys.org/downloads/depends/boost/boost_1_34_1.tar.bz2'
-						method='wget' renamefrom='boost_1_34_1'
-						md5='2d938467e8a448a2c9763e0a9f8ca7e5' />
-		<source addr='http://downloads.sourceforge.net/boost/boost_1_34_1.tar.bz2'
-						method='wget' renamefrom='boost_1_34_1'
-						md5='2d938467e8a448a2c9763e0a9f8ca7e5' /> -->
-		<source addr='http://7d7.almlys.org/downloads/depends/boost/boost_1_35_0.tar.bz2'
-						method='wget' renamefrom='boost_1_35_0'
-						md5='dce952a7214e72d6597516bcac84048b' />
-		<source addr='http://downloads.sourceforge.net/boost/boost_1_35_0.tar.bz2'
-						method='wget' renamefrom='boost_1_35_0'
-						md5='dce952a7214e72d6597516bcac84048b' />
-		<patch addr='boost.patch' />
+		<source addr='http://7d7.almlys.org/downloads/depends/boost/boost_1_39_0.tar.bz2'
+						method='wget' renamefrom='boost_1_39_0'
+						md5='a17281fd88c48e0d866e1a12deecbcc0' />
+		<source addr='http://downloads.sourceforge.net/boost/boost_1_39_0.tar.bz2'
+						method='wget' renamefrom='boost_1_39_0'
+						md5='a17281fd88c48e0d866e1a12deecbcc0' />
+		<!-- <patch addr='boost.patch' /> -->
 		<build>
 			<!-- Begin Dirty Hack -->
-			<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>
-			<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>
+			<!--<cmd>cp -v ../pygccxml/pyplusplus_dev/indexing_suite_v2/indexing/*.hpp boost/python/suite/indexing</cmd>-->
+			<!--<cmd>cp -rvf ../pygccxml/pyplusplus_dev/indexing_suite_v2/src/indexing libs/python/src</cmd>-->
 			<!-- End Dirty Hack -->
 			<!-- <cmd>./configure - - with-libraries=python,thread - - prefix=$PREFIX</cmd> -->
-			<cmd>./configure --with-libraries=python --prefix=$PREFIX</cmd>
-			<cmd>sed -i s/BJAM_CONFIG=/BJAM_CONFIG=release/ Makefile</cmd>
-			<cmd>make</cmd>
+			<!--<cmd>./configure - - with-libraries=python - - prefix=$PREFIX</cmd>-->
+			<cmd>./bootstrap.sh --with-libraries=python --prefix=$PREFIX --libdir=$PREFIX/lib</cmd>
+			<!--<cmd>sed -i s/BJAM_CONFIG=/BJAM_CONFIG=release/ Makefile</cmd>-->
+			<!--<cmd>make</cmd>-->
+			<cmd>./bjam --prefix=$PREFIX --libdir=$PREFIX/lib</cmd>
 		</build>
 		<install>
-			<cmd>make install</cmd>
+			<!--<cmd>make install</cmd>-->
+			<cmd>./bjam install --prefix=$PREFIX --libdir=$PREFIX/lib</cmd>
 			<!-- This is ugly -->
 			<!--
 			<cmd cmd='cd' path='${PREFIX}/lib' />
 			<cmd>ln -fs libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
 			-->
 			<cmd cmd='cd' path='${PREFIX}/include' />
-			<cmd>ln -fs boost-1_35/boost boost</cmd>
-			<!-- Argh -->
+			<cmd>ln -fs boost-1_39/boost boost</cmd>-->
 		</install>
 	</module>
 
@@ -362,17 +360,13 @@
 			Python-Ogre
 		</comment>
 		<license>LGPLv2 or later</license>
-		<!-- <source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080318.tar.bz2'
+		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20090602.tar.bz2'
 						method='wget' renamefrom='python-ogre'
-						md5='e59e2f41d9a3c271f0574373c4e5dd47'
-						branch='stable' /> -->
-		<source addr='http://7d7.almlys.org/downloads/depends/python-ogre/python-ogre20080727.tar.bz2'
-						method='wget' renamefrom='python-ogre'
-						md5='39f9d4283c569ee3b1e9dd182f9072bf'
+						md5='a6bd33f76a1177737ef121cbf332e522'
 						branch='stable' />
 
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
-						method='svn' revision='674'
+						method='svn' revision='984'
 						branch='stable' />
 		<source addr='https://python-ogre.svn.sourceforge.net/svnroot/python-ogre/trunk/python-ogre'
 						method='svn'
