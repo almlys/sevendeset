@@ -29,7 +29,8 @@
 						platform='linux' arch='x86_64' />
 
 		<install>
-			<cmd>cp -rvp * $PREFIX</cmd>
+			<cmd>cp -rvp bin include local share $PREFIX</cmd>
+			<cmd>cp -rvp lib/* $PREFIX/lib || cp -rvp lib64/* $PREFIX/lib</cmd>
 		</install>
 	</module>
 	
