@@ -25,4 +25,9 @@ echo "Using python $PYTHONVERSION"
 
 export PYTHONPATH=`pwd`:$PREFIX/lib/python$PYTHONVERSION/site-packages
 
-bash
+if [ $# -eq 0 ]; then
+  bash
+else
+  $@
+fi
+
