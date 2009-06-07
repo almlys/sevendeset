@@ -17,6 +17,11 @@
 	<controller name='startup' bind='sd7.system.startup.StartupHandler' target='main' />
 	
 	<controller name='chatapp' bind='sd7.logic.chatapp.ChatApp' autostart='true' />
+
+    <!-- target is used?
+        add priority, please!
+        events map not used!?
+        -->
 	
 	<!-- Associate an event with an object -->
 	<event name='input' bind='basicInput' />
