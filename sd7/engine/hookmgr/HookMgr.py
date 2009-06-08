@@ -43,6 +43,7 @@ class HookMgr(SubSystem):
     def initialize(self):
         SubSystem.initialize(self)
         self.log("Initializing HookManager")
+        print self._config
         self.__loadMapping(self._config["system.hooks"])
 
     def __addController(self,name,classname,args):

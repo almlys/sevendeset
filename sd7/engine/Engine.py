@@ -117,7 +117,6 @@ class _Engine(object):
         self._renderer.renderLoop()
 
 
-
 def Engine(options=None):
     if _Engine._instance == None:
         print "Created unique instance of the engine"

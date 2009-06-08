@@ -63,7 +63,7 @@ class SubSystem(object):
         self._log.write(time.strftime('%Y:%m:%d:%H:%M:%S>') + msg + '\n')
 
     def initialize(self):
-        """Initialize the render engine"""
+        """Initialize the SubSystem"""
         if self._initialized:
             raise Exception,"Cannot reinit"
         self._initialized = True
