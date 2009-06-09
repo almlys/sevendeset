@@ -16,10 +16,8 @@ __version__ = "$Revision$"
 
 __all__ = ["HookMgr"]
 
-from sd7.engine.subsystem import SubSystem as SubSystem
 from bootstrap.xmlparser import XMLParser
-
-from sd7.engine.Events import EventType
+from sd7.engine.subsystem import SubSystem as SubSystem
 
 class HookNotFoundError(Exception): pass
 
@@ -85,12 +83,17 @@ class HookMgr(SubSystem):
                 self.__saveControllerToCache(name,kls)
                 return kls
             except ImportError,e:
-                raise HookNotFoundError,"Cannot find %s:%s:%s" %(name,ctrl,e)
+                raise HookNotFoundError,"Cannot create %s:%s:%s" %(name,ctrl,e)
         return None
     
     def destroyController(self,name):
         # If reference count gets to 0 it will be destroyed...
-        self.__controller_cache.pop(name)
+        self.__controller_cache.pop(name).terminate()
+
+    def findController(self,name):
+        if self.__controller_cache.has_key(name):
+            return self.__controller_cache[name]
+        return None
 
     def startAutomaticControllers(self):
         for c in self.__autostart_list:
@@ -101,15 +104,17 @@ class HookMgr(SubSystem):
             self.destroyController(c)
 
     def processEvent(self, evt):
-        id = evt.getType()
-        if id in [EventType.KEY_PRESSED,EventType.KEY_RELEASED,
-        EventType.MOUSE_PRESSED,EventType.MOUSE_RELEASED,EventType.MOUSE_MOVED,
-        EventType.ACTION_UP,EventType.ACTION_DOWN,EventType.ACTION_AXIS]:
+        if evt.isActionEvent():
+            target = evt.getObject().target
+            if target != None and self.__controller_cache.has_key(target) and \
+                self.__controller_cache[target].processEvent(evt):
+                return True
+        if evt.isInputEvent():
             for c in self.__controller_cache:
                 if self.__controller_cache[c].processEvent(evt):
-                    break
+                    return True
         else:
             for c in self.__controller_cache:
                 self.__controller_cache[c].processEvent(evt)
-
+        return False
 

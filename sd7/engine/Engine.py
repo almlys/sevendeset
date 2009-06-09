@@ -112,6 +112,12 @@ class _Engine(object):
     def getGUI(self):
         return self._gui
 
+    def getRenderer(self):
+        return self._renderer
+
+    def getHookMGR(self):
+        return self._hookmgr
+
 
     def run(self):
         self._renderer.renderLoop()

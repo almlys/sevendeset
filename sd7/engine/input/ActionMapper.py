@@ -76,8 +76,6 @@ class EventDispatcher(object):
                     return True
             return False
 
-        print rawEvt
-        print actionEvt
         if actionEvt.getObject().priority < 1 :
             for o in self._normalConsumers:
                 if o.processEvent(actionEvt):
@@ -95,7 +93,7 @@ class EventDispatcher(object):
             if o.processEvent(rawEvt):
                 return True
 
-        self.log("")
+        self.log("Unprocessed event: Action: %s, Raw: %s" %(actionEvt, rawEvt))
 
 
 
@@ -134,7 +132,7 @@ class ActionMapper(SubSystem):
         
         for i in x.xsd7input[0].xinput:
             device = i.pdevice#, i.pname, i.ppriority
-            target = ""
+            target = None
             priority = 1
             if hasattr(i,"ptarget"):
                 target = i.ptarget
@@ -198,36 +196,38 @@ class ActionMapper(SubSystem):
 
 
     def _updateKeyMask(self,evt):
-        if evt.getObject().key in (Key.LSHIFT, Key.RSHIFT):
-            if evt.getType() == EventType.KEY_PRESSED:
+        key, etype = evt.getObject().key, evt.getType()
+        if key in (Key.LSHIFT, Key.RSHIFT):
+            if etype == EventType.KEY_PRESSED:
                 self._mask |= 1
             else:
                 self._mask &= ~1
-        elif evt.getObject().key in (Key.LCTRL, Key.RCTRL):
-            if evt.getType() == EventType.KEY_PRESSED:
+        elif key in (Key.LCTRL, Key.RCTRL):
+            if etype == EventType.KEY_PRESSED:
                 self._mask |= 2
             else:
                 self._mask &= ~2
-        elif evt.getObject().key in (Key.LALT, Key.RALT):
-            if evt.getType() == EventType.KEY_PRESSED:
+        elif key in (Key.LALT, Key.RALT):
+            if etype == EventType.KEY_PRESSED:
                 self._mask |= 4
             else:
                 self._mask &= ~4
-        print self._mask
+        #print self._mask
 
 
     def processEvent(self,evt):
-        if evt.getType() in [EventType.KEY_PRESSED, EventType.MOUSE_PRESSED]:
+        etype = evt.getType()
+        if etype in [EventType.KEY_PRESSED, EventType.MOUSE_PRESSED]:
             evtType = EventType.ACTION_DOWN
-        elif evt.getType() in [EventType.KEY_RELEASED, EventType.MOUSE_RELEASED]:
+        elif etype in [EventType.KEY_RELEASED, EventType.MOUSE_RELEASED]:
             evtType = EventType.ACTION_UP
-        elif evt.getType() in [EventType.MOUSE_MOVED]:
+        elif etype in [EventType.MOUSE_MOVED]:
             evtType = EventType.ACTION_AXIS
         else:
             self.log("Unkwnon unprocessed event: %s",str(evt))
             return False
 
-        if evt.getType() in [EventType.KEY_PRESSED, EventType.KEY_RELEASED]:
+        if etype in [EventType.KEY_PRESSED, EventType.KEY_RELEASED]:
             self._updateKeyMask(evt)
             hash = "keyboard"
             hash += Key.toString(evt.getObject().key)
@@ -236,12 +236,15 @@ class ActionMapper(SubSystem):
             if self._actionMap.has_key(hash):
                 actionEvt = Event(evtType,self._actionMap[hash])
                 return self._eventDispatcher.dispatchEvent(evt,actionEvt)
-        elif evt.getType() in [EventType.MOUSE_PRESSED,
-            EventType.MOUSE_RELEASED, EventType.MOUSE_MOVED]:
-            device = "mouse"
-        #else:
-        #    return False
-        #return False
+        elif etype in [EventType.MOUSE_PRESSED,
+            EventType.MOUSE_RELEASED]:
+            hash = "mouse"
+            hash += str(evt.getObject().id+1)
+            if self._actionMap.has_key(hash):
+                actionEvt = Event(evtType,self._actionMap[hash])
+                return self._eventDispatcher.dispatchEvent(evt,actionEvt)
+        elif etype in [EventType.MOUSE_MOVED]:
+            pass
         return self._eventDispatcher.dispatchEvent(evt)
 
 

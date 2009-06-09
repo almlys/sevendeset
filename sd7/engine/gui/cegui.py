@@ -28,8 +28,10 @@ class CEGUIRenderer(SubSystem):
     _device_type = "Ogre"
     _device = None
     _mouseWheel = 0
-    _controller = None
     _eventSubscribers = {}
+    _guiFocus = False
+    _mouseEnabled = False
+    _keyboardEnabled = False
     
     def __init__(self,options=None,type="Ogre",args=None):
         """
@@ -48,13 +50,6 @@ class CEGUIRenderer(SubSystem):
         del self._guiSystem
         del self._renderer
 
-    #def setController(self,ctrl):
-    #    """
-    #    Sets a Controller class, with the desired implementation
-    #    """
-    #    self._controller = ctrl
-    #    #self._controller.register("gui",self)
-
     def initialize(self):
         """ Initialization """
         
@@ -64,9 +59,6 @@ class CEGUIRenderer(SubSystem):
         
         if not self._initCEGUI():
             return False
-        
-        if self._controller!=None:
-            self._controller.initialize()
         
         self._loadResources()
         self._createRootWindow()
@@ -121,6 +113,8 @@ class CEGUIRenderer(SubSystem):
         
         frame.setText("Title sd7")
 
+    ### Client functions
+
     def loadView(self,name,parent="root"):
         """ Loads a set of Windows conforming a view
             @param name: The name of the file containing the layout definition
@@ -147,18 +141,6 @@ class CEGUIRenderer(SubSystem):
         wctrl.subscribeEvent(event, func.im_self, func.__name__)
 
 
-    #def _processEvents(self, e):
-    #    print e.window.getName()
-    #    print dir(e)
-    #    print help(e)
-
-    #def _addEvent(self,ctrl_name,event,func):
-    #    if self._eventSubscribers.has_key(ctrl_name):
-    #        self._eventSubscribers[ctrl_name][event] = func
-    #    else:
-    #        self._eventSubscribers[ctrl_name] = {event : func}
-        
-
     def getEvent(self,str):
         """
         Returns the selected event name
@@ -167,7 +149,44 @@ class CEGUIRenderer(SubSystem):
         klass, event = str.split("/")
         return getattr(getattr(cegui,klass),event)
 
+    def toggleFocus(self, focus = None):
+        """
+        Toggles the GUI focus state
+        @param focus: True or False to force the focus state
+        """
+        if focus is None:
+            self._guiFocus = not self._guiFocus
+        else:
+            self._guiFocus = focus
+
+    def toggleMouse(self, enabled = None):
+        """
+        Enables/Disables the Mouse
+        """
+        if enabled is None:
+            self._mouseEnabled = not self._mouseEnabled
+        else:
+            self._mouseEnabled = enabled
+        #print dir(cegui.MouseCursor)
+        cegui.MouseCursor.getSingleton().setVisible(self._mouseEnabled)
+
+    def toggleKeyboard(self, enabled = None):
+        """
+        Enables/Disables the Keyboard
+        """
+        if enabled is None:
+            self._keyboardEnabled = not self._keyboardEnabled
+        else:
+            self._keyboardEnabled = enabled
+
+    def hasFocus(self):
+        return self._guiFocus
+
+    # End client methods
+
     def processEvent(self, ev):
+        if not self.hasFocus():
+            return False
         type = ev.getType()
         if type == EventType.KEY_PRESSED:
             return self.keyPressed(ev.getObject())
@@ -189,7 +208,7 @@ class CEGUIRenderer(SubSystem):
         if self._mouseWheel!=mstate.Z.abs:
             self._mouseWheel = mstate.Z.abs
             self._guiSystem.injectMouseWheelChange(self._mouseWheel)
-            print self._mouseWheel
+            #print self._mouseWheel
         return True
             
 
@@ -216,7 +235,7 @@ class CEGUIRenderer(SubSystem):
         return True
 
     def keyPressed(self,ev):
-        print ev.key
+        #print ev.key
         self._guiSystem.injectKeyDown(ev.key)
         self._guiSystem.injectChar(ev.text)
         return True
@@ -225,4 +244,5 @@ class CEGUIRenderer(SubSystem):
         self._guiSystem.injectKeyUp(ev.key)
         return True
         
+
 

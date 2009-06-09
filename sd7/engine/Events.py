@@ -52,7 +52,16 @@ class Event(object):
     
     def getType(self):
         return self._type
-    
+
+    def isInputEvent(self):
+        return self._type in [EventType.KEY_PRESSED,EventType.KEY_RELEASED,
+        EventType.MOUSE_PRESSED,EventType.MOUSE_RELEASED,EventType.MOUSE_MOVED,
+        EventType.ACTION_UP,EventType.ACTION_DOWN,EventType.ACTION_AXIS]
+
+    def isActionEvent(self):
+        return self._type in [EventType.ACTION_UP,EventType.ACTION_DOWN,
+        EventType.ACTION_AXIS]
+
     def getObject(self):
         return self._object
 

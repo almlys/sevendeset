@@ -23,8 +23,7 @@ class ChatApp(Controller):
     
     def __init__(self,params):
         Controller.__init__(self,params)
-        print "Init chat app"
-        print params
+        self._visible = True
 
     def initialize(self):
         Controller.initialize(self)
@@ -42,8 +41,20 @@ class ChatApp(Controller):
         # get Net and watch for incomming messages
         #self._net = wathever
         #self._net.subscribeMsg("chat,",self.onMsg)
+        self.setVisible(False)
 
-    
+    def setVisible(self,vis = None):
+        if vis is not None:
+            self._visible = vis
+        else:
+            self._visible = not self._visible
+        self._gui.getObject("Chat/ChatWindow").setVisible(self._visible)
+        if self._visible:
+            bi = Engine().getHookMGR().findController("basicInput")
+            if bi:
+                bi.toggleGUIFocus(self._visible)
+
+
     def onInput(self,e):
         msg = self._gui.getObject("Chat/ChatWindow/ChatInput").getText()
         history = self._gui.getObject("Chat/ChatWindow/ChatBox")
@@ -53,5 +64,14 @@ class ChatApp(Controller):
     
     def onMsg(self,msg):
         self._gui.getControl("wathever").getText.append(msg)
-    
+
+    def onAction(self, name, down):
+        if down:
+            if name == "console":
+                self.setVisible()
+                return True
+                
+
+
+
     

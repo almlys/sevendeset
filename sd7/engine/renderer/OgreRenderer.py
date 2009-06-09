@@ -20,11 +20,21 @@ import os
 import os.path
 
 import ogre.renderer.OGRE as ogre
-#import ogre.io.OIS as OIS
+
 
 from sd7.engine.subsystem import SubSystem as SubSystem
 from sd7.engine.Events import Event, EventType
 from RendererInterface import RendererInterface
+
+class RendererFactory(object):
+
+    def __init__(self):
+        pass
+
+    def createVector3(self,x,y,z):
+        return ogre.Vector3(x,y,z)
+
+
 
 class OgreRenderer(SubSystem,RendererInterface):
     
@@ -35,6 +45,7 @@ class OgreRenderer(SubSystem,RendererInterface):
     def __init__(self,options=None):
         SubSystem.__init__(self,'OgreRenderer',True,options)
         RendererInterface.__init__(self,options)
+        self._rendererFactory = RendererFactory()
 
     def __del__(self):
         self.log("Destroying Renderer")
@@ -338,7 +349,8 @@ class OgreRenderer(SubSystem,RendererInterface):
             node = self._sceneManager.getRootSceneNode().createChildSceneNode("CamNode2", (0, 200, 400))
         node.createChildSceneNode("PitchNode2")
 
-    
+    ## Client methods
+
     def addEventListener(self, listenner):
         """ Register a event listener """
         self._subscribers.append(listenner)
@@ -359,6 +371,11 @@ class OgreRenderer(SubSystem,RendererInterface):
         should not be used for nothing else """
         return (self._renderWindow, ogre.RENDER_QUEUE_OVERLAY, False, 0, self._sceneManager)
 
+    def getRendererFactory(self):
+        return self._renderFactory
+
+    def getCamera(self):
+        return self._camera
 
 
 class OgreWindow(object):
@@ -394,7 +411,7 @@ class Frame(object):
     
     def __init__(self, frameevt):
         self._frameevt = frameevt
-
+        self.timeSinceLastFrame = frameevt.timeSinceLastFrame
 
 class EventListener(ogre.FrameListener, ogre.WindowEventListener):
     

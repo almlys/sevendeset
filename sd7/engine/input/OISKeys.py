@@ -137,7 +137,7 @@ class Key(object):
     WEBHOME = 178
     NUMPADCOMMA = 179
     DIVIDE = 181
-    SYSRQ = 183
+    PRTSC = 183
     RALT = 184
     PAUSE = 197
     HOME = 199
@@ -294,7 +294,7 @@ class Key(object):
         'WEBHOME' : 178,
         'NUMPADCOMMA' : 179,
         'DIVIDE' : 181,
-        'SYSRQ' : 183,
+        'PRTSC' : 183,
         'RALT' : 184,
         'PAUSE' : 197,
         'HOME' : 199,
@@ -442,7 +442,7 @@ class Key(object):
         178 : 'WEBHOME',
         179 : 'NUMPADCOMMA',
         181 : 'DIVIDE',
-        183 : 'SYSRQ',
+        183 : 'PRTSC',
         184 : 'RALT',
         197 : 'PAUSE',
         199 : 'HOME',

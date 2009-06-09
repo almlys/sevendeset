@@ -43,6 +43,13 @@ class Controller(object):
         self._view = who
 
     def processEvent(self,evt):
+        etype = evt.getType()
+        if etype == EventType.ACTION_DOWN:
+            return self.onAction(evt.getObject().name,True)
+        elif etype == EventType.ACTION_UP:
+            return self.onAction(evt.getObject().name,False)
+        elif etype == EventType.FRAME_STARTED:
+            return self.onFrame(evt)
         return False
         if evt.getType() == EventType.FRAME_STARTED or \
         evt.getType() == EventType.FRAME_ENDED or \
@@ -51,7 +58,14 @@ class Controller(object):
         self.log("Unprocessed event " + str(evt))
         return False
 
+    def onAction(self,name,down=True):
+        return False
+
+    def onFrame(self,evt):
+        return False
+
     def initialize(self):
         pass
     
-    
+    def terminate(self):
+        pass
