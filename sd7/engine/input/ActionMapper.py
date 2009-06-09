@@ -253,7 +253,7 @@ class ActionMapper(SubSystem):
         elif etype in [EventType.MOUSE_MOVED]:
             hash = "mouse"
             mo = evt.getObject()
-            x,y,z = mo.X.rel, mo.Y.rel, mo.Z.rel
+            x,y,z = mo.X.abs, mo.Y.abs, mo.Z.abs
             res = False
             if self._mouse_x != x:
                 self._mouse_x = x

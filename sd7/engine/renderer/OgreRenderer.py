@@ -387,8 +387,8 @@ class OgreWindow(object):
         return self._renderWindow
         
     def getMetrics(self):
-        dir(self._renderWindow)
-        help(self._renderWindow.getMetrics)
+        #dir(self._renderWindow)
+        #help(self._renderWindow.getMetrics)
         # Seems that I or upstream has broken getMetric
         w = 0
         h = 0

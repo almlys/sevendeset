@@ -36,12 +36,19 @@ class Camera(Controller):
         "right" : { True : 1, False : 0},
         "left" : { True : -1, False : 0},
     }
+
     
     def __init__(self,params):
         Controller.__init__(self,params)
         self._renderer = Engine().getRenderer()
         self._camera = self._renderer.getCamera()
-
+        self._updateMetrics()
+        
+    def _updateMetrics(self):
+        w, h, c, l, t = self._renderer.getRenderWindow().getMetrics()
+        wd = w/3
+        hd = h/3
+        self._frontier = [wd, 2*wd, hd, 2*hd]
 
     def initialize(self):
         Controller.initialize(self)
@@ -70,12 +77,12 @@ class Camera(Controller):
             #vector = self._renderer.getRendererFactory().createVector3()
             self._camera.moveRelative((moveScaleX,0,moveScaleZ))
 
-        self._mouse += time
+        #self._mouse += time
 
-        if self._mouse >= 0.2:
-            self._rotateX = 0
-            self._rotateY = 0
-            self._mouse = False
+        #if self._mouse >= 0.2:
+        #    self._rotateX = 0
+        #    self._rotateY = 0
+        #    self._mouse = False
 
 
     def onAction(self, name, down):
@@ -94,13 +101,29 @@ class Camera(Controller):
         return False
 
     def onAxis(self, name, abs, rel, type):
-        self._mouse = 0
-        print name, rel, abs
+        #self._mouse = 0
+        x1, x2, y1, y2 = self._frontier
+        neg = 1
+        if abs < 0:
+            neg = -1
+        abs = neg * abs
+        speed = 0.0013
+
         if name == "x":
-            self._rotateY = -rel * 0.13
+            if abs < x1:
+                self._rotateY = (x1 - abs) * speed * neg
+            elif abs > x2:
+                self._rotateY = (abs - x2) * speed * -neg
+            else:
+                self._rotateY = 0
             return True
         if name == "y":
-            self._rotateX = -rel * 0.13
+            if abs < x1:
+                self._rotateX = (y1 - abs) * speed * neg
+            elif abs > x2:
+                self._rotateX = (abs - y2) * speed * -neg
+            else:
+                self._rotateX = 0
             return True
         return False
             
