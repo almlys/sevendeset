@@ -59,7 +59,7 @@ class OISInput(SubSystem):
         # other names, I think that upstream (OIS maintainers), should have
         # used a set of generic options mapped to the corresponding OS attrs
         if self._config['graphics.fullscreen'].lower() != 'true' :
-            params.append(('x11_mouse_grab','false'))
+            #params.append(('x11_mouse_grab','false'))
             #params.append(('x11_mouse_hide','false'))
             params.append(('x11_keyboard_grab','false'))
         
@@ -163,7 +163,7 @@ class OISInput(SubSystem):
     def removeEventListener(self, listenner):
         """ Remove a event listenner """
         #self._InputConsumers.remove(listenner)
-        self._actionMapper.removeEventListener(listenner, priority)
+        self._actionMapper.removeEventListener(listenner)
 
     
 

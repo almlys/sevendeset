@@ -34,6 +34,9 @@ class Action(object):
         self.target = target
         self.priority = prio
         self.invert = invert
+        self.abs = 0
+        self.rel = 0
+        self.type = 0
 
     def __str__(self):
         return str((self.name,self.target,self.priority,self.invert))
@@ -93,7 +96,8 @@ class EventDispatcher(object):
             if o.processEvent(rawEvt):
                 return True
 
-        self.log("Unprocessed event: Action: %s, Raw: %s" %(actionEvt, rawEvt))
+        if actionEvt.getType() == EventType.ACTION_DOWN:
+            self.log("Unprocessed event: Action: %s, Raw: %s" %(actionEvt, rawEvt))
 
 
 
@@ -101,6 +105,9 @@ class EventDispatcher(object):
 class ActionMapper(SubSystem):
 
     _mask = 0
+    _mouse_x = 0
+    _mouse_y = 0
+    _mouse_z = 0
 
     def __init__(self,options=None):
         SubSystem.__init__(self,"ActionMapper",True,options)
@@ -173,7 +180,7 @@ class ActionMapper(SubSystem):
 
             if hasattr(i,"xaxis") and device != "keyboard":
                 for axis in i.xaxis:
-                    aname = axis.name
+                    aname = axis.pname
                     ctarget = target
                     cpriority = priority
                     cinvert = False
@@ -244,7 +251,39 @@ class ActionMapper(SubSystem):
                 actionEvt = Event(evtType,self._actionMap[hash])
                 return self._eventDispatcher.dispatchEvent(evt,actionEvt)
         elif etype in [EventType.MOUSE_MOVED]:
-            pass
+            hash = "mouse"
+            mo = evt.getObject()
+            x,y,z = mo.X.rel, mo.Y.rel, mo.Z.rel
+            res = False
+            if self._mouse_x != x:
+                self._mouse_x = x
+                hash += "x"
+                if self._actionMap.has_key(hash):
+                    acc = self._actionMap[hash]
+                    acc.abs = x
+                    acc.rel = mo.X.rel
+                    actionEvt = Event(evtType, acc)
+                    res |= bool(self._eventDispatcher.dispatchEvent(evt,actionEvt))
+            if self._mouse_y != y:
+                self._mouse_y = y
+                hash += "y"
+                if self._actionMap.has_key(hash):
+                    acc = self._actionMap[hash]
+                    acc.abs = y
+                    acc.rel = mo.Y.rel
+                    actionEvt = Event(evtType, acc)
+                    res |= bool(self._eventDispatcher.dispatchEvent(evt,actionEvt))
+            if self._mouse_z != z:
+                self._mouse_z = z
+                hash += "z"
+                if self._actionMap.has_key(hash):
+                    acc = self._actionMap[hash]
+                    acc.abs = z
+                    acc.rel = mo.Z.rel
+                    actionEvt = Event(evtType, acc)
+                    res |= bool(self._eventDispatcher.dispatchEvent(evt,actionEvt))
+            return res
+
         return self._eventDispatcher.dispatchEvent(evt)
 
 

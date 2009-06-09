@@ -5,15 +5,22 @@
 	<!-- Define a object that will do some things
 			 The object will be instanciancied when it is used
 	-->
-	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='true' >
+	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='false' >
 		<param name='layout'>main.layout</param>
 	</controller>
 	
-	
+	<!-- Define Basic System Key bindings -->
 	<controller name='basicInput'
     bind='sd7.system.basicInput.MyBasicInputHandler'
     autostart='true'
     target='main' />
+    
+    <!-- Script that set ups the Camera -->
+    <controller name = 'Cam'
+    bind = 'sd7.logic.camera.Camera'
+    autostart = 'true' />
+
+
 	<controller name='startup' bind='sd7.system.startup.StartupHandler' target='main' />
 	
 	<controller name='chatapp' bind='sd7.logic.chatapp.ChatApp' autostart='true' />

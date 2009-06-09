@@ -21,6 +21,7 @@ from sd7.engine import Engine
 
 class Camera(Controller):
 
+    _mouse = False
     _rotateX = 0
     _rotateY = 0
     _moveZ = 0
@@ -47,7 +48,7 @@ class Camera(Controller):
         self.log("Initializing %s" %(self.__class__.__name__))
 
     def onFrame(self,evt):
-        time = evt.getObject().timeSinceLastFrame
+        time = evt.timeSinceLastFrame
         
         if time == 0:
             rotateScaleX = 0.1 * self._rotateX
@@ -69,6 +70,13 @@ class Camera(Controller):
             #vector = self._renderer.getRendererFactory().createVector3()
             self._camera.moveRelative((moveScaleX,0,moveScaleZ))
 
+        self._mouse += time
+
+        if self._mouse >= 0.2:
+            self._rotateX = 0
+            self._rotateY = 0
+            self._mouse = False
+
 
     def onAction(self, name, down):
         if name in ("rotate_up", "rotate_down"):
@@ -83,6 +91,19 @@ class Camera(Controller):
         elif name in ("right", "left"):
             self._moveX = self._movementMap[name][down]
             return True
-        
+        return False
+
+    def onAxis(self, name, abs, rel, type):
+        self._mouse = 0
+        print name, rel, abs
+        if name == "x":
+            self._rotateY = -rel * 0.13
+            return True
+        if name == "y":
+            self._rotateX = -rel * 0.13
+            return True
+        return False
+            
+
 
     

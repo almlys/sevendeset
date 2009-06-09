@@ -48,8 +48,16 @@ class Controller(object):
             return self.onAction(evt.getObject().name,True)
         elif etype == EventType.ACTION_UP:
             return self.onAction(evt.getObject().name,False)
+        elif etype == EventType.ACTION_AXIS:
+            obj = evt.getObject()
+            abs = obj.abs
+            rel = obj.rel
+            if obj.invert :
+                abs = -abs
+                rel = -rel
+            return self.onAxis(obj.name, abs, rel, obj.type)
         elif etype == EventType.FRAME_STARTED:
-            return self.onFrame(evt)
+            return self.onFrame(evt.getObject())
         return False
         if evt.getType() == EventType.FRAME_STARTED or \
         evt.getType() == EventType.FRAME_ENDED or \
@@ -59,6 +67,9 @@ class Controller(object):
         return False
 
     def onAction(self,name,down=True):
+        return False
+
+    def onAxis(self,name,abs,rel,type):
         return False
 
     def onFrame(self,evt):

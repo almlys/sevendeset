@@ -49,6 +49,7 @@ __all__ = ["Key"]
         "RCONTROL" : "RCTRL",
         "LMENU" : "LALT",
         "RMENU" : "RALT",
+        "SYSRQ" : "PRTSC",
     }
 
     f = file("depends/ois/includes/OISKeyboard.h")
