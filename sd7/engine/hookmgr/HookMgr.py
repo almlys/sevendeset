@@ -103,7 +103,8 @@ class HookMgr(SubSystem):
     def processEvent(self, evt):
         id = evt.getType()
         if id in [EventType.KEY_PRESSED,EventType.KEY_RELEASED,
-        EventType.MOUSE_PRESSED,EventType.MOUSE_RELEASED,EventType.MOUSE_MOVED]:
+        EventType.MOUSE_PRESSED,EventType.MOUSE_RELEASED,EventType.MOUSE_MOVED,
+        EventType.ACTION_UP,EventType.ACTION_DOWN,EventType.ACTION_AXIS]:
             for c in self.__controller_cache:
                 if self.__controller_cache[c].processEvent(evt):
                     break

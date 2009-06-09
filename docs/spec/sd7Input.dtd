@@ -8,13 +8,32 @@
 
 -->
 
-<!ELEMENT sd7config (section)+>
+<!ELEMENT sd7input (input)+>
 
-<!ELEMENT section (option)*>
-<!ATTLIST section
-	name CDATA #REQUIRED>
+<!-- target: Name of a destination instance that will recieve the event -->
+<!-- priority: Input priority
+        prio: 0 - Goes to the PriorityEvents list of the ActionMapper
+                    it will be not processed by the GUI if the HookMGR
+                    processes it.
+        prio: 1 - Goes to the normal Events list of the ActionMapper -->
 
-<!ELEMENT option EMPTY>
-<!ATTLIST option
+<!ELEMENT input (action?,axis?)*>
+<!ATTLIST input
+	device CDATA #REQUIRED
+    target CDATA #IMPLIED
+    priority CDATA #IMPLIED>
+
+<!ELEMENT action EMPTY>
+<!ATTLIST action
 	name CDATA #REQUIRED
-	value CDATA #REQUIRED>
+	key CDATA #IMPLIED
+    mask CDATA #IMPLIED
+    target CDATA #IMPLIED
+    button CDATA #IMPLIED
+    priority CDATA #IMPLIED>
+
+<!ATTLIST axis
+    name CDATA #REQUIRED
+    id CDATA #REQUIRED
+    target CDATA #IMPLIED
+    priority CDATA #IMPLIED>

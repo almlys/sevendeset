@@ -17,11 +17,12 @@ __version__ = "$Revision$"
 __all__ = ['OISInput',]
 
 
-from sd7.engine.Events import Event
 import ogre.io.OIS as OIS
 
-from sd7.engine.subsystem import SubSystem as SubSystem
+from sd7.engine.Events import Event
 from sd7.engine.Events import EventType
+from sd7.engine.input.ActionMapper import ActionMapper
+from sd7.engine.subsystem import SubSystem as SubSystem
 
 class OISInput(SubSystem):
     """ OIS Input subsytem """
@@ -65,6 +66,11 @@ class OISInput(SubSystem):
         self._InputManager = OIS.createPythonInputSystem(params)
         
         self._printOISVersion()
+
+        self._actionMapper = ActionMapper(self._config)
+        self._actionMapper.initialize()
+        self._InputConsumers = [self._actionMapper]
+
         return self._initalizeAndRegisterListenners()
     
     def _printOISVersion(self):
@@ -149,14 +155,17 @@ class OISInput(SubSystem):
         for joy in self._Joys:
             joy.capture()
 
-    def addEventListener(self, listenner):
+    def addEventListener(self, listenner, priority):
         """ Register a event listener """
-        self._InputConsumers.append(listenner)
+        #self._InputConsumers.append(listenner)
+        self._actionMapper.addEventListener(listenner, priority)
     
     def removeEventListener(self, listenner):
         """ Remove a event listenner """
-        self._InputConsumers.remove(listenner)
+        #self._InputConsumers.remove(listenner)
+        self._actionMapper.removeEventListener(listenner, priority)
 
+    
 
 class KeyboardState(object):
 
@@ -176,14 +185,14 @@ class MyKeyListener(OIS.KeyListener):
         self._subscribers = subscribers
 
     def keyPressed(self, evt):
-        print "Key pressed %i %s" %(evt.key, evt.text)
+        #print "Key pressed %i %s" %(evt.key, evt.text)
         ev = Event(EventType.KEY_PRESSED, KeyboardState(evt.device, evt.key, evt.text))
         for sub in self._subscribers:
             if sub.processEvent(ev):
                 return
     
     def keyReleased(self, evt):
-        print "Key released %i %s" %(evt.key, evt.text)
+        #print "Key released %i %s" %(evt.key, evt.text)
         ev = Event(EventType.KEY_RELEASED, KeyboardState(evt.device, evt.key, evt.text))
         for sub in self._subscribers:
             if sub.processEvent(ev):

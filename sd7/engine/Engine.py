@@ -79,7 +79,7 @@ class _Engine(object):
         #self._gui.setController(self._hookmgr.getController("gui"))
         self._gui.initialize()
         # The GUI listens for Input events
-        self._input.addEventListener(self._gui)
+        self._input.addEventListener(self._gui, 0)
         self._renderer.addEventListener(self._gui)
         # CeguiOgreRenderer is already integrated into the rendering pipeline
         
@@ -106,7 +106,7 @@ class _Engine(object):
     def __startLogic(self):
         self._hookmgr.startAutomaticControllers()
         #The Hooks (Logic) will listen to render and input events
-        self._input.addEventListener(self._hookmgr)
+        self._input.addEventListener(self._hookmgr, 1)
         self._renderer.addEventListener(self._hookmgr)
 
     def getGUI(self):

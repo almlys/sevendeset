@@ -18,24 +18,19 @@ __all__ = ["MyBasicInputHandler"]
 
 from sd7.engine.controller import Controller
 from sd7.engine.Events import EventType
-
-#NOOO
-import ogre.io.OIS as OIS
+from sd7.engine.Engine import Engine
 
 class MyBasicInputHandler(Controller):
     
-    def __init__(self,engine):
-        self._engine = engine
+    def __init__(self,params):
+        Controller.__init__(self,params)
 
-    def processEvents(self,evt):
-        if evt.getType() == EventType.KEY_PRESSED:
-            if evt.getObject().key == OIS.KC_ESCAPE:
-                self._engine.Terminate()
+    def initialize(self):
+        Controller.initialize(self)
+
+    def processEvent(self,evt):
+        if evt.getType() == EventType.ACTION_DOWN:
+            if evt.getObject().name == "exit":
+                self.log("Terminating the Engine by user script")
+                Engine().terminate()
         
-    def onInputAction(self,action,args=None):
-        
-        if action=="exit":
-            self._engine.Terminate()
-        else:
-            return False
-        return True

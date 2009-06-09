@@ -30,10 +30,14 @@ class EventType(object):
     MOUSE_MOVED = 8
     MOUSE_PRESSED = 9
     MOUSE_RELEASED = 10
+    #Action Event
+    ACTION_DOWN  = 11
+    ACTION_UP = 12
+    ACTION_AXIS = 13
     
     stype = ["WIN_CLOSED","WIN_MOVED","WIN_RESIZED","WIN_FOCUS","FRAME_STARTED",
     "FRAME_ENDED","KEY_PRESSED","KEY_RELEASED","MOUSE_MOVED","MOUSE_PRESSED",
-    "MOUSE_RELEASED"]
+    "MOUSE_RELEASED","ACTION_DOWN","ACTION_UP","ACTION_AXIS"]
 
 
 def toString(type):
@@ -53,4 +57,4 @@ class Event(object):
         return self._object
 
     def __str__(self):
-        return "Event type: %i, %s" %(self._type,toString(self._type))
+        return "Event type: %i, %s, %s" %(self._type,toString(self._type),str(self.getObject()))

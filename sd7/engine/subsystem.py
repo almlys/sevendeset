@@ -78,6 +78,7 @@ class SubSystem(object):
         return self._initialized
 
     def processEvent(self,evt):
+        return False
         if evt.getType() == EventType.FRAME_STARTED or \
         evt.getType() == EventType.FRAME_ENDED or \
         evt.getType() == EventType.MOUSE_MOVED:

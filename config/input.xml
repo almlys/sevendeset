@@ -4,8 +4,8 @@
 
 	<input device='keyboard' >
 		<!-- Exit action -->
-		<action name='exit' key='ESC' />
-		<action name='exit' key='c' control='true' alt='true' shift='true' />
+		<action name='exit' key='ESC' priority="0" />
+		<action name='exit' key='c' mask="ctrl,alt,shift" priority="0" />
 		
 		<!-- Debug stuff -->
 		<action name='console' key='F12' />
@@ -94,4 +94,4 @@
 	</input>
 
 	
-</sd7config>
+</sd7input>
