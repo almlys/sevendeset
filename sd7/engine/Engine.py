@@ -16,6 +16,7 @@ __version__ = "$Revision$"
 
 __all__ = ["Engine"]
 
+import time
 
 class _Engine(object):
     
@@ -25,6 +26,7 @@ class _Engine(object):
     _input = None
     _gui = None
     _hookmgr = None
+    _keep_running = True
     
     def __init__(self,options=None):
         _Engine._instance = self
@@ -118,9 +120,49 @@ class _Engine(object):
     def getHookMGR(self):
         return self._hookmgr
 
+    def terminate(self):
+        self._keep_running = False
 
     def run(self):
-        self._renderer.renderLoop()
+        #self._renderer.renderLoop()
+        frmt = 1/70. # Query for monitor refresh rate!
+        tst_time = time.time()
+        count = 0
+        ofrm = 0
+        sloop_time = 0
+        ssleeptime = 0
+        tloop_time = 0
+        tsleeptime = 0
+        while self._keep_running:
+            t0 = time.time()
+            if not self._renderer.renderOneFrame():
+                break
+            loop_time = time.time()-t0
+            sleeptime = frmt - loop_time
+            if sleeptime <= 0:
+                print "DROPING FRAMES!!!!! loop_time:%f, sl:%f" \
+                    %(loop_time, sleeptime)
+            self.debugMsg("%f %f %i" %(tloop_time,tsleeptime,ofrm))
+            if sleeptime > 0:
+                time.sleep(sleeptime)
+            if time.time()-tst_time < 1:
+                count += 1
+                ssleeptime += sleeptime
+                sloop_time += loop_time
+            else:
+                tst_time = time.time()
+                ofrm = count
+                tloop_time = sloop_time / count
+                tsleeptime = ssleeptime / count
+                sloop_time = 0
+                ssleeptime = 0
+                count = 0
+
+    def debugMsg(self,msg):
+        try:
+            self._hookmgr.findController("Stats").writeMsg(msg)
+        except:
+            pass
 
 
 def Engine(options=None):

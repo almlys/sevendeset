@@ -108,6 +108,10 @@ class OgreRenderer(SubSystem,RendererInterface):
         #self.initialize()
         self._root.startRendering()
 
+    def renderOneFrame(self):
+        ogre.WindowEventUtilities.messagePump()
+        return self._root.renderOneFrame()
+
     def _loadPlugins(self,plugins_path,plugins):
         self.log("Loading plugins...")
         for plugin in plugins:
@@ -397,6 +401,9 @@ class OgreWindow(object):
         t = 0
         w,h,c,l,t = self._renderWindow.getMetrics(w,h,c,l,t)
         return w,h,c,l,t
+
+    def getStatistics(self):
+        return self._renderWindow.getStatistics()
 
 class SceneManager(object):
     

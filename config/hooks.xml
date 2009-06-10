@@ -2,23 +2,27 @@
 <!DOCTYPE sd7hooks SYSTEM "http://7d7.almlys.org/spec/draft/sd7Hooks.dtd">
 <sd7hooks>
 
-	<!-- Define a object that will do some things
-			 The object will be instanciancied when it is used
-	-->
-	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='true' >
-		<param name='layout'>stats.layout</param>
-	</controller>
-	
 	<!-- Define Basic System Key bindings -->
 	<controller name='basicInput'
     bind='sd7.system.basicInput.MyBasicInputHandler'
     autostart='true' />
-    
+
+    <!-- Stats window -->
+    <controller name = 'Stats'
+    bind = 'sd7.system.stats.Stats'
+    autostart = 'true' >
+        <param name = 'visible'>true</param>
+    </controller>
+
+	<!-- Loads the layout defined in the parameter	-->
+	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='false' >
+		<param name='layout'>stats.layout</param>
+	</controller>
+	
     <!-- Script that set ups the Camera -->
     <controller name = 'Cam'
     bind = 'sd7.logic.camera.Camera'
     autostart = 'true' />
-
 
 	<controller name='startup' bind='sd7.system.startup.StartupHandler' />
 	

@@ -11,8 +11,9 @@
 		
 		<!-- Debug stuff -->
 		<action name='console' key='F11' priority='0' target="chatapp" />
+        <action name='console' key='F2' priority='0' target="chatapp" />
 		<action name='debug' key='F9' priority='0' />
-		<action name='stats' key='F10' priority='0' />
+		<action name='stats' key='F10' priority='0' target = 'stats' />
 		<action name='screenshot' key='PrtSc' priority='0' target='basicinput' />
         <action name='gui' key='tab' priority='0' target='basicInput' />
 		

@@ -25,12 +25,15 @@ class Controller(object):
     _debugmsg = True
     __logFunc = None
     _view = None
+    _name = "unnamed"
     
-    def __init__(self, params = None):
-        if params!=None:
+    def __init__(self, params = None, name = None):
+        if params != None:
             self._params = params
         if params.has_key("debug"):
             self._debugmsg = params["debug"]
+        if name != None:
+            self._name = name
 
     def log(self,msg):
         if self._debugmsg and not self.__logFunc==None:
@@ -76,7 +79,10 @@ class Controller(object):
         return False
 
     def initialize(self):
-        pass
+        if self._initialized:
+            raise Exception, "You can't do that!"
+        self._initialized = True
+        self.log("Initializing %s:%s" %(self.__class__.__name__,self._name))
     
     def terminate(self):
-        pass
+        self._initialized = False

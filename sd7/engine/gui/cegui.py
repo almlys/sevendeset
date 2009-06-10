@@ -125,7 +125,10 @@ class CEGUIRenderer(SubSystem):
         self._wmgr.getWindow(parent).addChildWindow(guiLayout)
         #self._rootw.addChildWindow(guiLayout)
     
-    
+
+    def destroyObject(self,name):
+        return self._wmgr.destroyWindow(name)
+
     def getObject(self,name):
         return self._wmgr.getWindow(name)
     
@@ -138,7 +141,7 @@ class CEGUIRenderer(SubSystem):
         #self._addEvent(ctrl_name,event,func)
         #wctrl.subscribeEvent(event, self, "_processEvents")
         # Se podria hacer con un Proxy
-        wctrl.subscribeEvent(event, func.im_self, func.__name__)
+        wctrl.subscribeEvent(self.getEvent(event), func.im_self, func.__name__)
 
 
     def getEvent(self,str):

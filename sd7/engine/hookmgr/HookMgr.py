@@ -18,6 +18,7 @@ __all__ = ["HookMgr"]
 
 from bootstrap.xmlparser import XMLParser
 from sd7.engine.subsystem import SubSystem as SubSystem
+import sys
 
 class HookNotFoundError(Exception): pass
 
@@ -37,6 +38,15 @@ class HookMgr(SubSystem):
 
     def __del__(self):
         self.stopAutomaticControllers()
+
+    def list(self):
+        l = {}
+        for k in self.__controller_map.keys():
+            st = k in self.__autostart_list
+            run = k in self.__controller_cache
+            l[k] = (st,run)
+        return l
+
 
     def initialize(self):
         SubSystem.initialize(self)
@@ -77,6 +87,9 @@ class HookMgr(SubSystem):
             path = ".".join(ctrl.split(".")[:-1])
             klass = ctrl.split(".")[-1]
             try:
+                print "Importing %s" %(path)
+                if path in sys.modules:
+                    reload(sys.modules[path])
                 module = __import__(path, globals(), locals(), [klass,])
                 kls = getattr(module, klass)(params)
                 kls.setLogFunc(self.log)
@@ -94,6 +107,16 @@ class HookMgr(SubSystem):
         if self.__controller_cache.has_key(name):
             return self.__controller_cache[name]
         return None
+
+    def start(self,name):
+        self.getController(name).initialize()
+
+    def stop(self,name):
+        self.destroyController(name)
+
+    def restart(self,name):
+        self.stop(name)
+        self.start(name)
 
     def startAutomaticControllers(self):
         for c in self.__autostart_list:
