@@ -511,10 +511,10 @@
 	<module name='CELayoutEditor' depends='wx'>
 		<comment>CEGUI Layout Editor</comment>
 		<license>GPLv2 or later</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CELayoutEditor-0.6.1.tar.gz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CELayoutEditor-0.6.3.zip'
 						method='wget' renamefrom='CELayoutEditor-0.6.1'
 						md5='e146f2cc45da8589ee7b8f9774e81959' />
-		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CELayoutEditor-0.6.1.tar.gz'
+		<source addr='http://downloads.sourceforge.net/crayzedsgui/CELayoutEditor-0.6.3.zip'
 						method='wget' renamefrom='CELayoutEditor-0.6.1'
 						md5='e146f2cc45da8589ee7b8f9774e81959' />
 		<patch addr='CELayoutEditor.patch' />
@@ -530,10 +530,10 @@
 	<module name='CEImagesetEditor' depends='wx'>
 		<comment>CEGUI Image Editor</comment>
 		<license>GPLv2 or later</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEImagesetEditor-0.6.1.tar.gz'
+		<source addr='http://7d7.almlys.org/downloads/depends/cegui/CEImagesetEditor-0.6.2.tar.gz'
 						method='wget' renamefrom='CEImagesetEditor-0.6.1'
 						md5='99d2e1f57a600dee2a38c2432e20ce4e' />
-		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEImagesetEditor-0.6.1.tar.gz'
+		<source addr='http://prdownloads.sourceforge.net/crayzedsgui/CEImagesetEditor-0.6.2.tar.gz'
 						method='wget' renamefrom='CEImagesetEditor-0.6.1'
 						md5='99d2e1f57a600dee2a38c2432e20ce4e' />
 		<build>
