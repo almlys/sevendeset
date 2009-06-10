@@ -520,6 +520,7 @@
 		<!--
 		<patch addr='CELayoutEditor.patch' /> -->
 		<build>
+            <cmd>sh bootstrap</cmd>
 			<cmd>./configure --prefix=$PREFIX</cmd>
 			<cmd>make</cmd>
 		</build>
