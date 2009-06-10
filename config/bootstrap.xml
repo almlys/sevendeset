@@ -489,12 +489,12 @@
 	<module name='wx'>
 		<comment>WxWidgets Library</comment>
 		<license>wxWindows Licence</license>
-		<source addr='http://7d7.almlys.org/downloads/depends/wx/wxWidgets-2.8.8.tar.gz'
-						method='wget' renamefrom='wxWidgets-2.8.8'
-						md5='55ffbf4c09233a00d92b01c0eed6a3dc' />
-		<source addr='http://prdownloads.sourceforge.net/wxwindows/wxWidgets-2.8.8.tar.gz'
-						method='wget' renamefrom='wxWidgets-2.8.8'
-						md5='55ffbf4c09233a00d92b01c0eed6a3dc' />
+		<source addr='http://7d7.almlys.org/downloads/depends/wx/wxWidgets-2.8.10.tar.gz'
+						method='wget' renamefrom='wxWidgets-2.8.10'
+						md5='05b32ca051651f4b1885a90f62969faf' />
+		<source addr='http://downloads.sourceforge.net/wxwindows/wxWidgets-2.8.10.tar.gz'
+						method='wget' renamefrom='wxWidgets-2.8.10'
+						md5='05b32ca051651f4b1885a90f62969faf' />
 		<build>
 			<cmd>mkdir -p build_gtk</cmd>
 			<cmd cmd='cd' path='build_gtk' />
