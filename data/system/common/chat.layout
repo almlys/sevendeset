@@ -9,7 +9,6 @@
         <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="TitlebarEnabled" Value="True" />
         <Property Name="UnifiedAreaRect" Value="{{0.0635312,0},{0.213046,0},{0.952494,0},{0.637529,0}}" />
-        <Property Name="DragMovingEnabled" Value="False" />
         <Property Name="CloseButtonEnabled" Value="False" />
         <Window Type="TaharezLook/MultiLineEditbox" Name="Chat/ChatWindow/ChatBox" >
             <Property Name="Text" >
