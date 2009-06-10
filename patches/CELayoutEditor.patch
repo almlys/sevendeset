@@ -61,3 +61,19 @@ diff -Naur CELayoutEditor.orig/src/Options.cpp CELayoutEditor/src/Options.cpp
 +export WANT_AUTOCONF_2_5=1
 +
 +aclocal -I . $ACLOCAL_FLAGS && autoheader && automake --include-deps --add-missing --foreign && autoconf
+--- CELayoutEditor.orig/inc/StringHelper.h	2007-12-20 13:19:22.000000000 +0100
++++ CELayoutEditor/inc/StringHelper.h	2009-06-10 18:09:23.000000000 +0200
+@@ -131,6 +131,13 @@
+         return str;
+     }
+ 
++    static wxString ToWXString(const char str[]) {
++        return str;
++    }
++
++    static CEGUI::String ToCEGUIString(const char str[]) {
++        return str;
++    }
+     /** Helper function which returns all array elements in a single comma-separated and
+      * newline-terminated string. The entries can themselves be separated by newlines or not.
+      * @access public static 

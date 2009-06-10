@@ -519,7 +519,8 @@
 						md5='3973b18302c5fba4d17e50817920e6c5' />
 		<patch addr='CELayoutEditor.patch' />
 		<build>
-            <cmd>sh bootstrap</cmd>
+			<cmd>dos2unix *</cmd>
+			<cmd>sh bootstrap</cmd>
 			<cmd>./configure --prefix=$PREFIX</cmd>
 			<cmd>make</cmd>
 		</build>
