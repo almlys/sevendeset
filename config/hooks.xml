@@ -5,8 +5,8 @@
 	<!-- Define a object that will do some things
 			 The object will be instanciancied when it is used
 	-->
-	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='false' >
-		<param name='layout'>main.layout</param>
+	<controller name='gui' bind='sd7.logic.gui.GUI' autostart='true' >
+		<param name='layout'>stats.layout</param>
 	</controller>
 	
 	<!-- Define Basic System Key bindings -->

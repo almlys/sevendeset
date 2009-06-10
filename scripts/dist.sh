@@ -34,6 +34,8 @@ mkdir -p $DIST/lib/python$PYTHONVERSION/site-packages/ogre/renderer/OGRE
 mkdir -p $DIST/lib/python$PYTHONVERSION/site-packages/ogre/io/OIS
 mkdir -p $DIST/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI
 
+mkdir -p $DIST/bin
+
 ## Legal stuff, i need to review it still
 svn2cl
 cp -rvp README $DIST
@@ -57,6 +59,10 @@ cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/io/OIS/*.so $DIST/li
 cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/gui/*.py $DIST/lib/python$PYTHONVERSION/site-packages/ogre/gui
 cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI/*.py $DIST/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI
 cp -rvp $PREFIX/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI/*.so $DIST/lib/python$PYTHONVERSION/site-packages/ogre/gui/CEGUI
+
+
+cp -rvp $PREFIX/bin/OgreXMLConverter $DIST/bin
+cp -rvp $PREFIX/bin/CELayoutEditor $DIST/bin
 
 FILENAMEDATE=`date +%Y%m%d%H%M%S`
 
