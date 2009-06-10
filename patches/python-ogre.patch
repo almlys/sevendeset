@@ -53,9 +53,8 @@
  
  ## path to the root of your boost dir, should have 'libs', 'boost' subdirectories
  PATH_Boost = None
-diff -Naur python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py python-ogre/packages_2.5/ogre/gui/CEGUI/__init__.py
---- python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py    2009-06-02 22:47:06.000000000 +0200
-+++ python-ogre/packages_2.5/ogre/gui/CEGUI/__init__.py 2009-06-10 14:45:21.000000000 +0200
+--- python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py	2009-06-10 19:39:11.000000000 +0200
++++ python-ogre/packages_2.5/ogre/gui/CEGUI/__init__.py	2009-06-10 19:43:05.000000000 +0200
 @@ -15,7 +15,7 @@
  ## Make sure we are using a sane XML parser
  if os.name == 'nt':
@@ -64,5 +63,5 @@ diff -Naur python-ogre.orig/packages_2.5/ogre/gui/CEGUI/__init__.py python-ogre/
 -    System.setDefaultXMLParserName("TinyXMLParser")
 +#else:
 +#    System.setDefaultXMLParserName("TinyXMLParser")
-
- warnings.resetwarnings( )
+ 
+ warnings.resetwarnings( ) 
