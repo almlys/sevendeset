@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout >
-    <Window Type="TaharezLook/FrameWindow" Name="FrameWindow" >
+    <Window Type="TaharezLook/FrameWindow" Name="StatsWindow" >
         <Property Name="Font" Value="Commonwealth-10" />
         <Property Name="Alpha" Value="0.65" />
         <Property Name="TitlebarFont" Value="Commonwealth-10" />
@@ -11,7 +11,7 @@
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0.831724,0},{0.490145,0},{1,0}}" />
         <Property Name="DragMovingEnabled" Value="False" />
         <Property Name="CloseButtonEnabled" Value="False" />
-        <Window Type="TaharezLook/StaticText" Name="FrameWindow/Msg" >
+        <Window Type="TaharezLook/StaticText" Name="StatsWindow/Msg" >
             <Property Name="Font" Value="Commonwealth-10" />
             <Property Name="Text" >Stats: 34 FPS
 Net: MALAMENTE
