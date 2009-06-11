@@ -21,6 +21,8 @@ from sd7.engine import Engine
 
 import random
 
+class TestCrash(Exception): pass
+
 class ChatApp(Controller):
 
     _history = []
@@ -125,9 +127,13 @@ class ChatApp(Controller):
                     pass
             elif cmd == "bind" and len(args)>1:
                 Engine().getHookMGR().bind(args[0],args[1])
+            elif cmd == "crash":
+                raise TestCrash,"Crashing requested by user"
             else:
                 self.addMsg("I'm sorry, I'm afraid I can't do that")
                 self.addRetardedMsg("yet!")
+        except TestCrash,e:
+            raise e
         except Exception,e:
             self.addMsg("Exception: %s" %(e,))
             self.addRetardedMsg("System: Perhaps you should think about something different")

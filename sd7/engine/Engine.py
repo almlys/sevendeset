@@ -26,6 +26,10 @@ class _Engine(object):
     _input = None
     _gui = None
     _hookmgr = None
+    _worldmgr = None
+    _physics = None
+    _net = None
+    _audio = None
     _keep_running = True
     
     def __init__(self,options=None):
@@ -35,8 +39,12 @@ class _Engine(object):
         self.__startRenderer()
         self.__startInput()
         self.__startGUI()
+        self.__startPhysics()
+        self.__startAudio()
+        self.__startNetworking()
+        self.__startWorldMGR()
         self.__startLogic()
-
+        
     def __del__(self):
         """ Stuff needs to be deleted in the correct order, if not someting
         terrible will happen """
@@ -99,6 +107,11 @@ class _Engine(object):
         #from networking.sd7Net import sd7Net as NetCore
         #self._netcore = NetCore(self._options["global"])
         pass
+
+    def __startWorldMGR(self):
+        from renderer import OgreWorld
+        self._worldmgr = OgreWorld(self._options["global"])
+        self._worldmgr.initialize()
     
     def __loadHooks(self):
         from hookmgr.HookMgr import HookMgr as HookMgr
@@ -111,6 +124,18 @@ class _Engine(object):
         self._input.addEventListener(self._hookmgr, 1)
         self._renderer.addEventListener(self._hookmgr)
 
+    def __stop(self):
+        del self._hookmgr
+        self._hookmgr = None
+        del self._gui
+        self._gui = None
+        del self._input
+        self._input = None
+        del self._renderer
+        self._renderer = None
+        del _Engine._instance
+        _Engine._instance = None
+
     def getGUI(self):
         return self._gui
 
@@ -120,10 +145,20 @@ class _Engine(object):
     def getHookMGR(self):
         return self._hookmgr
 
+    def getWorldMGR(self):
+        return self._worldmgr
+
     def terminate(self):
         self._keep_running = False
 
     def run(self):
+        try:
+            self.__run()
+        except Exception,e:
+            self.__stop()
+            raise e
+
+    def __run(self):
         #self._renderer.renderLoop()
         frmt = 1/70. # Query for monitor refresh rate!
         tst_time = time.time()

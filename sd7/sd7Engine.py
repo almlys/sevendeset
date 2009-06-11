@@ -47,6 +47,7 @@ class MainApp(BaseApplication):
             trace = file(self.getCfg('global','system.logdir') + '/traceback.log','w')
             traceback.print_exc(file=trace)
             trace.close()
+            return
             try:
                 import wx
                 app = wx.App(redirect=False)

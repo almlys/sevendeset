@@ -75,6 +75,9 @@ class HookMgr(SubSystem):
                 self.__autostart_list.append(c.pname)
             self.__addController(c.pname,c.pbind,params)
 
+    def bind(self,name,path):
+        self.__addController(name,path,{})
+
     def getController(self,name):
         """
         Returns the Controller class instance for the specified Binding

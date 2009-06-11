@@ -413,6 +413,9 @@ class SceneManager(object):
     def _getOgreSceneManager(self):
         return self._sceneManager
 
+    def setAmbientLight(self,a):
+        self._sceneManager.ambientLight = a
+
 
 class Frame(object):
     
