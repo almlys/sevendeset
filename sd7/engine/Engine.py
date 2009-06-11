@@ -94,9 +94,9 @@ class _Engine(object):
         # CeguiOgreRenderer is already integrated into the rendering pipeline
         
     def __startPhysics(self):
-        #from physics.ODEPhysics import ODEPhysics as Physics
-        #self._physics = Physics(self._options["global"])
-        pass
+        from physics.odePhysics import Physics
+        self._physics = Physics(self._options["global"])
+        self._physics.initialize()
     
     def __startAudio(self):
         #from audio.OpenALAudio import OpenALAudio as Audio
@@ -109,7 +109,7 @@ class _Engine(object):
         pass
 
     def __startWorldMGR(self):
-        from renderer import OgreWorld
+        from renderer.ogreWorld import OgreWorld
         self._worldmgr = OgreWorld(self._options["global"])
         self._worldmgr.initialize()
     
@@ -127,6 +127,8 @@ class _Engine(object):
     def __stop(self):
         del self._hookmgr
         self._hookmgr = None
+        del self._physics
+        self._physics = None
         del self._gui
         self._gui = None
         del self._input
@@ -147,6 +149,9 @@ class _Engine(object):
 
     def getWorldMGR(self):
         return self._worldmgr
+
+    def getPhysics(self):
+        return self._physics
 
     def terminate(self):
         self._keep_running = False
@@ -170,6 +175,8 @@ class _Engine(object):
         tsleeptime = 0
         while self._keep_running:
             t0 = time.time()
+            self._physics.step(frmt)
+            self._worldmgr.update()
             if not self._renderer.renderOneFrame():
                 break
             loop_time = time.time()-t0

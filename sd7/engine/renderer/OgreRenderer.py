@@ -175,8 +175,8 @@ class OgreRenderer(SubSystem,RendererInterface):
     def _createCamera(self):
         """Creates the camera."""        
         self._camera = self._sceneManager.createCamera('PlayerCam')
-        self._camera.setPosition(0, 0, 500)
-        self._camera.lookAt((0, 0, -300))
+        self._camera.setPosition(0, 0, 0)
+        self._camera.lookAt((0, 0, 0))
         self._camera.setNearClipDistance(5)
 
     def _createViewports(self):
@@ -250,49 +250,6 @@ class OgreRenderer(SubSystem,RendererInterface):
         return True
     
     def _createScene(self):
-        self._sceneManager.ambientLight = 0.25, 0.25, 0.25
-
-        #World ground
-        plane = ogre.Plane((0, 1, 0), 0)
-        #self.floor = ode.GeomPlane(self.space, (0,1,0), 0.0)
-
-        mm = ogre.MeshManager.getSingleton()
-        mm.createPlane('ground', ogre.ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME,
-                       plane, 1500, 1500, 20, 20, True, 1, 5, 5, (0, 0, 1))
-
-        ent = self._sceneManager.createEntity("GroundEntity", "ground")
-        try:
-            self._sceneManager.rootSceneNode.createChildSceneNode().attachObject(ent)
-        except AttributeError:
-            self._sceneManager.getRootSceneNode().createChildSceneNode().attachObject(ent)
-        ent.setMaterialName("Material.002/SOLID")
-
-        # Ogre ball 1
-        ent1 = self._sceneManager.createEntity("ball1", "Sphere.mesh")
-        try:
-            node1 = self._sceneManager.rootSceneNode.createChildSceneNode()
-        except AttributeError:
-            node1 = self._sceneManager.getRootSceneNode().createChildSceneNode()
-        node1.attachObject(ent1)
-        node1.scale = ((1.8, 1.8, 1.8))
-
-        # ODE ball 1
-        #body1 = ode.Body(self.world)
-        #M = ode.Mass()
-        #M.setSphere(500, 0.05)
-        #M.mass = 50
-        #body1.setMass(M)
-        #body1.setPosition((10, 100, 0))
-        #geom = ode.GeomSphere(self.space, 50.0)
-        #geom.setBody(body1)
-
-        # Add ball 1 to the body list
-        #self.bodyList.append((body1, node1))
-
-        #ent = sceneManager.createEntity("Ninja", "ninja.mesh")
-        #node = sceneManager.rootSceneNode.createChildSceneNode("NinjaNode")
-        #node.attachObject(ent)
-
         ent = self._sceneManager.createEntity("Cube", "Cube.mesh")
         try:
             node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
