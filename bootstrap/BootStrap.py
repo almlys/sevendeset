@@ -16,7 +16,7 @@ This module downloads and build a set of libraries required to run sd7
 
 __version__ = "$Revision$"
 
-__all__ = ["BuildError","InstallError","PatchError","BootStrap","MainApp"]
+__all__ = ["BuildError", "InstallError", "PatchError", "BootStrap", "MainApp"]
 
 
 import os
@@ -28,51 +28,143 @@ import re
 from xmlparser import XMLParser
 from Tools import ToolDownloadFactory, ToolFactory, ToolError
 
-class DownloadError(Exception): pass
-class CommandError(Exception): pass
-class BuildError(Exception): pass
-class InstallError(Exception): pass
-class PatchError(Exception): pass
-class CleanError(Exception): pass
-class ModuleNotFoundError(Exception): pass
-class UnsuportedPlatformError(Exception): pass
+class DownloadError(Exception):
+    """
+    Exception launched when a file cannot be downloaded from Internet
+    """
+
+class CommandError(Exception):
+    """
+    Error running a command
+    """
+
+class BuildError(Exception):
+    """
+    Error building module
+    """
+
+class InstallError(Exception):
+    """
+    Error installing a module
+    """
+
+class PatchError(Exception):
+    """
+    Error patching a module
+    """
+
+class CleanError(Exception):
+    """
+    Error cleanning a module
+    """
+
+class ModuleNotFoundError(Exception):
+    """
+    A module cannot be found!
+    """
+
+class UnsuportedPlatformError(Exception):
+    """
+    Raised on unsuported platforms
+    """
 
 
 class BootStrap(object):
     """
     Main BootStrap Class
     """
-    
-    _manifestFile = None #: Path to BootStrap manifest
-    _manifest = None #: The manifest data
-    _ToolDownloadFactory = ToolDownloadFactory()
-    _ToolFactory = ToolFactory()
 
-    def __init__(self,options):
+    _manifestFile = None #: Path to BootStrap manifest
+    _manifest = XMLParser() #: The manifest data
+    _toolDownloadFactory = ToolDownloadFactory() #: Download factory
+    _toolFactory = ToolFactory() #: Generic tool factory
+
+    def __init__(self, options):
         """
         Init
         @param options: A dictonary containing all BootStrap options
         """
+        self._platformDetect(options)
+        self._configurePaths(options)
+        self._configureEnv(options)
+
         self._manifestFile = options["global"]["BootStrap.manifest"]
-        self._manifest = XMLParser()
         self._manifest.readfile(self._manifestFile)
 
+
+    def _configurePaths(self, options):
+        """
+        Configures the applications paths
+        """
         def setPath(path):
+            """"
+            Sets path
+            @param path
+            """
             if path.startswith('/'):
                 return path
             else:
                 return os.getcwd() + '/' + path.strip("./")
 
-
-        self._downloadPath = setPath(options["global"]["BootStrap.downloadPath"])
+        self._downloadPath = \
+            setPath(options["global"]["BootStrap.downloadPath"])
         self._outputPath = setPath(options["global"]["BootStrap.outputPath"])
         self._prefix = setPath(options["global"]["BootStrap.prefix"])
         self._patches = setPath(options["global"]["BootStrap.patches"])
-        self._moduleStatus = setPath(options["global"]["BootStrap.moduleStatus"])
-        
+        self._moduleStatus = \
+            setPath(options["global"]["BootStrap.moduleStatus"])
         self._branch = options["global"]["BootStrap.branch"]
         
-        # Set Platform and architecture details
+        if not os.path.exists(self._downloadPath):
+            os.makedirs(self._downloadPath, 0755)
+        if not os.path.exists(self._outputPath):
+            os.makedirs(self._outputPath, 0755)
+        if not os.path.exists(self._prefix):
+            os.makedirs(self._prefix, 0755)
+        if not os.path.exists(self._prefix + "/lib64") and \
+            self._arch == 'x86_64':
+            if not os.path.exists(self._prefix + "/lib"):
+                os.makedirs(self._prefix+"/lib", 0755)
+            os.symlink(self._prefix+"/lib", self._prefix + "/lib64")
+
+    def _configureEnv(self, options):
+        """
+        Configures the application environment
+        """
+        # Enviorment vars
+        prefix = os.environ['PREFIX'] = self._prefix
+
+        version = sys.version_info
+        version = str(version[0]) + "." + str(version[1])
+        self._python_version = version
+
+        a, b = os.popen4("gcc -v")
+        self._gcc_version = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',
+            b.read()).group(1).split("."))
+        os.environ['MY_GCC_VERSION'] = self._gcc_version
+
+        os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
+
+        def setEnv(key, val, sep = ":"):
+            aux = ""
+            if os.environ.has_key(key):
+                aux = sep + os.environ[key]
+            os.environ[key] = val + aux
+
+        setEnv('LD_LIBRARY_PATH', prefix + '/lib')
+        setEnv('PYTHONPATH',
+            os.getcwd() + ":" + prefix + '/lib/python' + \
+            version + '/site-packages')
+
+        setEnv('CPPFLAGS', '-I' + prefix + '/include', " ")
+        setEnv('LDFLAGS', '-L' + prefix + '/lib', " ")
+        setEnv('PKG_CONFIG_PATH', prefix + '/lib/pkgconfig')
+
+    def _platformDetect(self, options):
+        """
+        Detects and sets the current architecture and platform details
+        """
+
         if options["global"].has_key("BootStrap.platform"):
             self._platform = options["global"]["BootStrap.platform"]
         else:
@@ -80,6 +172,7 @@ class BootStrap(object):
                 self._platform = "linux"
             else:
                 self._platform = sys.platform
+
         if options["global"].has_key("BootStrap.arch"):
             self._arch = options["global"]["BootStrap.arch"]
         else:
@@ -88,21 +181,13 @@ class BootStrap(object):
                 import struct
                 bytes = struct.calcsize('P')
                 self._arch = os.uname()[4]
-                if self._arch == 'x86_64' and bytes!=8:
+                if self._arch == 'x86_64' and bytes != 8:
                     raise UnsuportedPlatformError,"""
-Warning, uname says that you are running a 64 bits kernel, but your user-space
-applications are compiled as 32 bits.
-To avoid a broken build, I'm just stopping.
-The only reason on why are you doing this, is because you may want to compile
-sd7 in 64 bits with userspace 32 bits tools (something that I think that it's
-not going to work), you should use 64 bits tools.
-In order to avoid this warning, you must launch this script under the shell
-created by 'linux32'. You can also try to harcode the architecture in the
-config file, but I'm already going to tell you, that is not gonna work. Mainly
-because the embeded tools will be also confused attemting to determine what
-are you attempting to do, the safest way is.
-* 64 bits build: Use 64 bits tools in 64 bits mode.
-* 32 bits build: Use whatever tools inside 32 bits mode.
+It looks like you are running a 64 bits kernel, but your user-space applications
+are compiled as 32 bits. You are attempting to build a 64 binary with a 32 bits
+compiler and, as far as I know, that it is not possible.
+In order to avoid this warning, you may launch this script under the shell
+created by 'linux32'.
 Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
 """
             else:
@@ -110,52 +195,10 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                 self._arch = "i686"
         # End Platform stuff (Move this code to another place)
 
-        if not os.path.exists(self._downloadPath):
-            os.makedirs(self._downloadPath,0755)
-        if not os.path.exists(self._outputPath):
-            os.makedirs(self._outputPath,0755)
-        if not os.path.exists(self._prefix):
-            os.makedirs(self._prefix,0755)
-        if not os.path.exists(self._prefix+"/lib64") and self._arch == 'x86_64':
-            if not os.path.exists(self._prefix+"/lib"):
-                os.makedirs(self._prefix+"/lib",0755)
-            os.symlink(self._prefix+"/lib",self._prefix+"/lib64")
-
-        # Enviorment vars
-        prefix = os.environ['PREFIX'] = self._prefix
-
-        version = sys.version_info
-        version = str(version[0]) + "." + str(version[1])
-        self._python_version = version
-        a,b = os.popen4("gcc -v")
-        self._gcc_version = "".join(re.search('gcc.* ([0-9]*\.[0-9]*)',b.read()).group(1).split("."))
-
-        os.environ['PATH'] = prefix + '/bin:' + os.environ['PATH']
-        os.environ['LD_LIBRARY_PATH'] = prefix + '/lib'
-        os.environ['PYTHONPATH'] = os.getcwd() + ":" + prefix + '/lib/python' + version + '/site-packages'
-        os.environ['CPPFLAGS'] = '-I' + prefix + '/include'
-        aux = ""
-        if os.environ.has_key('LDFLAGS'):
-            aux = os.environ['LDFLAGS'] + " "
-        os.environ['LDFLAGS'] = aux + '-L' + prefix + '/lib'
-        os.environ['PKG_CONFIG_PATH'] = prefix + '/lib/pkgconfig'
-        os.environ['MY_GCC_VERSION'] = self._gcc_version
-    
-##    def run(self):
-##        p = XMLParser()
-##        p.readfile(self.config)
-##        
-##        for module in p.xbootstrap[0].xmodule:
-##            if hasattr(module,"pignore") and module.pignore=="yes":
-##                continue
-##            self._mget(module,update=True)
-##            self._mpatch(module)
-##            self._mbuild(module)
-##            self._minstall(module)
-
     def _searchModule(self,moduleName):
         """
         Returns the module associated to a Name
+        @param moduleName the module
         """
         for module in self._manifest.xbootstrap[0].xmodule:
             if hasattr(module,"pignore") and module.pignore == "yes":
@@ -164,13 +207,23 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                 return module
         raise ModuleNotFoundError,moduleName
 
+    def getDefaultTarget(self):
+        """
+        Returns the default target module
+        """
+        if hasattr(self._manifest.xbootstrap[0], "pdefault_target"):
+            return self._manifest.xbootstrap[0].pdefault_target
+        return None
+
+
     def _mget(self,module,update=False,redownload=False):
         """
         Downloads a module, using the specified method
         @param module: Module node object got from XMLParser
         @param update: If true it will update the module code
         (only for SVN/CVS modules) downloaded code will be unpacked again
-        @param redownload: If true it will download again the entire code from scratch
+        @param redownload: If true it will download again the entire code
+        from scratch
         """
         
         # Architecture/Platform stuff
@@ -181,7 +234,8 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                 continue
             if hasattr(source,"parch") and source.parch!=self._arch:
                 continue
-            if hasattr(source,"ppython") and source.ppython!=self._python_version:
+            if hasattr(source,"ppython") and \
+                source.ppython!=self._python_version:
                 continue
             if hasattr(source,"pbranch") and source.pbranch!=self._branch:
                 continue
@@ -209,7 +263,8 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
                     self._mget_inner(module,source,update,redownload)
                 except ToolError,e:
                     print e
-                    print "Cannot download from that source, attempting another one"
+                    print "Cannot download from that source,\
+attempting another one"
                     continue
                 return
         raise DownloadError,"Cannot download from any suitable location"
@@ -226,7 +281,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         args['redownload'] = redownload
 
         print "Downloading %s from %s using %s" %(module.pname,source,method)
-        tool = self._ToolDownloadFactory.get(method,args)
+        tool = self._toolDownloadFactory.get(method,args)
     
     def get(self,module_name,args=[]):
         if "-f" in args:
@@ -284,7 +339,7 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
             os.chdir(self._outputPath + '/' + module.pname)
             for cmd in getattr(module,xfamily)[0].xcmd:
                 if hasattr(cmd,"pcmd"):
-                    self._ToolFactory.run(cmd.pcmd,cmd.attrs)
+                    self._toolDownloadFactory.run(cmd.pcmd,cmd.attrs)
                 elif (os.system(cmd.data)!=0):
                     raise CommandError,family + ":" + cmd.data
         except Exception,e:
@@ -353,6 +408,7 @@ class MainApp(object):
     def _run(self,args=None):
         """
         Run it
+        @param args: App Args
         """
         if args!=None:
             self._parseArgs(args)
@@ -360,30 +416,47 @@ class MainApp(object):
         self._setCmdConfig()
         #print self._options
         self._bootStrap = BootStrap(self._options)
-        self._runcmd(self._command,self._args,self._modules)
+        self._runcmd()
+
+    def _addCmdOption(self, key, value):
+        """
+        Adds a new command line option
+        """
+        if not self._options.has_key("cmd"):
+            self._options["cmd"] = {}
+        self._options["cmd"][key] = value
+
 
     def _parseArgs(self,argv):
+        """
+        Parse coniguration args
+        @param argv: The args
+        """
         n=len(argv)-1
         for i in xrange(1,n+1):
             param=argv[i]
             if param.startswith("-"):
-                if param=="-c" and i<n:
+                if param == "-c" and i < n:
                     i+=1
                     self._configFile=argv[i]
-                elif param=="-o" and i<n-1:
-                    i+=1
-                    if not self._options.has_key("cmd"):
-                        self._options["cmd"] = {}
-                    self._options["cmd"][argv[i]]=argv[i+1]
+                elif param == "--prefix" and i < n:
+                    i+= 1
+                    self._addCmdOption("BootStrap.prefix", argv[i])
+                elif param=="-o" and i < n-1:
+                    i+= 1
+                    self._addCmdOption(argv[i], argv[i+1])
                     i+=1
                 else:
                     self._args.append(param)
             else:
                 self._modules.append(param)
-        if len(self._modules)!=0:
+        if len(self._modules)!= 0:
             self._command = self._modules.pop(0)
 
     def _readConfig(self):
+        """
+        Reads the configuration file
+        """
         if self._configFile!=None:
             self._config = XMLParser()
             self._config.readfile(self._configFile)
@@ -402,13 +475,16 @@ class MainApp(object):
             for opt in self._options["cmd"]:
                 self._options["global"][opt] = self._options["cmd"][opt]
 
-    def _runcmd(self,cmd,args,modules):
+    def _runcmd(self):
         """
         Runs a cmd with args for the specified modules
         """
+        cmd = self._command
         if cmd==None or cmd=="help":
             print """sd7 BootStrap Application
+bootstrap/bootstrap.py [options] command <module1> <module2> <module3>
 get <module1> <module2> ...     Downloads the module(s)
+    -f : Forces re-download
 update <module1> <module2> ...  Updates the module(s)
 remove <module1> <module2> ...  Removes the module(s)
 patch <module1> <module2> ...   Patches the module(s)
@@ -418,28 +494,14 @@ install <module1> <module2> ... Installs the module(s)
 auto <module1> <module2> ...    Automatically builds and installs the module(s)
 """
             return
-        if len(modules)==0:
-            print "ToDo"
-        else:
-            for m in modules:
-                if cmd=="get":
-                    self._bootStrap.get(m,self._args)
-                elif cmd=="update":
-                    self._bootStrap.update(m)
-                elif cmd=="remove":
-                    self._bootStrap.remove(m)
-                elif cmd=="patch":
-                    self._bootStrap.patch(m)
-                elif cmd=="build":
-                    self._bootStrap.build(m)
-                elif cmd=="clean":
-                    self._bootStrap.clean(m)
-                elif cmd=="install":
-                    self._bootStrap.install(m)
-                elif cmd=="auto":
-                    self._bootStrap.auto(m)
-                else:
-                    print "Unknown command %s" %(cmd,)
+        if len(self._modules)==0:
+            self._modules = [self._bootStrap.getDefaultTarget(),]
+
+        for m in self._modules:
+            if hasattr(self._bootStrap, cmd):
+                getattr(self._bootStrap, cmd)(m, self._args)
+            else:
+                print "Unknown command %s" % (cmd,)
 
 
 if __name__ == "__main__":
@@ -447,5 +509,5 @@ if __name__ == "__main__":
     start = time.time()
     app = MainApp(sys.argv)
     end = time.time()
-    print "done in %.2f seconds" %(end-start,)
+    print "done in %.2f seconds" % (end-start,)
 

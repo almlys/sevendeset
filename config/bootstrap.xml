@@ -351,8 +351,8 @@
 			<cmd>ln -fs libboost_thread-gcc${MY_GCC_VERSION-mt.so}-mt.so libboost_thread-mt.so</cmd>
 			-->
 			<cmd cmd='cd' path='${PREFIX}/include' />
-			<cmd>ln -fs boost-1_39/boost boost</cmd>-->
-		</install>
+			<cmd>ln -fs boost-1_39/boost boost</cmd>
+            </install>
 	</module>
 
 	

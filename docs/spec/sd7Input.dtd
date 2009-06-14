@@ -32,8 +32,10 @@
     button CDATA #IMPLIED
     priority CDATA #IMPLIED>
 
+<!ELEMENT axis EMPTY>
 <!ATTLIST axis
     name CDATA #REQUIRED
     id CDATA #REQUIRED
     target CDATA #IMPLIED
-    priority CDATA #IMPLIED>
+    priority CDATA #IMPLIED
+    invert CDATA #IMPLIED>

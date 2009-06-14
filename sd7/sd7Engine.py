@@ -56,7 +56,7 @@ class MainApp(BaseApplication):
                 pass
 
     def getAppVersion(self):
-        return "sd7 Alchera pre-alpha v0.1 $Revision$"
+        return "sd7 Alchera pre-alpha v0.1b $Revision$"
 
 def runsd7():
     try:
