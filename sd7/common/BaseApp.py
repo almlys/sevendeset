@@ -11,6 +11,7 @@
 """
 Base Application
 """
+import os.path
 
 __version__ = "$Revision$"
 
@@ -70,10 +71,10 @@ class BaseApplication(object):
     
     def __del__(self):
         self._saveConfig()
-        if self._old_stdout != None:
+        if self._old_stdout is not None:
             sys.stdout = self._old_stdout
             self._log.close()
-        if self._old_stderr != None:
+        if self._old_stderr is not None:
             sys.stderr = self._old_stderr
             self._logerr.close()
     
@@ -140,6 +141,10 @@ class BaseApplication(object):
         """Save App configuration"""
         if cfg == None:
             cfg = self._configFile
+            try:
+                os.makedirs(os.path.dirname(self._configFile))
+            except OSError:
+                pass
         if cfg != None:
             out = file(cfg,'w')
             out.write("""<?xml version='1.0' encoding='UTF-8' ?>

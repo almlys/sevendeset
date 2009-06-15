@@ -230,16 +230,17 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
         wget_sources = []
         svn_sources = []
         for source in module.xsource:
-            if hasattr(source,"pplatform") and source.pplatform!=self._platform:
+            if hasattr(source,"pplatform") and \
+                source.pplatform != self._platform:
                 continue
-            if hasattr(source,"parch") and source.parch!=self._arch:
+            if hasattr(source,"parch") and source.parch != self._arch:
                 continue
             if hasattr(source,"ppython") and \
-                source.ppython!=self._python_version:
+                source.ppython != self._python_version:
                 continue
-            if hasattr(source,"pbranch") and source.pbranch!=self._branch:
+            if hasattr(source,"pbranch") and source.pbranch != self._branch:
                 continue
-            if source.pmethod=='wget':
+            if source.pmethod == 'wget':
                 wget_sources.append(source)
             else:
                 svn_sources.append(source)
@@ -251,7 +252,6 @@ Check documentation of the 'linux32' or the 'util-linux' Debian/Ubuntu packages
             raise UnsuportedPlatformError,info
         # End architecture/Platform stuff
         
-        used_sources = []
         while len(wget_sources) != 0 or len(svn_sources) != 0:
             if len(wget_sources) == 0:
                 wget_sources = svn_sources

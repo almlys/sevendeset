@@ -34,20 +34,24 @@ class _Engine(object):
     
     def __init__(self,options=None):
         _Engine._instance = self
-        self.__loadDefaults(options)
-        self.__loadHooks()
-        self.__startRenderer()
-        self.__startInput()
-        self.__startGUI()
-        self.__startPhysics()
-        self.__startAudio()
-        self.__startNetworking()
-        self.__startWorldMGR()
-        self.__startLogic()
-        
+        try:
+            self.__loadDefaults(options)
+            self.__loadHooks()
+            self.__startRenderer()
+            self.__startInput()
+            self.__startGUI()
+            self.__startPhysics()
+            self.__startAudio()
+            self.__startNetworking()
+            self.__startWorldMGR()
+            self.__startLogic()
+        except Exception,e:
+            _Engine._instance = None
+            raise e
+
     def __del__(self):
-        """ Stuff needs to be deleted in the correct order, if not someting
-        terrible will happen """
+    #    """ Stuff needs to be deleted in the correct order, if not someting
+    #    terrible will happen """
         del self._gui
         del self._input
         del self._renderer
@@ -125,17 +129,14 @@ class _Engine(object):
         self._renderer.addEventListener(self._hookmgr)
 
     def __stop(self):
-        del self._hookmgr
-        self._hookmgr = None
-        del self._physics
-        self._physics = None
-        del self._gui
-        self._gui = None
-        del self._input
-        self._input = None
-        del self._renderer
-        self._renderer = None
-        del _Engine._instance
+        def removesub(name):
+            if hasattr(self,name) and getattr(self,name) is not None:
+                setattr(self, name, None)
+        removesub("_hookmgr")
+        removesub("_physics")
+        removesub("_gui")
+        removesub("_input")
+        removesub("_renderer")
         _Engine._instance = None
 
     def getGUI(self):
@@ -208,7 +209,7 @@ class _Engine(object):
 
 
 def Engine(options=None):
-    if _Engine._instance == None:
+    if _Engine._instance is None:
         print "Created unique instance of the engine"
         _Engine(options)
     return _Engine._instance

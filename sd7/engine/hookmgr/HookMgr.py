@@ -104,7 +104,10 @@ class HookMgr(SubSystem):
     
     def destroyController(self,name):
         # If reference count gets to 0 it will be destroyed...
-        self.__controller_cache.pop(name).terminate()
+        c = self.findController(name)
+        if c is not None:
+            c. terminate()
+            self.__controller_cache.pop(name)
 
     def findController(self,name):
         if self.__controller_cache.has_key(name):
@@ -126,7 +129,8 @@ class HookMgr(SubSystem):
             self.getController(c).initialize()
     
     def stopAutomaticControllers(self):
-        for c in self.__autostart_list.reverse():
+        self.__autostart_list.reverse()
+        for c in self.__autostart_list:
             self.destroyController(c)
 
     def processEvent(self, evt):

@@ -24,6 +24,8 @@ from sd7.engine import Engine
 
 
 class MainApp(BaseApplication):
+
+    _exception = None
     
     def __init__(self,argv):
         BaseApplication.__init__(self,argv)
@@ -39,7 +41,10 @@ class MainApp(BaseApplication):
             print "Run..."
             e.run()
             print "END OK"
-        except:
+        except ImportError, e:
+            raise e
+        except Exception,e:
+            self._exception = e
             import traceback
             traceback.print_exc(file=sys.stderr)
             if not os.path.exists(self.getCfg('global','system.logdir')):
@@ -47,22 +52,30 @@ class MainApp(BaseApplication):
             trace = file(self.getCfg('global','system.logdir') + '/traceback.log','w')
             traceback.print_exc(file=trace)
             trace.close()
-            return
-            try:
-                import wx
-                app = wx.App(redirect=False)
-                wx.MessageBox(traceback.format_exc(),'Traceback - ' + self.getAppVersion(),wx.ICON_ERROR)
-            except ImportError:
-                pass
+            #return
+            #try:
+            #    import wx
+            #    app = wx.App(redirect=False)
+            #    wx.MessageBox(traceback.format_exc(),'Traceback - ' + self.getAppVersion(),wx.ICON_ERROR)
+            #except ImportError:
+            #    pass
+
 
     def getAppVersion(self):
         return "sd7 Alchera pre-alpha v0.1b $Revision$"
 
-def runsd7():
+    def getException(self):
+        return self._exception
+
+
+def runsd7(raise_ = True):
     try:
         app = MainApp(sys.argv)
         app.run()
-    except:
+    except Exception, e:
+        del app
+        if raise_:
+            raise e
         import traceback
         traceback.print_exc(file=sys.stderr)
         try:
@@ -82,4 +95,4 @@ def runsd7():
     print "App Terminated"
 
 if __name__ == '__main__':
-    runsd7()
+    runsd7(False)
