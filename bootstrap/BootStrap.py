@@ -339,7 +339,7 @@ attempting another one"
             os.chdir(self._outputPath + '/' + module.pname)
             for cmd in getattr(module,xfamily)[0].xcmd:
                 if hasattr(cmd,"pcmd"):
-                    self._toolDownloadFactory.run(cmd.pcmd,cmd.attrs)
+                    self._toolFactory.run(cmd.pcmd,cmd.attrs)
                 elif (os.system(cmd.data)!=0):
                     raise CommandError,family + ":" + cmd.data
         except Exception,e:
