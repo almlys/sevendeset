@@ -30,6 +30,7 @@
 
 		<install>
 			<cmd>cp -rvp bin include local share $PREFIX</cmd>
+            <cmd>mkdir -p $PREFIX/lib</cmd>
 			<cmd>cp -rvp lib/* $PREFIX/lib || cp -rvp lib64/* $PREFIX/lib</cmd>
 		</install>
 	</module>
@@ -374,7 +375,7 @@
 						branch='devel' />
 		<patch addr='python-ogre.patch' />
 		<build>
-			<cmd>echo "OK. LONG BUILD PROCESS STARTS NOW!!! - LEFT YOUR COMPUTER ON, AND COME TOMORROW!!"</cmd>
+			<cmd>echo "OK. LONG BUILD PROCESS STARTS NOW!!! - LEAVE YOUR COMPUTER ON, AND COME BACK TOMORROW!!"</cmd>
 
 			<cmd cmd='cd' path='code_generators/ogre' />
 			<cmd>echo "Generating Ogre Code ......."</cmd>
