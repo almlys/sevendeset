@@ -21,6 +21,8 @@ from sd7.engine.subsystem import SubSystem
 
 import ogre.renderer.OGRE as ogre
 
+import random
+
 class SceneObject(object):
 
     def __init__(self, name, node, phys):
@@ -62,7 +64,7 @@ class OgreWorld(SubSystem):
         ent = self._sceneManager.createEntity(name, name)
         node = self._sceneManager.getRootSceneNode().createChildSceneNode()
         node.attachObject(ent)
-        ent.setMaterialName("Material.002/SOLID")
+        ent.setMaterialName("Material.001/SOLID")
 
         self._staticObjects[name] = SceneObject(name, node, physical)
 
@@ -73,6 +75,11 @@ class OgreWorld(SubSystem):
         node.attachObject(ent)
         node.setScale((scale, scale, scale))
         node.setPosition(position)
+        matlist = ["Material.002/SOLID", "Material.001/SOLID",
+        "Material.003/SOLID", "Material.004/SOLID", "Material.005/SOLID",
+        "Material/SOLID"]
+        import random
+        ent.setMaterialName(matlist[int(random.uniform(0,len(matlist)))])
 
         # Physics ball
         body = self._simulator.newBody()
@@ -90,10 +97,45 @@ class OgreWorld(SubSystem):
         #node = sceneManager.rootSceneNode.createChildSceneNode("NinjaNode")
         #node.attachObject(ent)
 
+    def destroyObject(self, name):
+        obj = self.findObject(name)
+        self._destroyObject(obj)
+        self._removeObject(obj)
+
+    def _destroyObject(self, obj):
+        if obj.physical is not None:
+            self._simulator.destroyGeom(obj.physical)
+            obj.physical = None
+        if obj.node is not None:
+            self._sceneManager.destroySceneNode(obj.node)
+            obj.node = None
+            self._sceneManager.destroyEntity(obj.name)
+
+    def findObject(self, name):
+        if self._dynaObjects.has_key(name):
+            return self._dynaObjects[name]
+        elif self._staticObjects.has_key(name):
+            return self._staticObjects[name]
+
+    def _removeObject(self, name):
+        if self._dynaObjects.has_key(name):
+            return self._dynaObjects.pop(name)
+        elif self._staticObjects.has_key(name):
+            return self._staticObjects.pop(name)
+
+    def destroyAllObjects(self):
+        for k in self._dynaObjects.keys():
+            self.destroyObject(k)
+        for k in self._staticObjects.keys():
+            self.destroyObject(k)
+
     def update(self):
         for a in self._dynaObjects.keys():
-            obj = self._dynaObjects[a]
-            obj.node.setPosition(obj.physical.getPosition())
-            obj.node.setOrientation(obj.physical.getQuaternion())
-            #print obj.physical.getRotation()
+            try:
+                obj = self._dynaObjects[a]
+                obj.node.setPosition(obj.physical.getPosition())
+                obj.node.setOrientation(obj.physical.getQuaternion())
+                #print obj.physical.getRotation()
+            except Exception,e:
+                print e
 

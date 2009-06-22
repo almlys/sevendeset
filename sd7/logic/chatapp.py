@@ -23,6 +23,94 @@ import random
 
 class TestCrash(Exception): pass
 
+
+class Commands(object):
+
+    _help = { "quit" : "Does what the command says",
+              "hsize" : "Sets the history size: hsize size",
+              "clear" : "Clears the console",
+              "list" : "List running processes",
+              "start" : "Starts up a process",
+              "stop" : "Stops a process",
+              "restart" : "Restarts a process",
+              "bind" : "Binds a process into the HookMGR: bind name path"
+              }
+
+    def __init__(self, chatapp):
+        self._chatapp = chatapp
+
+    def quit(self):
+        Engine().terminate()
+
+    def exit(self):
+        self.quit()
+
+    def logout(self):
+        self.quit()
+
+    def killme(self):
+        self.quit()
+
+    def hsize(self, size):
+        self._chatapp._maxlines = int(size)
+
+    def help(self, topic = None):
+        if topic is None:
+            self._chatapp.addMsg("Avaliable commands are:")
+            self._chatapp.addMsg(",".join(self._help.keys()))
+            self._chatapp.addMsg("Type help command for more information")
+            return
+        topic = topic.lower()
+        if topic in ("exit", "logout", "killme"):
+            topic = "exit"
+        if self._help.has_key(topic):
+            self._chatapp.addMsg(self._help[topic])
+            if topic == "exit":
+                self.addRetardedMsg("HAL: Dave, perhaphs you should think about it...")
+                self.addRetardedMsg("HAL: Dave, what are you doing?")
+        else:
+            self._chatapp.addMsg("Unknwon help topic %s" %(topic,))
+
+    def clear(self):
+        self._chatapp.clear()
+
+    def list(self):
+        procs = Engine().getHookMGR().list()
+        map = { False: { True : "Running", False : "Stopped"},
+                True : { True: "Running*", False : "Stopped*"}}
+        for p in procs.keys():
+            autostart, running = procs[p]
+            self._chatapp.addMsg("%s - %s" %(p, map[autostart][running]))
+
+    def start(self, name):
+        Engine().getHookMGR().start(name)
+        self._chatapp.addMsg("%s started..." %(name))
+
+    def stop(self, name):
+        Engine().getHookMGR().stop(name)
+        try:
+            self._chatapp.addMsg("%s stopped..." %(name))
+        except:
+            pass
+
+    def restart(self, name):
+        Engine().getHookMGR().restart(name)
+        try:
+            self._chatapp.addMsg("%s restarted..." %(name))
+        except:
+            pass
+
+    def bind(self, name, path):
+        Engine().getHookMGR().bind(name, path)
+
+    def crash(self):
+        raise TestCrash,"Crashing requested by user"
+
+    def destroyobject(self, name):
+        Engine().getWorldMGR().destroyObject(name)
+
+
+
 class ChatApp(Controller):
 
     _history = []
@@ -34,6 +122,7 @@ class ChatApp(Controller):
     def __init__(self,params):
         Controller.__init__(self,params,"console")
         self._visible = True
+        self._cmds = Commands(self)
 
     def initialize(self):
         Controller.initialize(self)
@@ -81,59 +170,13 @@ class ChatApp(Controller):
         try:
             args = cmd.split()
             cmd = args.pop(0).lower()
-            if cmd.lower() in ("quit","exit","logout","killme"):
-                Engine().terminate()
-            elif cmd == "hsize" and len(args)>0:
-                self._maxlines = int(args[0])
-            elif cmd == "help":
-                if len(args) > 0:
-                    ht = args[0]
-                    if ht.lower() in ("quit","exit","logout","killme"):
-                        self.addMsg("Does what the command says")
-                        self.addRetardedMsg("HAL: Dave, perhaphs you should think about it...")
-                        self.addRetardedMsg("HAL: Dave, what are you doing?")
-                    elif ht.lower() == "hsize":
-                        self.addMsg("Sets the history size")
-                    else:
-                        self.addMsg("Unknwon help topic %s",ht)
-                else:
-                    self.addMsg("Avaliable commands are:")
-                    self.addMsg("quit, hsize")
-                    self.addMsg("Type help command for more information")
-            elif cmd == "clear":
-                self.clear()
-            elif cmd == "list":
-                ll = Engine().getHookMGR().list()
-                map = { False: { True : "Running", False : "Stopped"},
-                        True : { True: "Running*", False : "Stopped*"}}
-                for l in ll.keys():
-                    a, b = ll[l]
-                    self.addMsg("%s - %s" %(l,map[a][b]))
-
-            elif cmd == "start" and len(args)>0:
-                Engine().getHookMGR().start(args[0])
-                self.addMsg("%s started..." %(args[0]))
-            elif cmd == "stop" and len(args)>0:
-                Engine().getHookMGR().stop(args[0])
-                try:
-                    self.addMsg("%s stopped..." %(args[0]))
-                except:
-                    pass
-            elif cmd == "restart" and len(args)>0:
-                Engine().getHookMGR().restart(args[0])
-                try:
-                    self.addMsg("%s restarted..." %(args[0]))
-                except:
-                    pass
-            elif cmd == "bind" and len(args)>1:
-                Engine().getHookMGR().bind(args[0],args[1])
-            elif cmd == "crash":
-                raise TestCrash,"Crashing requested by user"
+            if hasattr(self._cmds, cmd):
+                getattr(self._cmds, cmd)(*args)
             else:
                 self.addMsg("I'm sorry, I'm afraid I can't do that")
                 self.addRetardedMsg("yet!")
-        except TestCrash,e:
-            raise e
+        except TestCrash:
+            raise
         except Exception,e:
             self.addMsg("Exception: %s" %(e,))
             self.addRetardedMsg("System: Perhaps you should think about something different")

@@ -174,9 +174,13 @@ class _Engine(object):
         ssleeptime = 0
         tloop_time = 0
         tsleeptime = 0
+        sleeptime = 0
         while self._keep_running:
             t0 = time.time()
-            self._physics.step(frmt)
+            pstep = frmt
+            if sleeptime < 0:
+                pstep = frmt + -sleeptime
+            self._physics.step(pstep)
             self._worldmgr.update()
             if not self._renderer.renderOneFrame():
                 break
@@ -185,7 +189,7 @@ class _Engine(object):
             if sleeptime <= 0:
                 print "DROPING FRAMES!!!!! loop_time:%f, sl:%f" \
                     %(loop_time, sleeptime)
-            self.debugMsg("%f %f %i" %(tloop_time,tsleeptime,ofrm))
+            self.debugMsg("%f %f %i %f" %(tloop_time,tsleeptime,ofrm,pstep))
             if sleeptime > 0:
                 time.sleep(sleeptime)
             if time.time()-tst_time < 1:

@@ -73,4 +73,5 @@ class Physics(SubSystem):
     def __create(self,*args):
         return getattr(ode,self.__createName)(self._space, *args)
 
-
+    def destroyGeom(self, geom):
+        self._space.remove(geom)

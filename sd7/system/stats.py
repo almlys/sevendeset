@@ -71,7 +71,6 @@ class Stats(Controller):
     def onFrame(self, evt):
         time = evt.timeSinceLastFrame
 
-        # Do stupid things..
         self._time += time
         if self._i <= len(self._markee) and self._time > 0.123:
             self._msg2 = self._markee[0:self._i]

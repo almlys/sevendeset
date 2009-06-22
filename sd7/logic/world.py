@@ -32,6 +32,9 @@ class World(Controller):
         self.loadScene()
         print "World was initialized"
 
+    def terminate(self):
+        self.destroyScene()
+
     def loadScene(self):
         self._worldMGR.setAmbientLight((0.25, 0.25, 0.25))
         #self._worldMGR.loadScene("test.xml")
@@ -44,10 +47,18 @@ class World(Controller):
         self._worldMGR.createBall("ball03",(80, 220, 10), 25, 150)
         self._worldMGR.createBall("ball04",(120, 400, -20), 5, 12)
 
-        for i in range(200):
+        for i in range(50):
             self._worldMGR.createBall("random%i" %(i),
             (-20 * random.uniform(0,0.1),i*42+150,20 * random.uniform(0,0.1)),
             15, 50)
             self._worldMGR.createBall("randoma%i" %(i),
             (-180 * random.uniform(0,0.1),i*40*random.uniform(1,5)+150,120 * random.uniform(0,0.1)),
             5, 50)
+
+    def destroyScene(self):
+        #self._worldMGR.destroyObject("ground")
+        self._worldMGR.destroyAllObjects()
+        
+
+
+
