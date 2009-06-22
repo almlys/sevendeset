@@ -44,10 +44,10 @@ class World2(Controller):
 
         for i in range(5):
             for j in range(5):
-                self._worldMGR.createBox("box%ix%i" %(i,j), (j*20, i*25+10, 100), (20,20,20), 500)
+                self._worldMGR.createBox("box%ix%i" %(i,j), (j*20, i*25+10, 100), (20,20,20), 5)
 
-        ball = self._worldMGR.createBall("ball", (20, 70, 500), 15, 1000)
-        ball.addForce((10,1000,-20000000))
+        ball = self._worldMGR.createBall("ball", (20, 70, 500), 15, 4)
+        ball.addForce((10,1000,-200000))
         #self._worldMGR.createBox("box01",(200,300,200), (15,15,15), 200)
 
 

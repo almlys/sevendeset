@@ -40,7 +40,7 @@ class World(Controller):
         #self._worldMGR.loadScene("test.xml")
 
         #World ground
-        self._worldMGR.createPlane("ground",(0 ,1, 0), -10)
+        self._worldMGR.createPlane("ground",(0 ,1, 0), 0)
 
         #self._worldMGR.createBox("box01",(200,300,200), (15,15,15), 200)
 
