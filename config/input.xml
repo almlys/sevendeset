@@ -31,6 +31,8 @@
 		<action name='rotate_up' key='PgUp' target='Cam' />
 		<action name='rotate_down' key='PgDown' target='Cam' />
 
+        <action name='shot' key='l' target='world2' />
+
 	</input>
 	
 	<!-- Define actions for our Mouse -->
