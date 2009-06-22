@@ -250,13 +250,13 @@ class OgreRenderer(SubSystem,RendererInterface):
         return True
     
     def _createScene(self):
-        ent = self._sceneManager.createEntity("Cube", "Cube.mesh")
-        try:
-            node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
-        except AttributeError:
-            node = self._sceneManager.getRootSceneNode().createChildSceneNode("CubeNode")
-        node.attachObject(ent)
-        node.translate(0,10,0)
+        #ent = self._sceneManager.createEntity("Cube", "Cube.mesh")
+        #try:
+        #    node = self._sceneManager.rootSceneNode.createChildSceneNode("CubeNode")
+        #except AttributeError:
+        #    node = self._sceneManager.getRootSceneNode().createChildSceneNode("CubeNode")
+        #node.attachObject(ent)
+        #node.translate(0,10,0)
 
         #body1 = ode.Body(self.world)
         #M = ode.Mass()
@@ -269,12 +269,12 @@ class OgreRenderer(SubSystem,RendererInterface):
         #self.bodyList.append((body1, node))
 
 
-        ent2 = self._sceneManager.createEntity("Circle", "Cube.001.mesh")
-        try:
-            node2 = self._sceneManager.rootSceneNode.createChildSceneNode("CircleNode")
-        except AttributeError:
-            node2 = self._sceneManager.getRootSceneNode().createChildSceneNode("CircleNode")
-        node2.attachObject(ent2)
+        #ent2 = self._sceneManager.createEntity("Circle", "Cube.001.mesh")
+        #try:
+        #    node2 = self._sceneManager.rootSceneNode.createChildSceneNode("CircleNode")
+        #except AttributeError:
+        #    node2 = self._sceneManager.getRootSceneNode().createChildSceneNode("CircleNode")
+        #node2.attachObject(ent2)
 
         #body1 = ode.Body(self.world)
         #M = ode.Mass()

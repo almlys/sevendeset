@@ -29,6 +29,9 @@ class SceneObject(object):
         self.name = name
         self.physical = phys
         self.node = node
+
+    def addForce(self, coords):
+        self.physical.getBody().addForce(coords)
     
 
 class OgreWorld(SubSystem):
@@ -70,7 +73,7 @@ class OgreWorld(SubSystem):
 
     def createBall(self, name, position=(10, 100, 0), scale = 20.0, mass = 50):
         # Draw ball
-        ent = self._sceneManager.createEntity(name, "Sphere.mesh")
+        ent = self._sceneManager.createEntity(name, "Sphere.001.mesh")
         node = self._sceneManager.getRootSceneNode().createChildSceneNode()
         node.attachObject(ent)
         node.setScale((scale, scale, scale))
@@ -78,7 +81,6 @@ class OgreWorld(SubSystem):
         matlist = ["Material.002/SOLID", "Material.001/SOLID",
         "Material.003/SOLID", "Material.004/SOLID", "Material.005/SOLID",
         "Material/SOLID"]
-        import random
         ent.setMaterialName(matlist[int(random.uniform(0,len(matlist)))])
 
         # Physics ball
@@ -91,11 +93,42 @@ class OgreWorld(SubSystem):
         geom = self._simulator.createGeomSphere(scale)
         geom.setBody(body)
 
-        self._dynaObjects[name] = SceneObject(name, node, geom)
+        obj = SceneObject(name, node, geom)
+        self._dynaObjects[name] = obj
+        return obj
 
         #ent = sceneManager.createEntity("Ninja", "ninja.mesh")
         #node = sceneManager.rootSceneNode.createChildSceneNode("NinjaNode")
         #node.attachObject(ent)
+
+
+    def createBox(self, name, position=(10, 100, 0), scale = (20.0, 20.0, 20.0), mass = 50):
+        # Draw ball
+        ent = self._sceneManager.createEntity(name, "Cube.005.mesh")
+        node = self._sceneManager.getRootSceneNode().createChildSceneNode()
+        node.attachObject(ent)
+        node.setScale((scale[0]/2, scale[1]/2, scale[2]/2))
+        node.setPosition(position)
+        matlist = ["Material.002/SOLID", "Material.001/SOLID",
+        "Material.003/SOLID", "Material.004/SOLID", "Material.005/SOLID",
+        "Material/SOLID"]
+        ent.setMaterialName(matlist[int(random.uniform(0,len(matlist)))])
+
+        # Physics ball
+        body = self._simulator.newBody()
+        M = self._simulator.newMass()
+        M.setBox(500, *scale)
+        M.mass = mass
+        body.setMass(M)
+        body.setPosition(position)
+        geom = self._simulator.createGeomBox(scale)
+        geom.setBody(body)
+
+        obj = SceneObject(name, node, geom)
+        self._dynaObjects[name] = obj
+        return obj
+
+
 
     def destroyObject(self, name):
         obj = self.findObject(name)

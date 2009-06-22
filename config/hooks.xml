@@ -24,8 +24,9 @@
     bind = 'sd7.logic.camera.Camera'
     autostart = 'true' />
 
-	<controller name='world' bind='sd7.logic.world.World' autostart='true' />
-	
+	<controller name='world' bind='sd7.logic.world.World' autostart='false' />
+	<controller name='world2' bind='sd7.logic.world2.World2' autostart='true' />
+
 	<controller name='chatapp' bind='sd7.logic.chatapp.ChatApp' autostart='true' />
 
 	

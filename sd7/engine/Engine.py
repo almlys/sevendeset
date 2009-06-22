@@ -45,9 +45,9 @@ class _Engine(object):
             self.__startNetworking()
             self.__startWorldMGR()
             self.__startLogic()
-        except Exception,e:
+        except Exception:
             _Engine._instance = None
-            raise e
+            raise
 
     def __del__(self):
     #    """ Stuff needs to be deleted in the correct order, if not someting
