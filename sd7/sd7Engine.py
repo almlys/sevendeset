@@ -62,7 +62,7 @@ class MainApp(BaseApplication):
 
 
     def getAppVersion(self):
-        return "sd7 Alchera pre-alpha v0.1b $Revision$"
+        return "sd7 Alchera pre-alpha v0.1.5 $Revision$"
 
     def getException(self):
         return self._exception
