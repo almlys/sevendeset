@@ -25,7 +25,7 @@ class Stats(Controller):
         Controller.__init__(self,params,"stats")
         self._msg2 = ""
         self._msg1 = ""
-        self._markee = "sd7 Engine - Demostration"
+        self._markee = "sd7 Engine -Canvi - Demostration"
         self._i = 0
         self._time = 0
 

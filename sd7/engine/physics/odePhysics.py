@@ -64,11 +64,11 @@ class Physics(SubSystem):
     def __getattribute__(self, name):
         try:
             return object.__getattribute__(self, name)
-        except AttributeError, e:
+        except AttributeError:
             if name.startswith("create"):
                 self.__createName = name[6:]
                 return self.__create
-            raise e
+            raise
 
     def __create(self,*args):
         return getattr(ode,self.__createName)(self._space, *args)

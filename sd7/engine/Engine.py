@@ -160,9 +160,9 @@ class _Engine(object):
     def run(self):
         try:
             self.__run()
-        except Exception,e:
+        except Exception:
             self.__stop()
-            raise e
+            raise
 
     def __run(self):
         #self._renderer.renderLoop()
