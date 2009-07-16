@@ -31,8 +31,11 @@ class SceneObject(object):
         self.node = node
 
     def addForce(self, coords):
-        self.physical.getBody().addForce(coords)
-    
+        self.physical.getBody().addRelForce(coords)
+
+    def addTorque(self, coords):
+        self.physical.getBody().addRelTorque(coords)
+
 
 class OgreWorld(SubSystem):
 

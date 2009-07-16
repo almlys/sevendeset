@@ -16,6 +16,8 @@
 		<action name='stats' key='F10' priority='0' target = 'stats' />
 		<action name='screenshot' key='PrtSc' priority='0' target='basicinput' />
         <action name='gui' key='tab' priority='0' target='basicInput' />
+
+        <action name='reload' key='F3' priority='0' target="chatapp" />
 		
 		<!-- Camera 1 or Player 1 actions
 				 For player 2, you can name them differently, or use the target name to differenciate players
@@ -31,7 +33,7 @@
 		<action name='rotate_up' key='PgUp' target='Cam' />
 		<action name='rotate_down' key='PgDown' target='Cam' />
 
-        <action name='shot' key='l' target='world2' />
+        <action name='shot' key='l' target='world3' />
 
 	</input>
 	

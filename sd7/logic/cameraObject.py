@@ -14,12 +14,12 @@ Template file
 
 __version__ = "$Revision$"
 
-__all__ = ["Camera"]
+__all__ = ["CameraObject"]
 
 from sd7.engine.controller import Controller
 from sd7.engine import Engine
 
-class Camera(Controller):
+class CameraObject(Controller):
 
     _mouse = False
     _rotateX = 0
@@ -43,7 +43,8 @@ class Camera(Controller):
         self._renderer = Engine().getRenderer()
         self._camera = self._renderer.getCamera()
         self._updateMetrics()
-        
+        self._target = None
+
     def _updateMetrics(self):
         w, h, c, l, t = self._renderer.getRenderWindow().getMetrics()
         wd = w/3
@@ -53,6 +54,10 @@ class Camera(Controller):
     def initialize(self):
         Controller.initialize(self)
         self.log("Initializing %s" %(self.__class__.__name__))
+
+    def setTarget(self, name):
+        self._targetName = name
+        self._target = Engine().getWorldMGR().findObject("tank_%s" %(name,));
 
     def onFrame(self,evt):
         time = evt.timeSinceLastFrame
@@ -76,6 +81,10 @@ class Camera(Controller):
         if moveScaleZ != 0 or moveScaleX != 0:
             #vector = self._renderer.getRendererFactory().createVector3()
             self._camera.moveRelative((moveScaleX,0,moveScaleZ))
+
+        if self._target != None and moveScaleZ != 0:
+            self._target.addForce((0, 0 , moveScaleZ * 2000))
+
 
         #self._mouse += time
 

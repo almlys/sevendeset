@@ -239,8 +239,9 @@ class OgreRenderer(SubSystem,RendererInterface):
         # according to them.
         ogre.TextureManager.getSingleton().setDefaultNumMipmaps(5)
         #Set Anisotropic
-        ogre.MaterialManager.getSingleton().setDefaultAnisotropy(8)
-        ogre.MaterialManager.getSingleton().setDefaultTextureFiltering(ogre.TFO_ANISOTROPIC)
+        ogre.MaterialManager.getSingleton().setDefaultAnisotropy(0)
+        ##ogre.MaterialManager.getSingleton().setDefaultTextureFiltering(ogre.TFO_ANISOTROPIC)
+        ogre.MaterialManager.getSingleton().setDefaultTextureFiltering(ogre.TFO_NONE)
 
         #self._createResourceListener()
         self._loadResources()

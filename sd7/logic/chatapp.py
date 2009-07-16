@@ -220,6 +220,10 @@ class ChatApp(Controller):
             if name == "console":
                 self.setVisible()
                 return True
+            elif name == "reload":
+                self.addMsg("Reloading world...")
+                Engine().getHookMGR().restart("world3")
+                return True
                 
     def onFrame(self,evt):
         time = evt.timeSinceLastFrame

@@ -166,7 +166,7 @@ class _Engine(object):
 
     def __run(self):
         #self._renderer.renderLoop()
-        frmt = 1/70. # Query for monitor refresh rate!
+        frmt = 1/25. # Query for monitor refresh rate!
         tst_time = time.time()
         count = 0
         ofrm = 0
@@ -180,7 +180,9 @@ class _Engine(object):
             pstep = frmt
             if sleeptime < 0:
                 pstep = frmt + -sleeptime
-            self._physics.step(pstep)
+                self._physics.qstep(pstep)
+            else:
+                self._physics.step(pstep)
             self._worldmgr.update()
             if not self._renderer.renderOneFrame():
                 break
@@ -199,8 +201,12 @@ class _Engine(object):
             else:
                 tst_time = time.time()
                 ofrm = count
-                tloop_time = sloop_time / count
-                tsleeptime = ssleeptime / count
+                if count != 0:
+                    tloop_time = sloop_time / count
+                    tsleeptime = ssleeptime / count
+                else:
+                    tloop_time = 9999999999999999999999L
+                    tsleeptime = 9999999999999999999999L
                 sloop_time = 0
                 ssleeptime = 0
                 count = 0

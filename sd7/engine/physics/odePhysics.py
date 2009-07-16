@@ -43,8 +43,8 @@ class Physics(SubSystem):
         # Create contact joints
         world,contactgroup = args
         for c in contacts:
-            c.setBounce(0.2)
-            c.setMu(5000)
+            c.setBounce(0.1)
+            c.setMu(50000)
             j = ode.ContactJoint(world, contactgroup, c)
             j.attach(geom1.getBody(), geom2.getBody())
         
@@ -52,6 +52,12 @@ class Physics(SubSystem):
     def step(self, dt):
         self._space.collide((self._world, self._contactGroup), self._collision)
         self._world.step(dt)
+        self._contactGroup.empty()
+
+    def qstep(self, dt):
+        return
+        self._space.collide((self._world, self._contactGroup), self._collision)
+        self._world.quickStep(dt)
         self._contactGroup.empty()
 
     def newBody(self):
