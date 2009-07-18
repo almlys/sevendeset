@@ -50,8 +50,8 @@ class World3(Controller):
             for j in range(5):
                 self._worldMGR.createBox("box%ix%i" %(i,j), (j*20, i*25+10, 100), (20,20,20), 5)
 
-        #self.createTank("me", (10,10,10))
-        #Engine().getHookMGR().findController("Cam").setTarget("me");
+        self.createTank("me", (10,10,10))
+        Engine().getHookMGR().findController("Cam").setTarget("me");
 
     def createTank(self, name, pos):
         self._worldMGR.createBox("tank_%s" %(name,), pos, (40, 20, 60), 500)

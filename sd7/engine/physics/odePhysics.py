@@ -39,7 +39,6 @@ class Physics(SubSystem):
     def _collision(self, args, geom1, geom2):
         # Check if the objects do collide
         contacts = ode.collide(geom1, geom2)
-
         # Create contact joints
         world,contactgroup = args
         for c in contacts:

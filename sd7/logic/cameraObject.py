@@ -82,8 +82,20 @@ class CameraObject(Controller):
             #vector = self._renderer.getRendererFactory().createVector3()
             self._camera.moveRelative((moveScaleX,0,moveScaleZ))
 
-        if self._target != None and moveScaleZ != 0:
-            self._target.addForce((0, 0 , moveScaleZ * 2000))
+        if self._target != None:
+            b = self._target.physical.getBody()
+            if moveScaleZ != 0:
+                #self._target.addForce((0, 0 , moveScaleZ * 8000))
+                #self._target.physical.getBody().addRelForceAtRelPos((0, 0, moveScaleZ * 80000), (0, -10, -30))
+                x, y, z = b.vectorFromWorld(b.getPosition())
+                z += moveScaleZ
+                x, y, z = b.vectorToWorld((x, y, z))
+                b.setPosition((x, y, z))
+            x, y, z = b.getPosition()
+            self._camera.setPosition((x, y, z))
+            self._camera.lookAt((x, y, z))
+            #else:
+            #    self._target.physical.getBody().addForce((0, -100000, 0))
 
 
         #self._mouse += time
